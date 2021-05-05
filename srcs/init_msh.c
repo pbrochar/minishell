@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/05 15:29:11 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/05 21:57:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,17 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_term[A_KEY_BACK] = tgetstr("kb", NULL);
 	(*key_terms)->key_term[A_CTRL_L_A] = ft_strdup(CTRL_LEFT_ARROW);
 	(*key_terms)->key_term[A_CTRL_R_A] = ft_strdup(CTRL_RIGHT_ARROW);
-	(*key_terms)->key_term[9] = NULL;
+	(*key_terms)->key_term[NB_KEY - 1] = NULL;
+	(*key_terms)->key_fct[A_KEY_LEFT] = &mv_curs_left;
+	(*key_terms)->key_fct[A_KEY_RIGHT] = &mv_curs_right;
+	(*key_terms)->key_fct[A_KEY_UP] = &browse_history_back;
+	(*key_terms)->key_fct[A_KEY_DOWN] = &browse_history_front;
+	(*key_terms)->key_fct[A_KEY_HOME] = &mv_curs_home;
+	(*key_terms)->key_fct[A_KEY_END] = &mv_curs_end;
+	(*key_terms)->key_fct[A_KEY_BACK] = &delete_key_display;
+	(*key_terms)->key_fct[A_CTRL_L_A] = &mv_curs_left_word;
+	(*key_terms)->key_fct[A_CTRL_R_A] = &mv_curs_right_word;
+	(*key_terms)->key_fct[NB_KEY - 1] =	NULL;
 	(*key_terms)->delete_char = tgetstr("dc", NULL);
 	(*key_terms)->clean_line = tgetstr("ce", NULL);
 	(*key_terms)->mv_left = tgetstr("le", NULL);
@@ -95,6 +105,9 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->line_len = 0;
 	init_prompt(msh_m);
 	(*msh_m)->curs_pos = 0;
+	(*msh_m)->res_x = tgetnum("co");
+	(*msh_m)->nb_line = 0;
+	(*msh_m)->curs_pos_nl = 0;
 	(*msh_m)->envp = envp;
 	(*msh_m)->term = term_c;
 	(*msh_m)->commands = NULL;

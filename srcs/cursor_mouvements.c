@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 21:12:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/05 14:52:08 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/05 22:16:38 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,29 @@
 
 void	mv_curs_left(t_master *msh)
 {
-	if (msh->curs_pos > 0)
+	if (msh->curs_pos > 0 && msh->nb_line == 0)
 	{
 		tputs(msh->term->mv_left, 1, ft_putchar);
 		msh->curs_pos--;
+	}
+	else if (msh->curs_pos_nl > 0 && msh->nb_line > 0)
+	{
+		tputs(msh->term->mv_left, 1, ft_putchar);
+		msh->curs_pos_nl--;
+	}
+	//A REVOIR ++++++++++++++++++++
+	else if (msh->curs_pos_nl == 0 && msh->nb_line > 0)
+	{
+		tputs(msh->term->inv_curs, 1, ft_putchar);
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
+		msh->nb_line--;
+		while (msh->curs_pos_nl < msh->res_x)
+		{	
+			tputs(msh->term->mv_right, 1, ft_putchar);
+			msh->curs_pos_nl++;
+		}
+		tputs(msh->term->vis_curs, 1, ft_putchar);
+		msh->curs_pos = msh->res_x - msh->prompt_len - 1;
 	}
 }
 

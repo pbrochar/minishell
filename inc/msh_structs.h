@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/05 15:24:33 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/05 21:57:31 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,23 @@
 # include "define_msh.h"
 # include "minishell.h"
 
+typedef struct	s_master t_master;
+
 /*
 ** key_term array contains only the keyboard keys that will have a particular 
 ** action the shell behavior.
 ** Basically it contains left/right/up/down arrow, Backspace, Home and End key.
+**
+** key_fct is an array to function's pointer. It is used for the different 
+** functions of the keyboard keys as well as the keyboard shortcuts.
+** It works with the key_term array.
 */
 typedef struct	s_term
 {
 	struct termios	term;
 	struct termios	backup;
 	char			*key_term[NB_KEY];
+	void			(*key_fct[NB_KEY])(t_master *);
 	char			*delete_char;
 	char			*clean_line;
 	char			*mv_left;
@@ -56,6 +63,10 @@ typedef struct	s_master
 	int			curs_pos;
 	int			prompt_len;
 	int			line_len;
+	int			nb_char;
+	int			nb_line;
+	int			curs_pos_nl;
+	int			res_x;
 	t_prompt	*prompt;
 	t_list		*commands;
 	t_list		*history;

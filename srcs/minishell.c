@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/05 15:36:05 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/05 21:59:07 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	execute_line(t_master *msh)
 	ft_bzero(msh->line, 1);
 	msh->line_len = 0;
 	msh->curs_pos = 0;
+	msh->nb_line = 0;
+	msh->nb_char = msh->prompt_len;
 	return (0);
 }
 
@@ -86,6 +88,14 @@ void add_in_line(t_master *msh, char c)
 
 int print_char_management(t_master *msh, char *buf)
 {
+	if (msh->nb_char + 1 > msh->res_x)
+	{
+		write(1, "\n", 1);
+		msh->nb_line++;
+		msh->nb_char = 0;
+	}
+	if (msh->nb_line != 0)
+		msh->curs_pos_nl++;
 	if (msh->curs_pos < msh->line_len)
 	{
 		tputs(msh->term->ipt_mode, 1, ft_putchar);
@@ -104,6 +114,7 @@ int print_char_management(t_master *msh, char *buf)
 		msh->line_len++;
 		msh->curs_pos++;
 	}
+	msh->nb_char++;
 	return (0);
 }
 
@@ -112,17 +123,14 @@ int	msh_main_loop(t_master *msh_m)
 	char	buf[51];
 	int		ret;
 	int		key_term_v;
-	void	(*key_fct[NB_KEY])(t_master *) = {&mv_curs_left, &mv_curs_right, 
-										&browse_history_back, &browse_history_front,
-										&mv_curs_home, &mv_curs_end, &delete_key_display,
-										&mv_curs_left_word, &mv_curs_right_word , NULL};
-	
+
 	print_prompt(msh_m);
+	msh_m->nb_char = msh_m->prompt_len;
 	while ((ret = read(0, buf, 50)) > 0)
 	{
 		buf[ret] = '\0';
 		if ((key_term_v = key_is_term(msh_m, buf)) != -1)
-			key_fct[key_term_v](msh_m);
+			msh_m->term->key_fct[key_term_v](msh_m);
 		else if (is_new_line(buf, ret) == 1)
 			execute_line(msh_m);
 		else if (is_char_to_print(buf, ret) == 1)
