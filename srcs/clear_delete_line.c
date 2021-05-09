@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:51:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/09 11:51:56 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/09 14:33:22 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ static char	*remove_elem(char *line, int pos)
 	int		i;
 
 	i = 0;
-	new = malloc(sizeof(char) * ((int)ft_strlen(line) - 1));
+	new = malloc(sizeof(char) * ((int)ft_strlen(line)));
 	if (new == NULL)
 		return (NULL);
+	ft_bzero(new, ft_strlen(line) - 1);
 	while (i < pos)
 	{
 		new[i] = line[i];
@@ -45,13 +46,12 @@ void		clear_line_display(t_master *msh)
 
 void		delete_key_display(t_master *msh)
 {
-	if (msh->curs_pos <= 0)
+	if (msh->curs_pos->curs_pos_rel <= 0)
 		return ;
 	msh->line = remove_elem(msh->line, msh->curs_pos->curs_pos_rel - 1);
 	if (msh->line == NULL)
 		return ;
 	msh->line_len--;
-	dec_curs_pos(msh);
-	tputs(msh->term->mv_left, 1, ft_putchar);
+	mv_curs_left(msh);
 	tputs(msh->term->delete_char, 1, ft_putchar);
 }

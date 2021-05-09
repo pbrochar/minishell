@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/09 11:49:55 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/09 15:13:46 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,9 @@ int	execute_line(t_master *msh)
 	write(1, "\n", 1);
 	print_prompt(msh);
 	free(msh->line);
-	msh->line = malloc(sizeof(char));
-	if (msh->line == NULL)
-		return (-1);
-	ft_bzero(msh->line, 1);
+	msh->line = NULL;
 	msh->line_len = 0;
 	reset_curs_pos(msh);
-	
 	return (0);
 }
 
@@ -100,6 +96,7 @@ void add_in_line(t_master *msh, char c)
 		i--;
 	}
 	msh->line[msh->curs_pos->curs_pos_rel] = c;
+	msh->line[msh->line_len] = '\0';
 }
 
 int print_char_management(t_master *msh, char *buf)
@@ -117,11 +114,14 @@ int print_char_management(t_master *msh, char *buf)
 	else
 	{
 		write(1, buf, 1);
-		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 1);
-		msh->line = ft_strcat(msh->line, buf);
+		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 2);
 		msh->line_len++;
+		msh->line[msh->line_len - 1] = buf[0];
+		msh->line[msh->line_len] = '\0';
 		inc_curs_pos(msh);
 	}
+	if (msh->curs_pos->curs_pos_abs % (msh->res_x) == 0)
+		write(1, "\n", 1);
 	return (0);
 }
 
@@ -142,6 +142,8 @@ int	msh_main_loop(t_master *msh_m)
 		else if (is_char_to_print(buf, ret) == 1)
 			print_char_management(msh_m, buf);
 		ft_bzero(buf, 50);
+		//printf("\nres = %d\n", msh_m->res_x);
+		//printf("\n%d, %d\n", msh_m->curs_pos->curs_pos_rel, msh_m->curs_pos->curs_pos_abs);
 	}
 	return (0);
 }
