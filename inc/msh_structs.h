@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/05 21:57:31 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/09 11:40:27 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,17 @@ typedef struct	s_prompt
 	int		dir_len;
 }				t_prompt;
 
+typedef struct	s_curs_pos
+{
+	int curs_pos_rel;
+	int curs_pos_abs;	
+}				t_curs_pos;
+
 typedef struct	s_master
 {
-	int			curs_pos;
+	t_curs_pos	*curs_pos;
 	int			prompt_len;
 	int			line_len;
-	int			nb_char;
-	int			nb_line;
-	int			curs_pos_nl;
 	int			res_x;
 	t_prompt	*prompt;
 	t_list		*commands;

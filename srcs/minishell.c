@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/05 21:59:07 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/09 11:49:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,23 @@ int	is_new_line(char *buf, int ret)
 	return (-1);
 }
 
+void	inc_curs_pos(t_master *msh)
+{
+	msh->curs_pos->curs_pos_rel++;
+	msh->curs_pos->curs_pos_abs++;
+}
+void	dec_curs_pos(t_master *msh)
+{
+	msh->curs_pos->curs_pos_rel--;
+	msh->curs_pos->curs_pos_abs--;
+}
+
+void	reset_curs_pos(t_master *msh)
+{
+	msh->curs_pos->curs_pos_rel = 0;
+	msh->curs_pos->curs_pos_abs = msh->prompt_len;
+}
+
 int	execute_line(t_master *msh)
 {
 	history_management(msh);
@@ -60,9 +77,8 @@ int	execute_line(t_master *msh)
 		return (-1);
 	ft_bzero(msh->line, 1);
 	msh->line_len = 0;
-	msh->curs_pos = 0;
-	msh->nb_line = 0;
-	msh->nb_char = msh->prompt_len;
+	reset_curs_pos(msh);
+	
 	return (0);
 }
 
@@ -78,25 +94,17 @@ void add_in_line(t_master *msh, char c)
 	int i;
 
 	i = msh->line_len;
-	while (i > msh->curs_pos)
+	while (i > msh->curs_pos->curs_pos_rel)
 	{
 		msh->line[i] = msh->line[i - 1];
 		i--;
 	}
-	msh->line[msh->curs_pos] = c;
+	msh->line[msh->curs_pos->curs_pos_rel] = c;
 }
 
 int print_char_management(t_master *msh, char *buf)
 {
-	if (msh->nb_char + 1 > msh->res_x)
-	{
-		write(1, "\n", 1);
-		msh->nb_line++;
-		msh->nb_char = 0;
-	}
-	if (msh->nb_line != 0)
-		msh->curs_pos_nl++;
-	if (msh->curs_pos < msh->line_len)
+	if (msh->curs_pos->curs_pos_rel < msh->line_len)
 	{
 		tputs(msh->term->ipt_mode, 1, ft_putchar);
 		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 1);
@@ -104,7 +112,7 @@ int print_char_management(t_master *msh, char *buf)
 		msh->line_len++;
 		write(1, buf, 1);
 		tputs(msh->term->lve_ipt_mode, 1, ft_putchar);
-		msh->curs_pos++;
+		inc_curs_pos(msh);
 	}
 	else
 	{
@@ -112,9 +120,8 @@ int print_char_management(t_master *msh, char *buf)
 		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 1);
 		msh->line = ft_strcat(msh->line, buf);
 		msh->line_len++;
-		msh->curs_pos++;
+		inc_curs_pos(msh);
 	}
-	msh->nb_char++;
 	return (0);
 }
 
@@ -125,7 +132,6 @@ int	msh_main_loop(t_master *msh_m)
 	int		key_term_v;
 
 	print_prompt(msh_m);
-	msh_m->nb_char = msh_m->prompt_len;
 	while ((ret = read(0, buf, 50)) > 0)
 	{
 		buf[ret] = '\0';

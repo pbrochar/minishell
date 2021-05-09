@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/05 12:30:19 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/09 11:43:45 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ void	mv_curs_home(t_master *msh);
 void	mv_curs_end(t_master *msh);
 void	mv_curs_right_word(t_master *msh);
 void	mv_curs_left_word(t_master *msh);
+void	reset_curs_pos(t_master *msh);
+void	dec_curs_pos(t_master *msh);
+void	inc_curs_pos(t_master *msh);
 
 void	history_management(t_master *msh);
 void	clear_line_display(t_master *msh);

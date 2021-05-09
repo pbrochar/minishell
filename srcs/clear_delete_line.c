@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:51:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/05 14:03:50 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/09 11:51:56 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void		delete_key_display(t_master *msh)
 {
 	if (msh->curs_pos <= 0)
 		return ;
-	msh->line = remove_elem(msh->line, msh->curs_pos - 1);
+	msh->line = remove_elem(msh->line, msh->curs_pos->curs_pos_rel - 1);
 	if (msh->line == NULL)
 		return ;
 	msh->line_len--;
-	msh->curs_pos--;
+	dec_curs_pos(msh);
 	tputs(msh->term->mv_left, 1, ft_putchar);
 	tputs(msh->term->delete_char, 1, ft_putchar);
 }
