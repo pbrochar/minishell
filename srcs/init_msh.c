@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/11 17:21:36 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:54:51 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_term[A_KEY_BACK] = tgetstr("kb", NULL);
 	(*key_terms)->key_term[A_CTRL_L_A] = ft_strdup(CTRL_LEFT_ARROW);
 	(*key_terms)->key_term[A_CTRL_R_A] = ft_strdup(CTRL_RIGHT_ARROW);
+	(*key_terms)->key_term[A_CTRL_U_A] = ft_strdup(CTRL_UP_ARROW);
+	(*key_terms)->key_term[A_CTRL_D_A] = ft_strdup(CTRL_DOWN_ARROW);
 	(*key_terms)->key_term[NB_KEY - 1] = NULL;
 	(*key_terms)->key_fct[A_KEY_LEFT] = &mv_curs_left;
 	(*key_terms)->key_fct[A_KEY_RIGHT] = &mv_curs_right;
@@ -35,6 +37,8 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_fct[A_KEY_BACK] = &delete_key_display;
 	(*key_terms)->key_fct[A_CTRL_L_A] = &mv_curs_left_word;
 	(*key_terms)->key_fct[A_CTRL_R_A] = &mv_curs_right_word;
+	(*key_terms)->key_fct[A_CTRL_U_A] = &mv_curs_up_multiline;
+	(*key_terms)->key_fct[A_CTRL_D_A] = &mv_curs_down_multiline;
 	(*key_terms)->key_fct[NB_KEY - 1] =	NULL;
 	(*key_terms)->delete_char = tgetstr("dc", NULL);
 	(*key_terms)->clean_line = tgetstr("ce", NULL);

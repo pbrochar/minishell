@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:51:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/11 18:27:58 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:47:09 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,31 @@ void		save_curs_pos(t_master *msh)
 	msh->save_curs_pos->curs_pos_rel = msh->curs_pos->curs_pos_rel;
 }
 
-void		delete_key_display(t_master *msh)
+static	void manage_delete_multiline(t_master *msh)
 {
 	int n;
-	//printf("\n\n\nabs = %d\n, rel = %d\n", msh->curs_pos->curs_pos_abs, msh->curs_pos->curs_pos_rel);
-	//printf("\n\n char = %c\n", msh->line[msh->curs_pos->curs_pos_rel]);
+
+	n = msh->nb_line - (msh->curs_pos->curs_pos_abs / msh->res_x);
+	save_curs_pos(msh);
+	tputs(msh->term->inv_curs, 1, ft_putchar);
+	while (n > 0)
+	{
+		mv_curs_abs(msh, msh->res_x - 1, msh->curs_pos->curs_pos_abs / msh->res_x);
+		set_curs_pos(msh, msh->curs_pos->curs_pos_abs - (msh->curs_pos->curs_pos_abs % msh->res_x)
+					+ (msh->res_x - 1));
+		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
+		mv_curs_right(msh);
+		tputs(msh->term->delete_char, 1, ft_putchar);
+		n--;
+	}
+	mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x, msh->save_curs_pos->curs_pos_abs / msh->res_x);
+	rest_curs_pos(msh);
+	msh->nb_line = (msh->line_len + msh->prompt_len) / msh->res_x;
+	tputs(msh->term->vis_curs, 1, ft_putchar);
+}
+
+void		delete_key_display(t_master *msh)
+{
 	if (msh->curs_pos->curs_pos_rel <= 0)
 		return ;
 	msh->line = remove_elem(msh->line, msh->curs_pos->curs_pos_rel - 1);
@@ -98,24 +118,5 @@ void		delete_key_display(t_master *msh)
 	mv_curs_left(msh);
 	tputs(msh->term->delete_char, 1, ft_putchar);
 	if (msh->nb_line != 0 && msh->curs_pos->curs_pos_abs / msh->res_x != msh->nb_line)
-	{
-		save_curs_pos(msh);
-		n = msh->nb_line - (msh->curs_pos->curs_pos_abs / msh->res_x);
-		tputs(msh->term->inv_curs, 1, ft_putchar);
-		while (n > 0)
-		{
-			mv_curs_abs(msh, msh->res_x - 1, msh->curs_pos->curs_pos_abs / msh->res_x);
-			set_curs_pos(msh, msh->curs_pos->curs_pos_abs - (msh->curs_pos->curs_pos_abs % msh->res_x)
-						+ (msh->res_x - 1));
-			//if (msh->line_len)
-			write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
-			mv_curs_right(msh);
-			tputs(msh->term->delete_char, 1, ft_putchar);
-			n--;
-		}
-		mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x, msh->save_curs_pos->curs_pos_abs / msh->res_x);
-		rest_curs_pos(msh);
-		msh->nb_line = (msh->line_len + msh->prompt_len) / msh->res_x;
-	}
-	tputs(msh->term->vis_curs, 1, ft_putchar);
+		manage_delete_multiline(msh);
 }
