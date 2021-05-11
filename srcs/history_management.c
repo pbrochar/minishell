@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:27:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/05 13:33:09 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/09 16:08:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static int		line_is_empty(char *line)
 	int i;
 
 	i = 0;
+	if (!line)
+		return (1);
 	while (line[i] == ' ')
 		i++;
 	if (line[i])

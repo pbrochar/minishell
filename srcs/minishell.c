@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/09 15:13:46 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:14:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,22 @@ void	reset_curs_pos(t_master *msh)
 	msh->curs_pos->curs_pos_abs = msh->prompt_len;
 }
 
+void	set_curs_pos(t_master *msh, int abs)
+{
+	msh->curs_pos->curs_pos_abs = abs;
+	msh->curs_pos->curs_pos_rel = msh->curs_pos->curs_pos_abs - msh->prompt_len;
+}
+
 int	execute_line(t_master *msh)
 {
 	history_management(msh);
 	write(1, "\n", 1);
 	print_prompt(msh);
-	free(msh->line);
+	if (msh->line)
+		free(msh->line);
 	msh->line = NULL;
 	msh->line_len = 0;
+	msh->nb_line = 0;
 	reset_curs_pos(msh);
 	return (0);
 }
@@ -122,6 +130,7 @@ int print_char_management(t_master *msh, char *buf)
 	}
 	if (msh->curs_pos->curs_pos_abs % (msh->res_x) == 0)
 		write(1, "\n", 1);
+	msh->nb_line = (msh->line_len + msh->prompt_len) / msh->res_x;
 	return (0);
 }
 
@@ -142,8 +151,6 @@ int	msh_main_loop(t_master *msh_m)
 		else if (is_char_to_print(buf, ret) == 1)
 			print_char_management(msh_m, buf);
 		ft_bzero(buf, 50);
-		//printf("\nres = %d\n", msh_m->res_x);
-		//printf("\n%d, %d\n", msh_m->curs_pos->curs_pos_rel, msh_m->curs_pos->curs_pos_abs);
 	}
 	return (0);
 }

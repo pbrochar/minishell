@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/09 14:31:20 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/11 17:21:36 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,17 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->curs_pos = malloc(sizeof(t_curs_pos));
 	if ((*msh_m)->curs_pos == NULL)
 		return (-1);
+	(*msh_m)->save_curs_pos = malloc(sizeof(t_curs_pos));
+	if ((*msh_m)->save_curs_pos == NULL)
+		return (-1);
 	(*msh_m)->curs_pos->curs_pos_rel = 0;
+	(*msh_m)->nb_line = 0;
 	(*msh_m)->curs_pos->curs_pos_abs = (*msh_m)->prompt_len;
 	(*msh_m)->res_x = tgetnum("co");
 	(*msh_m)->envp = envp;
 	(*msh_m)->term = term_c;
+	(*msh_m)->save_curs_pos->curs_pos_abs = -1;
+	(*msh_m)->save_curs_pos->curs_pos_rel = -1;
 	(*msh_m)->commands = NULL;
 	(*msh_m)->history = NULL;
 	return (0);

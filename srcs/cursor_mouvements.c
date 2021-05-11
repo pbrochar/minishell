@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 21:12:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/09 15:15:54 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:42:16 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,42 +26,24 @@
 /*
 ** Function to move the cursor one char to the left.
 */
+
+
 void	go_to_end_term_line(t_master *msh)
 {
-	int temp;
-
-	temp = msh->curs_pos->curs_pos_abs;
-	tputs(msh->term->inv_curs, 1, ft_putchar);
-	tputs(tgetstr("up", NULL), 1, ft_putchar);
-	while (++temp % msh->res_x != 0)
-	{
-		tputs(msh->term->mv_right, 1, ft_putchar);
-	}
+	mv_curs_abs(msh, msh->res_x - 1, (msh->curs_pos->curs_pos_abs / msh->res_x) - 1);
 	dec_curs_pos(msh);
-	tputs(msh->term->vis_curs, 1, ft_putchar);
 }
 
 void go_to_start_term_line(t_master *msh)
 {
-	int temp;
-
-	temp = msh->curs_pos->curs_pos_abs - 1;
-	tputs(msh->term->inv_curs, 1, ft_putchar);
-	while (temp % msh->res_x != 0)
-	{
-		tputs(msh->term->mv_left, 1, ft_putchar);
-		temp--;
-	}
-	tputs(tgetstr("do", NULL), 1, ft_putchar);
-	msh->curs_pos->curs_pos_abs++;
-	msh->curs_pos->curs_pos_rel++;
-	tputs(msh->term->vis_curs, 1, ft_putchar);
+	mv_curs_abs(msh, 0, (msh->curs_pos->curs_pos_abs / msh->res_x) + 1);
+	inc_curs_pos(msh);
 }
 
 void	mv_curs_left(t_master *msh)
 {
 	if ((msh->curs_pos->curs_pos_abs) % (msh->res_x) == 0
-		&& msh->curs_pos->curs_pos_abs / msh->res_x > 0)
+		&& msh->nb_line > 0)
 		go_to_end_term_line(msh);
 	else if (msh->curs_pos->curs_pos_rel > 0)
 	{
@@ -91,10 +73,8 @@ void	mv_curs_right(t_master *msh)
 
 void	mv_curs_home(t_master *msh)
 {
-	tputs(msh->term->inv_curs, 1, ft_putchar);
-	while (msh->curs_pos->curs_pos_rel != 0)
-		mv_curs_left(msh);
-	tputs(msh->term->vis_curs, 1, ft_putchar);
+	mv_curs_abs(msh, msh->prompt_len, 0);
+	reset_curs_pos(msh);
 }
 
 /*
@@ -103,10 +83,8 @@ void	mv_curs_home(t_master *msh)
 
 void	mv_curs_end(t_master *msh)
 {
-	tputs(msh->term->inv_curs, 1, ft_putchar);
-	while (msh->curs_pos->curs_pos_rel < msh->line_len)
-		mv_curs_right(msh);
-	tputs(msh->term->vis_curs, 1, ft_putchar);
+	mv_curs_abs(msh, ((msh->line_len + msh->prompt_len) % msh->res_x), msh->nb_line);
+	set_curs_pos(msh, msh->line_len + msh->prompt_len);
 }
 
 /*
@@ -115,23 +93,24 @@ void	mv_curs_end(t_master *msh)
 
 void	mv_curs_right_word(t_master *msh)
 {
-	tputs(msh->term->inv_curs, 1, ft_putchar);
-	if (ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel]) == 0)
+	int	i;
+
+	i = msh->curs_pos->curs_pos_rel;
+	if (ft_isalnum(msh->line[i]) == 0)
 	{
-		while (msh->line[msh->curs_pos->curs_pos_rel] && \
-				ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel]) == 0)
-			mv_curs_right(msh);
+		while (msh->line[i] && ft_isalnum(msh->line[i]) == 0)
+			i++;
 	}
 	else
 	{
-		while (msh->line[msh->curs_pos->curs_pos_rel] && \
-				ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel]) != 0)
-			mv_curs_right(msh);
-		while (msh->line[msh->curs_pos->curs_pos_rel] && \
-				ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel]) == 0)
-			mv_curs_right(msh);
+		while (msh->line[i] && ft_isalnum(msh->line[i]) != 0)
+			i++;
+		while (msh->line[i] && ft_isalnum(msh->line[i]) == 0)
+			i++;
 	}
-	tputs(msh->term->vis_curs, 1, ft_putchar);
+	mv_curs_abs(msh, (i + msh->prompt_len) % msh->res_x,\
+						(i + msh->prompt_len) / msh->res_x);
+	set_curs_pos(msh, i + msh->prompt_len);
 }
 
 /*
@@ -140,29 +119,29 @@ void	mv_curs_right_word(t_master *msh)
 
 void	mv_curs_left_word(t_master *msh)
 {
-	tputs(msh->term->inv_curs, 1, ft_putchar);
-	if (ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel]) == 0)
+	int i;
+
+	i = msh->curs_pos->curs_pos_rel;
+	if (ft_isalnum(msh->line[i]) == 0)
 	{
-		while (msh->curs_pos->curs_pos_rel > 0 && ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel]) == 0)
-			mv_curs_left(msh);
-		while (msh->curs_pos->curs_pos_rel > 0 && \
-				ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel - 1]) != 0)
-			mv_curs_left(msh);
+		while (i > 0 && ft_isalnum(msh->line[i]) == 0)
+			i--;
+		while (i > 0 && ft_isalnum(msh->line[i - 1]) != 0)
+			i--;
 	}
 	else
 	{
-		if (msh->curs_pos->curs_pos_rel > 0 && ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel - 1]) == 0)
+		if (i > 0 && ft_isalnum(msh->line[i - 1]) == 0)
 		{
-			while (msh->curs_pos->curs_pos_rel > 0 && \
-					ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel - 1]) == 0)
-				mv_curs_left(msh);
-			while (msh->curs_pos->curs_pos_rel > 0 && \
-					ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel]) != 0)
-				mv_curs_left(msh);
+			while (i > 0 && ft_isalnum(msh->line[i - 1]) == 0)
+				i--;
+			while (i > 0 && ft_isalnum(msh->line[i]) != 0)
+				i--;
 		}
-		while (msh->curs_pos->curs_pos_rel > 0 && \
-				ft_isalnum(msh->line[msh->curs_pos->curs_pos_rel - 1]) != 0)
-			mv_curs_left(msh);
+		while (i > 0 && ft_isalnum(msh->line[i - 1]) != 0)
+			i--;
 	}
-	tputs(msh->term->vis_curs, 1, ft_putchar);
+	mv_curs_abs(msh, (i + msh->prompt_len) % msh->res_x,\
+						(i + msh->prompt_len) / msh->res_x);
+	set_curs_pos(msh, i + msh->prompt_len);
 }
