@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/11 19:54:04 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/12 19:59:33 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,23 @@ void	set_curs_pos(t_master *msh, int abs)
 	msh->curs_pos->curs_pos_rel = msh->curs_pos->curs_pos_abs - msh->prompt_len;
 }
 
+void	set_alt_curs_pos(t_master *msh, t_curs_pos *pos, int abs)
+{
+	pos->curs_pos_abs = abs;
+	pos->curs_pos_rel = pos->curs_pos_abs - msh->prompt_len;
+}
+
 int	execute_line(t_master *msh)
 {
+	if (msh->line_len == 0)
+	{
+		write(1, "\n", 1);
+		print_prompt(msh);
+		return (0);
+	}
 	history_management(msh);
+	if (ft_strncmp(msh->line, "exit", 4) == 0)
+		return (-1);
 	write(1, "\n", 1);
 	print_prompt(msh);
 	if (msh->line)
@@ -147,7 +161,13 @@ int	msh_main_loop(t_master *msh_m)
 		if ((key_term_v = key_is_term(msh_m, buf)) != -1)
 			msh_m->term->key_fct[key_term_v](msh_m);
 		else if (is_new_line(buf, ret) == 1)
-			execute_line(msh_m);
+		{
+			if (execute_line(msh_m) == -1)
+			{
+				write(1, "\n", 1);
+				break;
+			}
+		}
 		else if (is_char_to_print(buf, ret) == 1)
 			print_char_management(msh_m, buf);
 		ft_bzero(buf, 50);

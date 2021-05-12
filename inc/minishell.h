@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/11 19:59:21 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/12 20:44:15 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,24 @@ void	mv_curs_right_word(t_master *msh);
 void	mv_curs_left_word(t_master *msh);
 void	mv_curs_up_multiline(t_master *msh);
 void	mv_curs_down_multiline(t_master *msh);
+void	paste_selection(t_master *msh);
+void	select_left(t_master *msh);
+void	select_right(t_master *msh);
+void	select_home(t_master *msh);
+void	select_end(t_master *msh);
+void	remove_select(t_master *msh);
+void	select_word_left(t_master *msh);
+void	select_word_right(t_master *msh);
+void	copy_select(t_master *msh);
+void	select_all(t_master *msh);
+void	cut_select(t_master *msh);
+void	buffer_select(t_master *msh);
+void	paste_buff_select(t_master *msh);
 
-void	ctrl_home_select(t_master *msh);
+void	select_mode(t_master *msh);
 void	reset_curs_pos(t_master *msh);
 void	set_curs_pos(t_master *msh, int abs);
+void	set_alt_curs_pos(t_master *msh, t_curs_pos *pos, int abs);
 void	dec_curs_pos(t_master *msh);
 void	inc_curs_pos(t_master *msh);
 void	mv_curs_abs(t_master *msh, int x, int y);

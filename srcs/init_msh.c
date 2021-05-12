@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/11 20:01:50 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/12 20:48:24 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_term[A_CTRL_U_A] = ft_strdup(CTRL_UP_ARROW);
 	(*key_terms)->key_term[A_CTRL_D_A] = ft_strdup(CTRL_DOWN_ARROW);
 	(*key_terms)->key_term[A_CTRL_H_A] = ft_strdup(CTRL_HOME);
+	(*key_terms)->key_term[A_INSERT_A] = ft_strdup(INSERT);
 	(*key_terms)->key_term[NB_KEY - 1] = NULL;
 	(*key_terms)->key_fct[A_KEY_LEFT] = &mv_curs_left;
 	(*key_terms)->key_fct[A_KEY_RIGHT] = &mv_curs_right;
@@ -40,8 +41,36 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_fct[A_CTRL_R_A] = &mv_curs_right_word;
 	(*key_terms)->key_fct[A_CTRL_U_A] = &mv_curs_up_multiline;
 	(*key_terms)->key_fct[A_CTRL_D_A] = &mv_curs_down_multiline;
-	(*key_terms)->key_fct[A_CTRL_H_A] = &ctrl_home_select;
+	(*key_terms)->key_fct[A_CTRL_H_A] = &select_mode;
+	(*key_terms)->key_fct[A_INSERT_A] = &paste_selection;
 	(*key_terms)->key_fct[NB_KEY - 1] =	NULL;
+	(*key_terms)->key_term_select_mode[S_KEY_LEFT] = tgetstr("kl", NULL);
+	(*key_terms)->key_term_select_mode[S_KEY_RIGHT] = tgetstr("kr", NULL);
+	(*key_terms)->key_term_select_mode[S_KEY_HOME] = tgetstr("kh", NULL);
+	(*key_terms)->key_term_select_mode[S_KEY_END] = tgetstr("@7", NULL);
+	(*key_terms)->key_term_select_mode[S_KEY_BACK] = tgetstr("kb", NULL);
+	(*key_terms)->key_term_select_mode[S_CTRL_L_A] = ft_strdup(CTRL_LEFT_ARROW);
+	(*key_terms)->key_term_select_mode[S_CTRL_R_A] = ft_strdup(CTRL_RIGHT_ARROW);
+	(*key_terms)->key_term_select_mode[S_CTRL_H_A] = ft_strdup(CTRL_HOME);
+	(*key_terms)->key_term_select_mode[S_KEY_C] = ft_strdup(KEY_C);
+	(*key_terms)->key_term_select_mode[S_KEY_A] = ft_strdup(KEY_A);
+	(*key_terms)->key_term_select_mode[S_KEY_X] = ft_strdup(KEY_X);
+	(*key_terms)->key_term_select_mode[S_KEY_B] = ft_strdup(KEY_B);
+	(*key_terms)->key_term_select_mode[S_KEY_P] = ft_strdup(KEY_P);
+	(*key_terms)->key_term_select_mode[NB_KEY_SELECT - 1] = NULL;
+	(*key_terms)->key_fct_select_mode[S_KEY_LEFT] = &select_left;
+	(*key_terms)->key_fct_select_mode[S_KEY_RIGHT] = &select_right;
+	(*key_terms)->key_fct_select_mode[S_KEY_HOME] = &select_home;
+	(*key_terms)->key_fct_select_mode[S_KEY_END] = &select_end;
+	(*key_terms)->key_fct_select_mode[S_KEY_BACK] = &remove_select;
+	(*key_terms)->key_fct_select_mode[S_CTRL_L_A] = &select_word_left;
+	(*key_terms)->key_fct_select_mode[S_CTRL_R_A] = &select_word_right;
+	(*key_terms)->key_fct_select_mode[S_KEY_C] = &copy_select;
+	(*key_terms)->key_fct_select_mode[S_KEY_A] = &select_all;
+	(*key_terms)->key_fct_select_mode[S_KEY_X] = &cut_select;
+	(*key_terms)->key_fct_select_mode[S_KEY_B] = &buffer_select;
+	(*key_terms)->key_fct_select_mode[S_KEY_P] = &paste_buff_select;
+	(*key_terms)->key_fct_select_mode[NB_KEY_SELECT - 1] =	NULL;
 	(*key_terms)->delete_char = tgetstr("dc", NULL);
 	(*key_terms)->clean_line = tgetstr("ce", NULL);
 	(*key_terms)->mv_left = tgetstr("le", NULL);
@@ -64,6 +93,7 @@ int		init_term(t_term **term_conf)
 		return (-1);
 	(*term_conf)->term.c_lflag &= ~(ECHO);
 	(*term_conf)->term.c_lflag &= ~(ICANON);
+	(*term_conf)->term.c_lflag &= ~(ISIG);
 	if (tcsetattr(0, TCSANOW, &((*term_conf)->term)) == -1)
 		return (-1);
 	if (tgetent(0, getenv("TERM")) == -1)
@@ -96,6 +126,16 @@ void	init_prompt(t_master **msh_m)
 							+ 2;
 }
 
+static	int	init_select_struct(t_master **msh)
+{
+	(*msh)->select->begin = malloc(sizeof(t_curs_pos));
+	(*msh)->select->end = malloc(sizeof(t_curs_pos));
+	if ((*msh)->select->begin == NULL || (*msh)->select->end == NULL)
+		return (-1);
+	(*msh)->select->is_select = 0;
+	return (0);
+}
+
 int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 {
 	*msh_m = malloc(sizeof(t_master));
@@ -112,6 +152,11 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->save_curs_pos = malloc(sizeof(t_curs_pos));
 	if ((*msh_m)->save_curs_pos == NULL)
 		return (-1);
+	(*msh_m)->select = malloc(sizeof(t_select));
+	if ((*msh_m)->select == NULL)
+		return (-1);
+	if (init_select_struct(msh_m) == -1)
+		return (-1);
 	(*msh_m)->curs_pos->curs_pos_rel = 0;
 	(*msh_m)->nb_line = 0;
 	(*msh_m)->curs_pos->curs_pos_abs = (*msh_m)->prompt_len;
@@ -122,5 +167,6 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->save_curs_pos->curs_pos_rel = -1;
 	(*msh_m)->commands = NULL;
 	(*msh_m)->history = NULL;
+	(*msh_m)->clipboard = NULL;
 	return (0);
 }

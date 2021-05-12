@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/11 17:16:46 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/12 20:11:40 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct	s_term
 	int				fd;
 	char			*key_term[NB_KEY];
 	void			(*key_fct[NB_KEY])(t_master *);
+	char			*key_term_select_mode[NB_KEY_SELECT];
+	void			(*key_fct_select_mode[NB_KEY_SELECT])(t_master *);
 	char			*delete_char;
 	char			*clean_line;
 	char			*mv_left;
@@ -65,10 +67,18 @@ typedef struct	s_curs_pos
 	int curs_pos_abs;	
 }				t_curs_pos;
 
+typedef struct	s_select
+{
+	int			is_select;
+	t_curs_pos	*begin;
+	t_curs_pos	*end;
+}				t_select;
+
 typedef struct	s_master
 {
 	t_curs_pos	*curs_pos;
 	t_curs_pos	*save_curs_pos;
+	t_select	*select;
 	int			prompt_len;
 	int			line_len;
 	int			nb_line;
@@ -79,6 +89,7 @@ typedef struct	s_master
 	t_list		*pos_in_history;
 	t_term		*term;
 	char		*line;
+	char		*clipboard;
 	char		**envp;
 }				t_master;
 
