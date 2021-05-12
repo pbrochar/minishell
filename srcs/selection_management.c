@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/12 20:52:48 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/12 21:53:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,14 @@ static void reset_selection(t_master *msh)
 	set_curs_pos(msh, msh->select->end->curs_pos_abs);
 }
 
+static	void swap_select_curs(t_master *msh)
+{
+	t_curs_pos *temp;
+
+	temp = msh->select->begin;
+	msh->select->begin = msh->select->end;
+	msh->select->end = temp;
+}
 void	copy_select(t_master *msh)
 {
 	int size;
@@ -40,6 +48,8 @@ void	copy_select(t_master *msh)
 	if (msh->select->begin->curs_pos_abs == -1 ||
 		msh->select->end->curs_pos_abs == -1)
 		return ;
+	if (msh->select->begin->curs_pos_abs > msh->select->end->curs_pos_abs)
+		swap_select_curs(msh);
 	size = msh->select->end->curs_pos_rel - msh->select->begin->curs_pos_rel + 1;
 	msh->clipboard = malloc(sizeof(char) * (size + 1));
 	if (msh->clipboard == NULL)
@@ -134,6 +144,9 @@ void	loop_selection(t_master *msh)
 	int	key_term;
 	char buf[51];
 	
+	tputs(msh->term->inv_curs, 1, ft_putchar);
+	set_alt_curs_pos(msh, msh->select->begin, msh->curs_pos->curs_pos_abs);
+	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	while ((ret = read(0, buf, 50)) > 0)
 	{
 		buf[ret] = '\0';
@@ -156,30 +169,64 @@ void	select_mode(t_master *msh)
 {
 	msh->select->is_select = 1;
 	loop_selection(msh);
+	tputs(msh->term->vis_curs, 1, ft_putchar);
 }
 
 void	select_left(t_master *msh)
 {
-	(void)msh;
-	printf("select left\n");
+	tputs(tgetstr("so", NULL), 1, ft_putchar);
+	if ((msh->curs_pos->curs_pos_abs) % (msh->res_x) == 0
+		&& msh->nb_line > 0)
+	{
+		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
+		go_to_end_term_line(msh);
+		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	}
+	else if (msh->curs_pos->curs_pos_rel > 0)
+	{
+		tputs(msh->term->mv_left, 1, ft_putchar);
+		dec_curs_pos(msh);
+		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
+		tputs(msh->term->mv_left, 1, ft_putchar);
+		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	}
+	tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
 void	select_right(t_master *msh)
 {
-	(void)msh;
-	printf("select right\n");
+	tputs(tgetstr("so", NULL), 1, ft_putchar);
+	if ((msh->curs_pos->curs_pos_abs + 1) % (msh->res_x) == 0)
+	{
+		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
+		go_to_start_term_line(msh);
+		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	}
+	else if (msh->curs_pos->curs_pos_rel < msh->line_len)
+	{
+		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
+		inc_curs_pos(msh);
+		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	}
+	tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
 void	select_home(t_master *msh)
 {
-	(void)msh;
-	printf("select home\n");
+	tputs(tgetstr("so", NULL), 1, ft_putchar);
+	mv_curs_home(msh);
+	write(1, msh->line, msh->select->begin->curs_pos_rel);
+	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
 void	select_end(t_master *msh)
 {
-	(void)msh;
-	printf("select end\n");
+	tputs(tgetstr("so", NULL), 1, ft_putchar);
+	write(1, &msh->line[msh->curs_pos->curs_pos_rel], msh->line_len - msh->curs_pos->curs_pos_rel);
+	set_curs_pos(msh, msh->line_len + msh->prompt_len);
+	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
 void	remove_select(t_master *msh)
@@ -199,18 +246,7 @@ void	select_word_right(t_master *msh)
 	(void)msh;
 	printf("select word right\n");
 }
-/*
-void	copy_select(t_master *msh)
-{
-	(void)msh;
-	printf("copy select\n");
-}*/
-/*
-void	select_all(t_master *msh)
-{
-	(void)msh;
-	printf("select all\n");
-}*/
+
 
 void	cut_select(t_master *msh)
 {

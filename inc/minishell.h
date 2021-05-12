@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/12 20:44:15 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/12 21:45:52 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	select_all(t_master *msh);
 void	cut_select(t_master *msh);
 void	buffer_select(t_master *msh);
 void	paste_buff_select(t_master *msh);
+void go_to_start_term_line(t_master *msh);
+void	go_to_end_term_line(t_master *msh);
 
 void	select_mode(t_master *msh);
 void	reset_curs_pos(t_master *msh);
