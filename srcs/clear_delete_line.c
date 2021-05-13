@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:51:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/11 18:47:09 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 15:29:29 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,12 @@ void		save_curs_pos(t_master *msh)
 	msh->save_curs_pos->curs_pos_rel = msh->curs_pos->curs_pos_rel;
 }
 
-static	void manage_delete_multiline(t_master *msh)
+void manage_delete_multiline(t_master *msh)
 {
 	int n;
 
 	n = msh->nb_line - (msh->curs_pos->curs_pos_abs / msh->res_x);
 	save_curs_pos(msh);
-	tputs(msh->term->inv_curs, 1, ft_putchar);
 	while (n > 0)
 	{
 		mv_curs_abs(msh, msh->res_x - 1, msh->curs_pos->curs_pos_abs / msh->res_x);
@@ -104,7 +103,6 @@ static	void manage_delete_multiline(t_master *msh)
 	mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x, msh->save_curs_pos->curs_pos_abs / msh->res_x);
 	rest_curs_pos(msh);
 	msh->nb_line = (msh->line_len + msh->prompt_len) / msh->res_x;
-	tputs(msh->term->vis_curs, 1, ft_putchar);
 }
 
 void		delete_key_display(t_master *msh)
@@ -118,5 +116,9 @@ void		delete_key_display(t_master *msh)
 	mv_curs_left(msh);
 	tputs(msh->term->delete_char, 1, ft_putchar);
 	if (msh->nb_line != 0 && msh->curs_pos->curs_pos_abs / msh->res_x != msh->nb_line)
+	{
+		tputs(msh->term->inv_curs, 1, ft_putchar);
 		manage_delete_multiline(msh);
+		tputs(msh->term->vis_curs, 1, ft_putchar);
+	}
 }

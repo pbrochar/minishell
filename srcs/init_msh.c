@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/12 20:48:24 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 15:07:05 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	init_prompt(t_master **msh_m)
 	(*msh_m)->prompt->dir_len = ft_strlen((*msh_m)->prompt->dir);
 	(*msh_m)->prompt_len = (*msh_m)->prompt->dir_len
 							+ (*msh_m)->prompt->user_len
-							+ 2;
+							+ 5;
 }
 
 static	int	init_select_struct(t_master **msh)

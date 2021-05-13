@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/12 19:59:33 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 15:07:26 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_prompt(t_master *msh_m)
 	write(1, TEXT_CYAN, 7);
 	write(1, msh_m->prompt->dir, msh_m->prompt->dir_len);
 	write(1, TEXT_NORMAL, 4);
-	write(1, " ", 1);
+	write(1, "[n] ", 4);
 }
 
 int	key_is_term(t_master *msh, char *buf)

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 11:14:27 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 17:28:00 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,6 @@ void	loop_selection(t_master *msh)
 	int	key_term;
 	char buf[51];
 	
-	
 	set_alt_curs_pos(msh, msh->select->begin, msh->curs_pos->curs_pos_abs);
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	while ((ret = read(0, buf, 50)) > 0)
@@ -153,7 +152,7 @@ void	loop_selection(t_master *msh)
 		if ((key_term = key_is_term_select(msh, buf)) != -1)
 		{
 			msh->term->key_fct_select_mode[key_term](msh);
-			if (key_term == S_KEY_C)
+			if (key_term == S_KEY_C || key_term == S_KEY_BACK || key_term == S_KEY_X)
 				break;
 		}
 		else
@@ -169,7 +168,14 @@ void	select_mode(t_master *msh)
 {
 	tputs(msh->term->inv_curs, 1, ft_putchar);
 	msh->select->is_select = 1;
+	/*save_curs_pos(msh);
+	mv_curs_abs(msh, msh->prompt_len - 3, 0);
+	write(1, "i", 1);
+	rest_curs_pos(msh);
+	mv_curs_abs(msh, msh->curs_pos->curs_pos_abs % msh->res_x,\
+				msh->curs_pos->curs_pos_abs / msh->res_x);*/
 	loop_selection(msh);
+	msh->select->is_select = 0;
 	tputs(msh->term->vis_curs, 1, ft_putchar);
 }
 
@@ -180,8 +186,8 @@ void	select_left(t_master *msh)
 	if ((msh->curs_pos->curs_pos_abs) % (msh->res_x) == 0
 		&& msh->nb_line > 0)
 	{
-		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
 		go_to_end_term_line(msh);
+		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
 		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	}
 	else if (msh->curs_pos->curs_pos_rel > 0)
@@ -254,8 +260,68 @@ void	select_end(t_master *msh)
 
 void	remove_select(t_master *msh)
 {
-	(void)msh;
-	printf("coucou remove\n");
+	save_curs_pos(msh);
+	if (msh->select->begin->curs_pos_abs > msh->select->end->curs_pos_abs)
+	{
+		swap_select_curs(msh);
+		mv_curs_abs(msh, msh->select->end->curs_pos_abs % msh->res_x,\
+					msh->select->end->curs_pos_abs / msh->res_x);
+		set_curs_pos(msh, msh->select->end->curs_pos_abs);
+	}
+	delete_multi_display(msh);
+}
+
+void	delete_multi_display(t_master *msh)
+{
+	char *temp;
+	
+	temp = remove_multi_char(msh);
+	if (temp == NULL)
+		return ;
+	mv_curs_end(msh);
+	while (msh->curs_pos->curs_pos_abs > msh->select->begin->curs_pos_abs)
+	{
+		mv_curs_left(msh);
+		tputs(msh->term->delete_char, 1, ft_putchar);	
+	}
+	write(1, &msh->line[msh->select->end->curs_pos_rel],\
+			msh->line_len - msh->select->end->curs_pos_rel);
+	set_curs_pos(msh, msh->curs_pos->curs_pos_abs + msh->line_len - msh->select->end->curs_pos_rel);
+	mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x,\
+		msh->save_curs_pos->curs_pos_abs / msh->res_x);
+	rest_curs_pos(msh);
+	msh->line_len = ft_strlen(temp);
+	msh->nb_line = (msh->line_len + msh->prompt_len) / msh->res_x;
+	free(msh->line);
+	msh->line = temp;
+}
+
+char *remove_multi_char(t_master *msh)
+{
+	char 	*new;
+	int		size;
+	int 	len;
+	int		i;
+
+	i = 0;
+	len = (msh->select->end->curs_pos_abs - msh->select->begin->curs_pos_abs);
+	size = msh->line_len - len;
+	new = malloc(sizeof(char) * (size + 1));
+	if (new == NULL)
+		return (NULL);
+	while (i < msh->select->begin->curs_pos_rel)
+	{
+		new[i] = msh->line[i];
+		i++;
+	}
+	i += len;
+	while (msh->line[i])
+	{
+		new[i - len] = msh->line[i];
+		i++;
+	}
+	new[size] = '\0';
+	return (new);
 }
 
 void	select_word_left(t_master *msh)
@@ -270,12 +336,15 @@ void	select_word_left(t_master *msh)
 		set_curs_pos(msh, msh->select->end->curs_pos_abs);
 		mv_curs_left_word(msh);
 		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+		return ;
 	}
 	tputs(tgetstr("so", NULL), 1, ft_putchar);
 	mv_curs_left_word(msh);
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	write(1, &msh->line[msh->select->end->curs_pos_rel], \
 		msh->select->begin->curs_pos_rel - msh->select->end->curs_pos_rel);
+	set_curs_pos(msh, msh->curs_pos->curs_pos_abs +\
+	(msh->select->begin->curs_pos_rel - msh->select->end->curs_pos_rel));
 	mv_curs_abs(msh, msh->select->end->curs_pos_abs % msh->res_x,\
 				msh->select->end->curs_pos_abs / msh->res_x);
 	set_curs_pos(msh, msh->select->end->curs_pos_abs);
@@ -307,11 +376,10 @@ void	select_word_right(t_master *msh)
 	tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
-
 void	cut_select(t_master *msh)
 {
-	(void)msh;
-	printf("cut select\n");
+	copy_select(msh);
+	remove_select(msh);
 }
 
 void	buffer_select(t_master *msh)
