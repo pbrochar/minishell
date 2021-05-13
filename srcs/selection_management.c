@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 10:25:58 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 11:14:27 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	loop_selection(t_master *msh)
 	int	key_term;
 	char buf[51];
 	
-	tputs(msh->term->inv_curs, 1, ft_putchar);
+	
 	set_alt_curs_pos(msh, msh->select->begin, msh->curs_pos->curs_pos_abs);
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	while ((ret = read(0, buf, 50)) > 0)
@@ -167,6 +167,7 @@ void	loop_selection(t_master *msh)
 
 void	select_mode(t_master *msh)
 {
+	tputs(msh->term->inv_curs, 1, ft_putchar);
 	msh->select->is_select = 1;
 	loop_selection(msh);
 	tputs(msh->term->vis_curs, 1, ft_putchar);
@@ -230,6 +231,7 @@ void	select_home(t_master *msh)
 	tputs(tgetstr("so", NULL), 1, ft_putchar);
 	mv_curs_home(msh);
 	write(1, msh->line, msh->select->begin->curs_pos_rel);
+	mv_curs_home(msh);
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
@@ -253,19 +255,56 @@ void	select_end(t_master *msh)
 void	remove_select(t_master *msh)
 {
 	(void)msh;
-	printf("remove select\n");
+	printf("coucou remove\n");
 }
 
 void	select_word_left(t_master *msh)
 {
-	(void)msh;
-	printf("select word left\n");
+	if (msh->select->end->curs_pos_rel == 0)
+		return ;
+	if (msh->select->end->curs_pos_abs > msh->select->begin->curs_pos_abs)
+	{
+		mv_curs_left_word(msh);
+		write(1, &msh->line[msh->curs_pos->curs_pos_rel],\
+			msh->select->end->curs_pos_abs - msh->curs_pos->curs_pos_abs);
+		set_curs_pos(msh, msh->select->end->curs_pos_abs);
+		mv_curs_left_word(msh);
+		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	}
+	tputs(tgetstr("so", NULL), 1, ft_putchar);
+	mv_curs_left_word(msh);
+	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	write(1, &msh->line[msh->select->end->curs_pos_rel], \
+		msh->select->begin->curs_pos_rel - msh->select->end->curs_pos_rel);
+	mv_curs_abs(msh, msh->select->end->curs_pos_abs % msh->res_x,\
+				msh->select->end->curs_pos_abs / msh->res_x);
+	set_curs_pos(msh, msh->select->end->curs_pos_abs);
+	tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
 void	select_word_right(t_master *msh)
 {
-	(void)msh;
-	printf("select word right\n");
+	if (msh->select->end->curs_pos_rel == msh->line_len)
+		return ;
+	if (msh->select->end->curs_pos_abs < msh->select->begin->curs_pos_abs)
+	{
+		mv_curs_right_word(msh);
+		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+		mv_curs_left_word(msh);
+		write(1, &msh->line[msh->curs_pos->curs_pos_rel],\
+			msh->select->end->curs_pos_abs - msh->curs_pos->curs_pos_abs);
+		set_curs_pos(msh, msh->select->end->curs_pos_abs);
+		return ;
+	}
+	tputs(tgetstr("so", NULL), 1, ft_putchar);
+	mv_curs_right_word(msh);
+	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	mv_curs_abs(msh, msh->select->begin->curs_pos_abs % msh->res_x,\
+				msh->select->begin->curs_pos_abs / msh->res_x);
+	write(1, &msh->line[msh->select->begin->curs_pos_rel], \
+		msh->select->end->curs_pos_rel - msh->select->begin->curs_pos_rel);
+	set_curs_pos(msh, msh->select->end->curs_pos_abs);
+	tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
 
