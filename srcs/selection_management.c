@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/12 21:53:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 10:25:58 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,8 @@ void	select_mode(t_master *msh)
 
 void	select_left(t_master *msh)
 {
-	tputs(tgetstr("so", NULL), 1, ft_putchar);
+	if (msh->select->end->curs_pos_abs <= msh->select->begin->curs_pos_abs)
+		tputs(tgetstr("so", NULL), 1, ft_putchar);
 	if ((msh->curs_pos->curs_pos_abs) % (msh->res_x) == 0
 		&& msh->nb_line > 0)
 	{
@@ -190,12 +191,14 @@ void	select_left(t_master *msh)
 		tputs(msh->term->mv_left, 1, ft_putchar);
 		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	}
-	tputs(tgetstr("se", NULL), 1, ft_putchar);
+	if (msh->select->end->curs_pos_abs <= msh->select->begin->curs_pos_abs)
+		tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
 void	select_right(t_master *msh)
 {
-	tputs(tgetstr("so", NULL), 1, ft_putchar);
+	if (msh->select->end->curs_pos_abs >= msh->select->begin->curs_pos_abs)
+		tputs(tgetstr("so", NULL), 1, ft_putchar);
 	if ((msh->curs_pos->curs_pos_abs + 1) % (msh->res_x) == 0)
 	{
 		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
@@ -208,11 +211,22 @@ void	select_right(t_master *msh)
 		inc_curs_pos(msh);
 		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	}
-	tputs(tgetstr("se", NULL), 1, ft_putchar);
+	if (msh->select->end->curs_pos_abs >= msh->select->begin->curs_pos_abs)
+		tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
 void	select_home(t_master *msh)
 {
+	if (msh->select->end->curs_pos_abs >= msh->select->begin->curs_pos_abs)
+	{
+		mv_curs_abs(msh, msh->select->begin->curs_pos_abs % msh->res_x,\
+						msh->select->begin->curs_pos_abs / msh->res_x);
+		write(1, &msh->line[msh->select->begin->curs_pos_rel],\
+				msh->select->end->curs_pos_abs - msh->select->begin->curs_pos_abs);
+		mv_curs_abs(msh, msh->select->begin->curs_pos_abs % msh->res_x,\
+						msh->select->begin->curs_pos_abs / msh->res_x);
+		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	}
 	tputs(tgetstr("so", NULL), 1, ft_putchar);
 	mv_curs_home(msh);
 	write(1, msh->line, msh->select->begin->curs_pos_rel);
@@ -222,6 +236,13 @@ void	select_home(t_master *msh)
 
 void	select_end(t_master *msh)
 {
+	if (msh->select->end->curs_pos_abs <= msh->select->begin->curs_pos_abs)
+	{
+		write(1, &msh->line[msh->select->end->curs_pos_rel],\
+				msh->select->begin->curs_pos_abs - msh->select->end->curs_pos_abs);
+		set_curs_pos(msh, msh->select->begin->curs_pos_abs);
+		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+	}
 	tputs(tgetstr("so", NULL), 1, ft_putchar);
 	write(1, &msh->line[msh->curs_pos->curs_pos_rel], msh->line_len - msh->curs_pos->curs_pos_rel);
 	set_curs_pos(msh, msh->line_len + msh->prompt_len);
