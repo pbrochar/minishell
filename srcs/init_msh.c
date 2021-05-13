@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 15:07:05 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 18:17:18 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,22 @@ static	int	init_select_struct(t_master **msh)
 	return (0);
 }
 
+void	init_buffer(t_master **msh_m)
+{
+	int i;
+
+	i = 0;
+	(*msh_m)->buffer = malloc(sizeof(char *) * NB_BUFFER);
+	while (i < NB_BUFFER)
+	{
+		(*msh_m)->buffer[i] = malloc(sizeof(char *));
+		if ((*msh_m)->buffer[i] == NULL)
+			return ;
+		(*msh_m)->buffer[i] = NULL;
+		i++;
+	}
+}
+
 int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 {
 	*msh_m = malloc(sizeof(t_master));
@@ -168,5 +184,7 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->commands = NULL;
 	(*msh_m)->history = NULL;
 	(*msh_m)->clipboard = NULL;
+	(*msh_m)->buffer = malloc(sizeof(char *) * NB_BUFFER);
+	init_buffer(msh_m);
 	return (0);
 }

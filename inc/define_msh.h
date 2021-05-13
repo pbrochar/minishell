@@ -6,12 +6,14 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 20:41:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/12 20:28:36 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 17:47:14 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINE_MSH_H
 # define DEFINE_MSH_H
+
+# define NB_BUFFER 10
 
 /*
 ** define for main loop key

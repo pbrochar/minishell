@@ -6,18 +6,15 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 17:43:04 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 18:21:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "colors.h"
-// a = select all
-// c = copy
-// x = cut
+
 // p = paste
-// arrow = select one 
-// ctrl arrow = select word
+// b = buffer
 // + ctrl_p = paste in general loop;
 
 static void reset_selection(t_master *msh)
@@ -38,6 +35,24 @@ static	void swap_select_curs(t_master *msh)
 	temp = msh->select->begin;
 	msh->select->begin = msh->select->end;
 	msh->select->end = temp;
+}
+
+void	copy_in_buffer(t_master *msh, int rang)
+{
+	int size;
+	
+	if (msh->buffer[rang] != NULL)
+		free(msh->buffer[rang]);
+	if (msh->select->begin->curs_pos_abs == -1 ||
+		msh->select->end->curs_pos_abs == -1)
+		return ;
+	if (msh->select->begin->curs_pos_abs > msh->select->end->curs_pos_abs)
+		swap_select_curs(msh);
+	size = msh->select->end->curs_pos_rel - msh->select->begin->curs_pos_rel + 1;
+	msh->buffer[rang] = malloc(sizeof(char) * (size + 1));
+	if (msh->buffer[rang] == NULL)
+		return ;
+	ft_strlcpy(msh->buffer[rang], &msh->line[msh->select->begin->curs_pos_rel], (size_t)size);
 }
 void	copy_select(t_master *msh)
 {
@@ -411,8 +426,24 @@ void	cut_select(t_master *msh)
 
 void	buffer_select(t_master *msh)
 {
-	(void)msh;
-	printf("buffer select\n");
+	int ret;
+	char buf[51];
+	int rang;
+
+	print_mode(msh, 'b', TEXT_BLUE);
+	while ((ret = read(0, buf, 50)) > 0)
+	{
+		buf[ret] = '\0';
+		if (ft_isdigit(buf[0]))
+		{
+			rang = buf[0] - '0';
+			copy_in_buffer(msh, rang);
+			break ;
+		}
+		else
+			break ;
+	}
+	print_mode(msh, 'i', TEXT_RED);
 }
 
 void	paste_buff_select(t_master *msh)

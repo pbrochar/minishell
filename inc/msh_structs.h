@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/12 20:11:40 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 18:02:58 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct	s_master
 	char		*line;
 	char		*clipboard;
 	char		**envp;
+	char		**buffer;
 }				t_master;
 
 #endif
