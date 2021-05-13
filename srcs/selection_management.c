@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 18:21:01 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 19:14:57 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,54 @@ void	select_all(t_master *msh)
 	tputs(tgetstr("se", NULL), 1, ft_putchar);
 	set_curs_pos(msh, msh->line_len + msh->prompt_len);
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
+}
+
+char *insert_buffer_in_line(t_master *msh, int rang)
+{
+	int i;
+	char *temp;
+
+	i = 0;
+	temp = malloc(sizeof(char) * (msh->line_len + 1));
+	if (temp == NULL)
+		return (NULL);
+	ft_bzero(temp, msh->line_len);
+	ft_memcpy(temp, msh->line, msh->curs_pos->curs_pos_rel);
+	i += msh->curs_pos->curs_pos_rel;
+	ft_memcpy(&temp[i], msh->buffer[rang], ft_strlen(msh->buffer[rang]));
+	i += ft_strlen(msh->buffer[rang]);
+	ft_memcpy(&temp[i], &msh->line[msh->curs_pos->curs_pos_rel],\
+				ft_strlen(&msh->line[msh->curs_pos->curs_pos_rel]));
+	temp[msh->line_len] = '\0';
+	free(msh->line);
+	return (temp);
+}
+
+int		paste_buffer_management(t_master *msh, int rang)
+{
+	int len;
+
+	len = ft_strlen(msh->buffer[rang]);
+	if (msh->curs_pos->curs_pos_rel < msh->line_len)
+	{
+		tputs(msh->term->ipt_mode, 1, ft_putchar);
+		msh->line_len += len + 1;
+		msh->line = insert_buffer_in_line(msh, rang);
+		write(1, msh->buffer[rang], len);
+		tputs(msh->term->lve_ipt_mode, 1, ft_putchar);
+		set_curs_pos(msh, msh->curs_pos->curs_pos_abs + len);
+	}
+	else
+	{
+		write(1, msh->buffer[rang], len);
+		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + len + 1);
+		ft_strcat(msh->line, msh->buffer[rang]);
+		msh->line[msh->line_len + len] = '\0';
+		msh->line_len += len;
+		set_curs_pos(msh, msh->curs_pos->curs_pos_abs + len);
+	}
+	msh->nb_line = (msh->line_len + msh->prompt_len) / msh->res_x;
+	return (0);
 }
 
 char *insert_clipboard_in_line(t_master *msh)
@@ -184,7 +232,8 @@ void	loop_selection(t_master *msh)
 		if ((key_term = key_is_term_select(msh, buf)) != -1)
 		{
 			msh->term->key_fct_select_mode[key_term](msh);
-			if (key_term == S_KEY_C || key_term == S_KEY_BACK || key_term == S_KEY_X)
+			if (key_term == S_KEY_C || key_term == S_KEY_BACK || key_term == S_KEY_X ||\
+				key_term == S_KEY_P)
 				break;
 		}
 		else
@@ -446,8 +495,50 @@ void	buffer_select(t_master *msh)
 	print_mode(msh, 'i', TEXT_RED);
 }
 
+void	paste_buffer(t_master *msh, int rang)
+{
+	if (msh->buffer[rang] == NULL)
+		return ;
+	if (msh->select->begin->curs_pos_abs != msh->select->end->curs_pos_abs)
+		remove_select(msh);
+	paste_buffer_management(msh, rang);
+}
+
 void	paste_buff_select(t_master *msh)
 {
+	int ret;
+	char buf[51]; 
+	int rang;
+
+	print_mode(msh, 'p', TEXT_YELLOW);
+	while ((ret = read(0, buf, 50)) > 0)
+	{
+		buf[ret] = '\0';
+		if (ft_isdigit(buf[0]))
+		{
+			rang = buf[0] - '0';
+			paste_buffer(msh, rang);
+			break ;
+		}
+		else if (buf[0] == 'c')
+		{
+			paste_selection(msh);
+			break ;
+		}
+		else
+			break ;
+	}
+	print_mode(msh, 'i', TEXT_RED);
+}
+
+void	manage_page_up(t_master *msh)
+{
 	(void)msh;
-	printf("paste buffer select\n");
+	printf("pg up\n");
+}
+
+void	manage_page_dw(t_master *msh)
+{
+	(void)msh;
+	printf("pg dw\n");
 }

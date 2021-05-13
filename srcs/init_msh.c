@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 18:17:18 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/13 19:16:07 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_term[A_CTRL_D_A] = ft_strdup(CTRL_DOWN_ARROW);
 	(*key_terms)->key_term[A_CTRL_H_A] = ft_strdup(CTRL_HOME);
 	(*key_terms)->key_term[A_INSERT_A] = ft_strdup(INSERT);
+	(*key_terms)->key_term[A_KEY_PG_UP] = ft_strdup(PG_UP);
+	(*key_terms)->key_term[A_KEY_PG_DW] = ft_strdup(PG_DOWN);
 	(*key_terms)->key_term[NB_KEY - 1] = NULL;
 	(*key_terms)->key_fct[A_KEY_LEFT] = &mv_curs_left;
 	(*key_terms)->key_fct[A_KEY_RIGHT] = &mv_curs_right;
@@ -43,6 +45,8 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_fct[A_CTRL_D_A] = &mv_curs_down_multiline;
 	(*key_terms)->key_fct[A_CTRL_H_A] = &select_mode;
 	(*key_terms)->key_fct[A_INSERT_A] = &paste_selection;
+	(*key_terms)->key_fct[A_KEY_PG_UP] = &manage_page_up;
+	(*key_terms)->key_fct[A_KEY_PG_DW] = &manage_page_dw;
 	(*key_terms)->key_fct[NB_KEY - 1] =	NULL;
 	(*key_terms)->key_term_select_mode[S_KEY_LEFT] = tgetstr("kl", NULL);
 	(*key_terms)->key_term_select_mode[S_KEY_RIGHT] = tgetstr("kr", NULL);
