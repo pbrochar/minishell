@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 20:48:12 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 20:56:23 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,7 @@ void	copy_select(t_master *msh)
 	reset_selection(msh);
 }
 
-void	select_all(t_master *msh)
-{
-	mv_curs_home(msh);
-	set_alt_curs_pos(msh, msh->select->begin, msh->curs_pos->curs_pos_abs);
-	tputs(tgetstr("so", NULL), 1, ft_putchar);
-	write(1, msh->line, msh->line_len);
-	tputs(tgetstr("se", NULL), 1, ft_putchar);
-	set_curs_pos(msh, msh->line_len + msh->prompt_len);
-	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
-}
+
 
 char *insert_buffer_in_line(t_master *msh, int rang)
 {
