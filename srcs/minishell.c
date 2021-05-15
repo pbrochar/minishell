@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 16:13:19 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:33:49 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,16 @@
 
 void	print_prompt(t_master *msh_m)
 {
+	char buf[50];
+	getcwd(buf, 50);
+	int i;
+	i = ft_strlen(buf) - 1;
+	while (i != 0 && buf[i] != '/')
+		i--;
+	if (buf[i + 1] && buf[i] == '/')
+		i++;
+	msh_m->prompt->dir = ft_strdup(&buf[i]);
+
 	write(1, TEXT_GREEN, 7);
 	write(1, msh_m->prompt->user, msh_m->prompt->user_len);
 	write(1, TEXT_NORMAL, 4);
@@ -49,47 +59,33 @@ int	is_new_line(char *buf, int ret)
 	return (-1);
 }
 
-void	inc_curs_pos(t_master *msh)
-{
-	msh->curs_pos->curs_pos_rel++;
-	msh->curs_pos->curs_pos_abs++;
-}
-void	dec_curs_pos(t_master *msh)
-{
-	msh->curs_pos->curs_pos_rel--;
-	msh->curs_pos->curs_pos_abs--;
-}
 
-void	reset_curs_pos(t_master *msh)
-{
-	msh->curs_pos->curs_pos_rel = 0;
-	msh->curs_pos->curs_pos_abs = msh->prompt_len;
-}
-
-void	set_curs_pos(t_master *msh, int abs)
-{
-	msh->curs_pos->curs_pos_abs = abs;
-	msh->curs_pos->curs_pos_rel = msh->curs_pos->curs_pos_abs - msh->prompt_len;
-}
-
-void	set_alt_curs_pos(t_master *msh, t_curs_pos *pos, int abs)
-{
-	pos->curs_pos_abs = abs;
-	pos->curs_pos_rel = pos->curs_pos_abs - msh->prompt_len;
-}
 
 int	execute_line(t_master *msh)
 {
+	//char *toto[] = {"/bin/ls", "--color=tty", NULL}
+	/*
+	if (ft_strncmp(msh->line, "cd", 2) == 0)
+		built_in_cd(msh, "..");
+	int pid_ls;
+	if (ft_strncmp(msh->line, "ls", 2) == 0)
+	{
+		if (!(pid_ls = fork()))
+			execve("/bin/ls", toto, msh->envp);
+		else
+			waitpid(pid_ls, NULL, 0);
+	}
+	waitpid(-1, NULL, 0);*/
 	if (msh->line_len == 0)
 	{
 		write(1, "\n", 1);
 		print_prompt(msh);
 		return (0);
 	}
-	history_management(msh);
 	if (ft_strncmp(msh->line, "exit", 4) == 0)
 		return (-1);
 	write(1, "\n", 1);
+	history_management(msh);
 	print_prompt(msh);
 	if (msh->line)
 		free(msh->line);
@@ -132,7 +128,7 @@ void	update_line_front(t_master *msh)
 	mv_curs_end(msh);
 	if (msh->curs_pos->curs_pos_abs % msh->res_x == 0)
 	{
-		write(1, "\n", 1);
+		tputs(tgetstr("sf", NULL), 1, ft_putchar);
 		msh->nb_line++;
 		n++;
 	}
@@ -184,13 +180,7 @@ int	msh_main_loop(t_master *msh_m)
 	int		ret;
 	int		key_term_v;
 
-	/*int i = msh_m->res_y;
-	while (i > -4)
-	{
-		tputs(tgetstr("sr", NULL), 1, ft_putchar);
-		i--;
-	}
-	sleep(3);*/
+
 	print_prompt(msh_m);
 	while ((ret = read(0, buf, 50)) > 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 12:35:28 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:00:50 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_fct_select_mode[S_KEY_BACK] = &remove_select;
 	(*key_terms)->key_fct_select_mode[S_CTRL_L_A] = &select_word_left;
 	(*key_terms)->key_fct_select_mode[S_CTRL_R_A] = &select_word_right;
+	(*key_terms)->key_fct_select_mode[S_CTRL_H_A] = &leave_select_mode;
 	(*key_terms)->key_fct_select_mode[S_KEY_C] = &copy_select;
 	(*key_terms)->key_fct_select_mode[S_KEY_A] = &select_all;
 	(*key_terms)->key_fct_select_mode[S_KEY_X] = &cut_select;

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 19:16:15 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:02:04 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,13 @@ void	manage_page_up(t_master *msh);
 void	manage_page_dw(t_master *msh);
 void	browse_history_back(t_master *msh);
 void	browse_history_front(t_master *msh);
-
+void	update_line_front(t_master *msh);
 int init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c);
 void init_prompt(t_master **msh_m);
 int	init_term(t_term **term_conf);
 int	init_key_terms(t_term **key_terms);
+void	leave_select_mode(t_master *msh);
 
+
+int built_in_cd(t_master *msh, const char *path);
 #endif

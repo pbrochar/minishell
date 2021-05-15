@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 13:45:32 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:55:14 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,18 @@ char *insert_clipboard_in_line(t_master *msh)
 
 int		paste_char_management(t_master *msh, int clip_len)
 {
+	int i;
+
 	if (msh->curs_pos->curs_pos_rel < msh->line_len)
 	{
+		i = 0;
 		tputs(msh->term->ipt_mode, 1, ft_putchar);
 		msh->line_len += clip_len + 1;
 		msh->line = insert_clipboard_in_line(msh);
-		write(1, msh->clipboard, clip_len);
+		tputs(tgetstr("cd", NULL), 1, ft_putchar);
+		ft_putstr_fd(&msh->line[msh->curs_pos->curs_pos_rel], 1);
+		set_curs_pos(msh, msh->line_len + msh->prompt_len);
 		tputs(msh->term->lve_ipt_mode, 1, ft_putchar);
-		set_curs_pos(msh, msh->curs_pos->curs_pos_abs + clip_len);
 	}
 	else
 	{
@@ -233,7 +237,7 @@ void	loop_selection(t_master *msh)
 		{
 			msh->term->key_fct_select_mode[key_term](msh);
 			if (key_term == S_KEY_C || key_term == S_KEY_BACK || key_term == S_KEY_X ||\
-				key_term == S_KEY_P)
+				key_term == S_KEY_P || key_term == S_CTRL_H_A)
 				break;
 		}
 		else
@@ -264,11 +268,7 @@ void	select_mode(t_master *msh)
 	msh->select->is_select = 1;
 	print_mode(msh, 's', TEXT_RED);
 	loop_selection(msh);
-	set_alt_curs_pos(msh, msh->select->begin, -1);
-	set_alt_curs_pos(msh, msh->select->end, -1);
-	msh->select->is_select = 0;
-	print_mode(msh, 'n', TEXT_NORMAL);
-	tputs(msh->term->vis_curs, 1, ft_putchar);
+	leave_select_mode(msh);
 }
 
 void	select_left(t_master *msh)
@@ -314,43 +314,19 @@ void	select_right(t_master *msh)
 		tputs(tgetstr("se", NULL), 1, ft_putchar);
 }
 
-void	select_home(t_master *msh)
+void	leave_select_mode(t_master *msh)
 {
-	if (msh->select->end->curs_pos_abs >= msh->select->begin->curs_pos_abs &&\
-		(msh->select->end->curs_pos_abs != msh->curs_pos->curs_pos_abs))
-	{
-		mv_curs_abs(msh, msh->select->begin->curs_pos_abs % msh->res_x,\
-						msh->select->begin->curs_pos_abs / msh->res_x);
-		write(1, &msh->line[msh->select->begin->curs_pos_rel],\
-				msh->select->end->curs_pos_abs - msh->select->begin->curs_pos_abs);
-		mv_curs_abs(msh, msh->select->begin->curs_pos_abs % msh->res_x,\
-						msh->select->begin->curs_pos_abs / msh->res_x);
-		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
-	}
-	tputs(tgetstr("so", NULL), 1, ft_putchar);
-	mv_curs_home(msh);
-	write(1, msh->line, msh->select->begin->curs_pos_rel);
-	set_curs_pos(msh, msh->select->begin->curs_pos_abs);
-	mv_curs_home(msh);
-	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
-	tputs(tgetstr("se", NULL), 1, ft_putchar);
+	unselect_for_leave(msh);
+	set_alt_curs_pos(msh, msh->select->begin, -1);
+	set_alt_curs_pos(msh, msh->select->end, -1);
+	msh->select->is_select = 0;
+	print_mode(msh, 'n', TEXT_NORMAL);
+	tputs(msh->term->vis_curs, 1, ft_putchar);
 }
 
-void	select_end(t_master *msh)
-{
-	if (msh->select->end->curs_pos_abs <= msh->select->begin->curs_pos_abs)
-	{
-		write(1, &msh->line[msh->select->end->curs_pos_rel],\
-				msh->select->begin->curs_pos_abs - msh->select->end->curs_pos_abs);
-		set_curs_pos(msh, msh->select->begin->curs_pos_abs);
-		set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
-	}
-	tputs(tgetstr("so", NULL), 1, ft_putchar);
-	write(1, &msh->line[msh->curs_pos->curs_pos_rel], msh->line_len - msh->curs_pos->curs_pos_rel);
-	set_curs_pos(msh, msh->line_len + msh->prompt_len);
-	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
-	tputs(tgetstr("se", NULL), 1, ft_putchar);
-}
+
+
+
 
 void	remove_select(t_master *msh)
 {

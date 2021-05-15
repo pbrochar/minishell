@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:51:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 14:25:18 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:52:59 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,46 +42,6 @@ void		clear_line_display(t_master *msh)
 {
 	mv_curs_home(msh);
 	tputs(msh->term->clean_line, 1, ft_putchar);
-}
-
-void		mv_curs_abs(t_master *msh, int x, int y)
-{
-	int curr_line;
-	
-	curr_line = msh->curs_pos->curs_pos_abs / msh->res_x;
-	if (x < 0)
-		return ;
-	if (y < 0 || y > msh->nb_line)
-		return ;
-	if (y < curr_line)
-	{
-		while (y < curr_line)
-		{
-			tputs(tgetstr("up", NULL), 1, ft_putchar);
-			y++;
-		}
-	}
-	if (y > curr_line)
-	{
-		while (y > curr_line)
-		{
-			tputs(tgetstr("sf", NULL), 1, ft_putchar); //do
-			y--;
-		}
-	}
-	tputs(tgoto(tgetstr("ch", NULL), 0, x), 1, ft_putchar);
-}
-
-void		rest_curs_pos(t_master *msh)
-{
-	msh->curs_pos->curs_pos_abs = msh->save_curs_pos->curs_pos_abs;
-	msh->curs_pos->curs_pos_rel = msh->save_curs_pos->curs_pos_rel;
-}
-
-void		save_curs_pos(t_master *msh)
-{
-	msh->save_curs_pos->curs_pos_abs = msh->curs_pos->curs_pos_abs;
-	msh->save_curs_pos->curs_pos_rel = msh->curs_pos->curs_pos_rel;
 }
 
 void manage_delete_multiline(t_master *msh)
