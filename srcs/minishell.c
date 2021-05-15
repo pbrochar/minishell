@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 15:07:26 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 16:13:19 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,35 @@ void add_in_line(t_master *msh, char c)
 	msh->line[msh->line_len] = '\0';
 }
 
+void	update_line_front(t_master *msh)
+{
+	int n;
+	
+	n = msh->nb_line - (msh->curs_pos->curs_pos_abs / msh->res_x);
+	if (n == 0)
+		return ;
+	save_curs_pos(msh);
+	mv_curs_end(msh);
+	if (msh->curs_pos->curs_pos_abs % msh->res_x == 0)
+	{
+		write(1, "\n", 1);
+		msh->nb_line++;
+		n++;
+	}
+	while (n > 0)
+	{
+		mv_curs_abs(msh, 0, msh->curs_pos->curs_pos_abs / msh->res_x);
+		set_curs_pos(msh, msh->curs_pos->curs_pos_abs - (msh->curs_pos->curs_pos_abs % msh->res_x));
+		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
+		set_curs_pos(msh, (msh->curs_pos->curs_pos_abs - msh->res_x) + 1);
+		n--;
+	}
+	mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x, \
+				msh->save_curs_pos->curs_pos_abs / msh->res_x);
+	rest_curs_pos(msh);
+}
+
 int print_char_management(t_master *msh, char *buf)
 {
 	if (msh->curs_pos->curs_pos_rel < msh->line_len)
@@ -129,6 +158,7 @@ int print_char_management(t_master *msh, char *buf)
 		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 1);
 		add_in_line(msh, buf[0]);
 		msh->line_len++;
+		update_line_front(msh);
 		write(1, buf, 1);
 		tputs(msh->term->lve_ipt_mode, 1, ft_putchar);
 		inc_curs_pos(msh);
@@ -154,6 +184,13 @@ int	msh_main_loop(t_master *msh_m)
 	int		ret;
 	int		key_term_v;
 
+	/*int i = msh_m->res_y;
+	while (i > -4)
+	{
+		tputs(tgetstr("sr", NULL), 1, ft_putchar);
+		i--;
+	}
+	sleep(3);*/
 	print_prompt(msh_m);
 	while ((ret = read(0, buf, 50)) > 0)
 	{

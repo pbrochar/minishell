@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 21:12:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/12 14:45:09 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 14:15:39 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ void	mv_curs_left_word(t_master *msh)
 
 void	mv_curs_up_multiline(t_master *msh)
 {
-	(void)msh;
 	if (msh->nb_line == 0 ||\
 		msh->curs_pos->curs_pos_abs / msh->res_x == 0)
 		return ; 

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 18:02:58 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 12:35:37 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct	s_master
 	int			line_len;
 	int			nb_line;
 	int			res_x;
+	int			res_y;
 	t_prompt	*prompt;
 	t_list		*commands;
 	t_list		*history;

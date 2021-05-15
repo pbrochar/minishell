@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:51:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 15:29:29 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/15 14:25:18 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void		mv_curs_abs(t_master *msh, int x, int y)
 	{
 		while (y > curr_line)
 		{
-			tputs(tgetstr("do", NULL), 1, ft_putchar);
+			tputs(tgetstr("sf", NULL), 1, ft_putchar); //do
 			y--;
 		}
 	}
