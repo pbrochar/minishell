@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 19:00:50 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 18:47:53 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_fct[A_CTRL_U_A] = &mv_curs_up_multiline;
 	(*key_terms)->key_fct[A_CTRL_D_A] = &mv_curs_down_multiline;
 	(*key_terms)->key_fct[A_CTRL_H_A] = &select_mode;
-	(*key_terms)->key_fct[A_INSERT_A] = &paste_selection;
+	(*key_terms)->key_fct[A_INSERT_A] = &paste_clipboard;
 	(*key_terms)->key_fct[A_KEY_PG_UP] = &manage_page_up;
 	(*key_terms)->key_fct[A_KEY_PG_DW] = &manage_page_dw;
 	(*key_terms)->key_fct[NB_KEY - 1] =	NULL;

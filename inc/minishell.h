@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/16 10:40:52 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 19:03:38 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	mv_curs_right_word(t_master *msh);
 void	mv_curs_left_word(t_master *msh);
 void	mv_curs_up_multiline(t_master *msh);
 void	mv_curs_down_multiline(t_master *msh);
-void	paste_selection(t_master *msh);
+void	paste_clipboard(t_master *msh);
 void	select_left(t_master *msh);
 void	select_right(t_master *msh);
 void	select_home(t_master *msh);
@@ -74,6 +74,13 @@ int	init_key_terms(t_term **key_terms);
 void	leave_select_mode(t_master *msh);
 
 void swap_select_curs(t_master *msh);
+void	copy_in_buffer(t_master *msh, int rang);
+void	print_mode(t_master *msh, char c, char *color);
 
 int built_in_cd(t_master *msh, const char *path);
+
+int		paste_buffer_management(t_master *msh, int rang);
+void	paste_buffer(t_master *msh, int rang);
+int		paste_clipboard_management(t_master *msh, int clip_len);
+
 #endif
