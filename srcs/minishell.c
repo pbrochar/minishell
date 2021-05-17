@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 20:01:33 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 22:12:11 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ int	is_new_line(char *buf, int ret)
 	return (-1);
 }
 
-
-
 int	execute_line(t_master *msh)
 {
 	//char *toto[] = {"/bin/ls", "--color=tty", NULL}
@@ -92,6 +90,8 @@ int	execute_line(t_master *msh)
 	msh->line = NULL;
 	msh->line_len = 0;
 	msh->nb_line = 0;
+	msh->curr_line = 0;
+	msh->is_multiline = 0;
 	reset_curs_pos(msh);
 	return (0);
 }
@@ -169,8 +169,10 @@ int print_char_management(t_master *msh, char *buf)
 		inc_curs_pos(msh);
 	}
 	if (msh->curs_pos->curs_pos_abs % (msh->res_x) == 0)
+	{
 		write(1, "\n", 1);
-	msh->nb_line = (msh->line_len + msh->prompt_len) / msh->res_x;
+		msh->nb_line++;
+	}
 	return (0);
 }
 
@@ -180,13 +182,19 @@ int	msh_main_loop(t_master *msh_m)
 	int		ret;
 	int		key_term_v;
 
-
 	print_prompt(msh_m);
 	while ((ret = read(0, buf, 50)) > 0)
 	{
 		buf[ret] = '\0';
 		if ((key_term_v = key_is_term(msh_m, buf)) != -1)
 			msh_m->term->key_fct[key_term_v](msh_m);
+		if ((int)buf[0] == 27 && buf[1] == '\n')
+		{
+			msh_m->is_multiline = 1;
+			print_char_management(msh_m, &buf[1]);
+			msh_m->nb_line++;
+			msh_m->curr_line++;
+		}
 		else if (is_new_line(buf, ret) == 1)
 		{
 			if (execute_line(msh_m) == -1)

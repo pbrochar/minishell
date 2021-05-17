@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:09:13 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 20:01:27 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 23:07:11 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 
 void	mv_curs_left(t_master *msh)
 {
-	if ((msh->curs_pos->curs_pos_abs) % (msh->res_x) == 0
-		&& msh->nb_line > 0)
+	if ((msh->curs_pos->curs_pos_abs % msh->res_x == 0 && msh->nb_line > 0) || 
+		(msh->line[msh->curs_pos->curs_pos_rel - 1] == '\n'))
 		go_to_end_term_line(msh);
 	else if (msh->curs_pos->curs_pos_rel > 0)
 	{
@@ -45,7 +45,8 @@ void	mv_curs_left(t_master *msh)
 
 void	mv_curs_right(t_master *msh)
 {
-	if ((msh->curs_pos->curs_pos_abs + 1) % (msh->res_x) == 0)
+	if (((msh->curs_pos->curs_pos_abs + 1) % (msh->res_x) == 0 ) ||
+		(msh->line[msh->curs_pos->curs_pos_rel] == '\n'))
 		go_to_start_term_line(msh);
 	else if (msh->curs_pos->curs_pos_rel < msh->line_len)
 	{
@@ -60,9 +61,25 @@ void	mv_curs_right(t_master *msh)
 
 void	go_to_end_term_line(t_master *msh)
 {
-	mv_curs_abs(msh, msh->res_x - 1,\
+	int i;
+	
+	if (msh->line[msh->curs_pos->curs_pos_rel - 1] == '\n')
+	{
+		i = 1;
+		while (msh->line[msh->curs_pos->curs_pos_rel - 1 - i] &&\
+				msh->line[msh->curs_pos->curs_pos_rel - 1 - i] != '\n')
+			i++;
+		if (msh->curr_line == 1)
+			i += msh->prompt_len;
+		tputs(tgetstr("up", NULL), 1, ft_putchar);
+		tputs(tgoto(tgetstr("ch", NULL), 0, i - 1), 1, ft_putchar);
+		msh->curr_line--;
+	}
+	else
+		mv_curs_abs(msh, msh->res_x - 1,\
 			(msh->curs_pos->curs_pos_abs / msh->res_x) - 1);
 	dec_curs_pos(msh);
+	
 }
 
 /*
@@ -71,6 +88,13 @@ void	go_to_end_term_line(t_master *msh)
 
 void	go_to_start_term_line(t_master *msh)
 {
-	mv_curs_abs(msh, 0, (msh->curs_pos->curs_pos_abs / msh->res_x) + 1);
+	if (msh->line[msh->curs_pos->curs_pos_rel] == '\n')
+	{
+		tputs(tgetstr("sf", NULL), 1, ft_putchar);
+		tputs(tgoto(tgetstr("ch", NULL), 0, 0), 1, ft_putchar);
+		msh->curr_line++;
+	}
+	else
+		mv_curs_abs(msh, 0, (msh->curs_pos->curs_pos_abs / msh->res_x) + 1);
 	inc_curs_pos(msh);
 }
