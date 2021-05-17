@@ -6,29 +6,15 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 20:56:23 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 18:29:45 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "colors.h"
 
-// p = paste
-// b = buffer
-// + ctrl_p = paste in general loop;
 
-static void reset_selection(t_master *msh)
-{
-	int size;
-
-	size = msh->select->end->curs_pos_rel - msh->select->begin->curs_pos_rel + 1;
-	mv_curs_abs(msh, msh->select->begin->curs_pos_abs % msh->res_x,\
-				msh->select->begin->curs_pos_abs / msh->res_x);
-	write(1, &msh->line[msh->select->begin->curs_pos_rel], size);
-	set_curs_pos(msh, msh->select->end->curs_pos_abs);
-}
-
-static	void swap_select_curs(t_master *msh)
+void swap_select_curs(t_master *msh)
 {
 	t_curs_pos *temp;
 
@@ -54,26 +40,6 @@ void	copy_in_buffer(t_master *msh, int rang)
 		return ;
 	ft_strlcpy(msh->buffer[rang], &msh->line[msh->select->begin->curs_pos_rel], (size_t)size);
 }
-void	copy_select(t_master *msh)
-{
-	int size;
-	
-	if (msh->clipboard)
-		free(msh->clipboard);
-	if (msh->select->begin->curs_pos_abs == -1 ||
-		msh->select->end->curs_pos_abs == -1)
-		return ;
-	if (msh->select->begin->curs_pos_abs > msh->select->end->curs_pos_abs)
-		swap_select_curs(msh);
-	size = msh->select->end->curs_pos_rel - msh->select->begin->curs_pos_rel + 1;
-	msh->clipboard = malloc(sizeof(char) * (size + 1));
-	if (msh->clipboard == NULL)
-		return ;
-	ft_strlcpy(msh->clipboard, &msh->line[msh->select->begin->curs_pos_rel], (size_t)size);
-	reset_selection(msh);
-}
-
-
 
 char *insert_buffer_in_line(t_master *msh, int rang)
 {
@@ -123,26 +89,7 @@ int		paste_buffer_management(t_master *msh, int rang)
 	return (0);
 }
 
-char *insert_clipboard_in_line(t_master *msh)
-{
-	int i;
-	char *temp;
 
-	i = 0;
-	temp = malloc(sizeof(char) * (msh->line_len + 1));
-	if (temp == NULL)
-		return (NULL);
-	ft_bzero(temp, msh->line_len);
-	ft_memcpy(temp, msh->line, msh->curs_pos->curs_pos_rel);
-	i += msh->curs_pos->curs_pos_rel;
-	ft_memcpy(&temp[i], msh->clipboard, ft_strlen(msh->clipboard));
-	i += ft_strlen(msh->clipboard);
-	ft_memcpy(&temp[i], &msh->line[msh->curs_pos->curs_pos_rel],\
-				ft_strlen(&msh->line[msh->curs_pos->curs_pos_rel]));
-	temp[msh->line_len] = '\0';
-	free(msh->line);
-	return (temp);
-}
 
 int		paste_char_management(t_master *msh, int clip_len)
 {
@@ -199,15 +146,16 @@ int		key_is_term_select(t_master *msh, char *buf)
 void	unselect_for_leave(t_master *msh)
 {
 	if (msh->select->begin->curs_pos_abs == -1 ||
-		msh->select->begin->curs_pos_abs == -1)
+		msh->select->end->curs_pos_abs == -1)
 		return ;
 	if (msh->select->begin->curs_pos_abs > msh->select->end->curs_pos_abs)
 		swap_select_curs(msh);
 	save_curs_pos(msh);
 	mv_curs_abs(msh, msh->select->begin->curs_pos_abs % msh->res_x,\
-		msh->select->end->curs_pos_abs / msh->res_x);
+		msh->select->begin->curs_pos_abs / msh->res_x);
 	write(1, &msh->line[msh->select->begin->curs_pos_rel],\
-		msh->select->end->curs_pos_abs - msh->select->begin->curs_pos_abs); //erreur ici multiline
+		msh->select->end->curs_pos_abs - msh->select->begin->curs_pos_abs);
+	set_curs_pos(msh, msh->select->end->curs_pos_abs);
 	mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x, \
 			msh->save_curs_pos->curs_pos_abs / msh->res_x);
 	rest_curs_pos(msh);
@@ -232,10 +180,7 @@ void	loop_selection(t_master *msh)
 				break;
 		}
 		else
-		{
-			unselect_for_leave(msh);
 			return ;
-		}
 		ft_bzero(buf, 50);
 	}
 }
@@ -264,7 +209,8 @@ void	select_mode(t_master *msh)
 
 void	leave_select_mode(t_master *msh)
 {
-	unselect_for_leave(msh);
+	if (msh->line_len != 0)
+		unselect_for_leave(msh);
 	set_alt_curs_pos(msh, msh->select->begin, -1);
 	set_alt_curs_pos(msh, msh->select->end, -1);
 	msh->select->is_select = 0;
@@ -272,81 +218,7 @@ void	leave_select_mode(t_master *msh)
 	tputs(msh->term->vis_curs, 1, ft_putchar);
 }
 
-void	remove_select(t_master *msh)
-{
-	save_curs_pos(msh);
-	if (msh->select->begin->curs_pos_abs > msh->select->end->curs_pos_abs)
-	{
-		swap_select_curs(msh);
-		mv_curs_abs(msh, msh->select->end->curs_pos_abs % msh->res_x,\
-					msh->select->end->curs_pos_abs / msh->res_x);
-		set_curs_pos(msh, msh->select->end->curs_pos_abs);
-	}
-	delete_multi_display(msh);
-}
 
-void	delete_multi_display(t_master *msh)
-{
-	char *temp;
-	
-	temp = remove_multi_char(msh);
-	if (temp == NULL)
-		return ;
-	mv_curs_end(msh);
-	while (msh->curs_pos->curs_pos_abs > msh->select->begin->curs_pos_abs)
-	{
-		mv_curs_left(msh);
-		tputs(msh->term->delete_char, 1, ft_putchar);	
-	}
-	write(1, &msh->line[msh->select->end->curs_pos_rel],\
-			msh->line_len - msh->select->end->curs_pos_rel);
-	set_curs_pos(msh, msh->curs_pos->curs_pos_abs + msh->line_len - msh->select->end->curs_pos_rel);
-	mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x,\
-		msh->save_curs_pos->curs_pos_abs / msh->res_x);
-	rest_curs_pos(msh);
-	msh->line_len = ft_strlen(temp);
-	msh->nb_line = (msh->line_len + msh->prompt_len) / msh->res_x;
-	free(msh->line);
-	msh->line = temp;
-}
-
-char *remove_multi_char(t_master *msh)
-{
-	char 	*new;
-	int		size;
-	int 	len;
-	int		i;
-
-	i = 0;
-	len = (msh->select->end->curs_pos_abs - msh->select->begin->curs_pos_abs);
-	size = msh->line_len - len;
-	new = malloc(sizeof(char) * (size + 1));
-	if (new == NULL)
-		return (NULL);
-	while (i < msh->select->begin->curs_pos_rel)
-	{
-		new[i] = msh->line[i];
-		i++;
-	}
-	i += len;
-	while (msh->line[i])
-	{
-		new[i - len] = msh->line[i];
-		i++;
-	}
-	new[size] = '\0';
-	return (new);
-}
-
-
-
-
-
-void	cut_select(t_master *msh)
-{
-	copy_select(msh);
-	remove_select(msh);
-}
 
 void	buffer_select(t_master *msh)
 {

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:38:55 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/09 11:54:00 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 17:50:15 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	browse_history_back(t_master *msh)
 	if (msh->pos_in_history->next)
 		msh->pos_in_history = msh->pos_in_history->next;
 	write(1, msh->line, msh->line_len);
-	msh->curs_pos->curs_pos_rel = msh->line_len;
-	msh->curs_pos->curs_pos_abs = msh->line_len + msh->prompt_len;
+	set_curs_pos(msh, msh->line_len + msh->prompt_len);
+	msh->nb_line = msh->curs_pos->curs_pos_abs / msh->res_x;
 }
 
 void	browse_history_front(t_master *msh)
@@ -47,6 +47,6 @@ void	browse_history_front(t_master *msh)
 	msh->line = ft_strdup(msh->pos_in_history->content);
 	msh->line_len = ft_strlen(msh->line);
 	write(1, msh->line, msh->line_len);
-	msh->curs_pos->curs_pos_rel = msh->line_len;
-	msh->curs_pos->curs_pos_abs = msh->line_len + msh->prompt_len;
+	set_curs_pos(msh, msh->line_len + msh->prompt_len);
+	msh->nb_line = msh->curs_pos->curs_pos_abs / msh->res_x;
 }

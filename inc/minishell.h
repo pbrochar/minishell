@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 19:02:04 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/16 10:40:52 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	init_term(t_term **term_conf);
 int	init_key_terms(t_term **key_terms);
 void	leave_select_mode(t_master *msh);
 
+void swap_select_curs(t_master *msh);
 
 int built_in_cd(t_master *msh, const char *path);
 #endif
