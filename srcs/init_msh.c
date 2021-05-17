@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 18:47:53 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 20:30:57 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_fct_select_mode[S_KEY_P] = &paste_buff_select;
 	(*key_terms)->key_fct_select_mode[NB_KEY_SELECT - 1] =	NULL;
 	(*key_terms)->delete_char = tgetstr("dc", NULL);
-	(*key_terms)->clean_line = tgetstr("ce", NULL);
+	(*key_terms)->clean_line = tgetstr("cd", NULL);
 	(*key_terms)->mv_left = tgetstr("le", NULL);
 	(*key_terms)->mv_right = tgetstr("nd", NULL);
 	(*key_terms)->ipt_mode = tgetstr("im", NULL);
