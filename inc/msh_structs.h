@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 12:35:37 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 20:01:15 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MSH_STRUCTS_H
 
 # include "libft.h"
-# include "define_msh.h"
+# include "msh_define.h"
 # include "minishell.h"
 
 typedef struct	s_master t_master;

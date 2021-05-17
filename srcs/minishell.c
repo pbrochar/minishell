@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 19:33:49 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 20:01:33 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "msh_structs.h"
 #include "colors.h"
-#include "define_msh.h"
+#include "msh_define.h"
 
 void	print_prompt(t_master *msh_m)
 {

@@ -1,19 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   browse_history.c                                   :+:      :+:    :+:   */
+/*   history_browse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:38:55 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 17:50:15 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 20:15:11 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-void	browse_history_back(t_master *msh)
+/*
+** These functions allow you to navigate in the history towards
+** the old (back) or more recent (front) lines.
+**
+** A pointer on the list allows to know during the navigation at which
+** link you are located.
+*/
+
+static void	history_update_line_graphic(t_master *msh)
+{
+	write(1, msh->line, msh->line_len);
+	set_curs_pos(msh, msh->line_len + msh->prompt_len);
+	msh->nb_line = msh->curs_pos->curs_pos_abs / msh->res_x;
+}
+
+void		browse_history_back(t_master *msh)
 {
 	if (!msh->history)
 		return ;
@@ -23,12 +38,10 @@ void	browse_history_back(t_master *msh)
 	msh->line_len = ft_strlen(msh->line);
 	if (msh->pos_in_history->next)
 		msh->pos_in_history = msh->pos_in_history->next;
-	write(1, msh->line, msh->line_len);
-	set_curs_pos(msh, msh->line_len + msh->prompt_len);
-	msh->nb_line = msh->curs_pos->curs_pos_abs / msh->res_x;
+	history_update_line_graphic(msh);
 }
 
-void	browse_history_front(t_master *msh)
+void		browse_history_front(t_master *msh)
 {
 	if (!msh->history)
 		return ;
@@ -39,14 +52,12 @@ void	browse_history_front(t_master *msh)
 	else
 	{
 		msh->line = malloc(sizeof(char));
-		if(msh->line == NULL)
+		if (msh->line == NULL)
 			return ;
 		msh->line_len = 1;
 		return ;
 	}
 	msh->line = ft_strdup(msh->pos_in_history->content);
 	msh->line_len = ft_strlen(msh->line);
-	write(1, msh->line, msh->line_len);
-	set_curs_pos(msh, msh->line_len + msh->prompt_len);
-	msh->nb_line = msh->curs_pos->curs_pos_abs / msh->res_x;
+	history_update_line_graphic(msh);
 }
