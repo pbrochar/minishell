@@ -6,16 +6,25 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 19:02:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 19:04:55 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/17 19:09:35 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+** These functions allow to paste the clipboard content on the graphic line
+** and to update the line in memory.
+**
+** insert_clipboard_in_line is a function to add the clipboard in the line if
+** the insertion is done in another place than the end of the line.
+** Otherwise ft_strcat is used.
+*/
+
 void	paste_clipboard(t_master *msh)
 {
 	int	clip_len;
-	
+
 	if (msh->clipboard == NULL)
 		return ;
 	clip_len = ft_strlen(msh->clipboard);
@@ -58,7 +67,8 @@ int		paste_clipboard_management(t_master *msh, int clip_len)
 	else
 	{
 		write(1, msh->clipboard, clip_len);
-		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + clip_len + 1);
+		msh->line = ft_mem_exp(msh->line, msh->line_len,\
+								msh->line_len + clip_len + 1);
 		ft_strcat(msh->line, msh->clipboard);
 		msh->line[msh->line_len + clip_len] = '\0';
 		msh->line_len += clip_len;
