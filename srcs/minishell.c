@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 22:12:11 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/18 11:53:29 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,21 @@ int	execute_line(t_master *msh)
 	print_prompt(msh);
 	if (msh->line)
 		free(msh->line);
+	/*int i = 0;
+	while (i < msh->nb_line)
+	{
+		printf("%d\n", msh->line_size[i]);
+		i++;
+	}*/
 	msh->line = NULL;
 	msh->line_len = 0;
-	msh->nb_line = 0;
+	msh->nb_line = 1;
 	msh->curr_line = 0;
 	msh->is_multiline = 0;
+	msh->pos_in_line = 0;
+	free(msh->line_size);
+	msh->line_size = malloc(sizeof(int));
+	msh->line_size[msh->curr_line] = msh->prompt_len;
 	reset_curs_pos(msh);
 	return (0);
 }
@@ -168,10 +178,17 @@ int print_char_management(t_master *msh, char *buf)
 		msh->line[msh->line_len] = '\0';
 		inc_curs_pos(msh);
 	}
-	if (msh->curs_pos->curs_pos_abs % (msh->res_x) == 0)
+	msh->line_size[msh->curr_line]++;
+	msh->pos_in_line++;
+	if (msh->line_size[msh->curr_line] == msh->res_x)
 	{
 		write(1, "\n", 1);
+		msh->line_size = ft_mem_exp(msh->line_size, sizeof(int) * msh->nb_line,\
+												sizeof(int) * msh->nb_line + 1);
 		msh->nb_line++;
+		msh->curr_line++;
+		msh->line_size[msh->curr_line] = 0;
+		msh->pos_in_line = 0;
 	}
 	return (0);
 }
@@ -192,8 +209,12 @@ int	msh_main_loop(t_master *msh_m)
 		{
 			msh_m->is_multiline = 1;
 			print_char_management(msh_m, &buf[1]);
+			msh_m->line_size = ft_mem_exp(msh_m->line_size, sizeof(int) * msh_m->nb_line,\
+													sizeof(int) * msh_m->nb_line + 1);
 			msh_m->nb_line++;
 			msh_m->curr_line++;
+			msh_m->line_size[msh_m->curr_line] = 0;
+			msh_m->pos_in_line = 0;
 		}
 		else if (is_new_line(buf, ret) == 1)
 		{

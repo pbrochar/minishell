@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:09:13 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 23:07:11 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/18 11:54:47 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	mv_curs_left(t_master *msh)
 	{
 		tputs(msh->term->mv_left, 1, ft_putchar);
 		dec_curs_pos(msh);
+		msh->pos_in_line--;
 	}
 }
 
@@ -52,6 +53,7 @@ void	mv_curs_right(t_master *msh)
 	{
 		tputs(msh->term->mv_right, 1, ft_putchar);
 		inc_curs_pos(msh);
+		msh->pos_in_line++;
 	}
 }
 
@@ -63,23 +65,11 @@ void	go_to_end_term_line(t_master *msh)
 {
 	int i;
 	
-	if (msh->line[msh->curs_pos->curs_pos_rel - 1] == '\n')
-	{
-		i = 1;
-		while (msh->line[msh->curs_pos->curs_pos_rel - 1 - i] &&\
-				msh->line[msh->curs_pos->curs_pos_rel - 1 - i] != '\n')
-			i++;
-		if (msh->curr_line == 1)
-			i += msh->prompt_len;
-		tputs(tgetstr("up", NULL), 1, ft_putchar);
-		tputs(tgoto(tgetstr("ch", NULL), 0, i - 1), 1, ft_putchar);
-		msh->curr_line--;
-	}
-	else
-		mv_curs_abs(msh, msh->res_x - 1,\
-			(msh->curs_pos->curs_pos_abs / msh->res_x) - 1);
+	i = msh->line_size[msh->curr_line - 1] - 1;
+	mv_curs_abs(msh, i, msh->curr_line - 1);
 	dec_curs_pos(msh);
-	
+	msh->curr_line--;
+	msh->pos_in_line = msh->line_size[msh->curr_line] - 1;
 }
 
 /*
@@ -88,13 +78,8 @@ void	go_to_end_term_line(t_master *msh)
 
 void	go_to_start_term_line(t_master *msh)
 {
-	if (msh->line[msh->curs_pos->curs_pos_rel] == '\n')
-	{
-		tputs(tgetstr("sf", NULL), 1, ft_putchar);
-		tputs(tgoto(tgetstr("ch", NULL), 0, 0), 1, ft_putchar);
-		msh->curr_line++;
-	}
-	else
-		mv_curs_abs(msh, 0, (msh->curs_pos->curs_pos_abs / msh->res_x) + 1);
+	mv_curs_abs(msh, 0, msh->curr_line + 1);
 	inc_curs_pos(msh);
+	msh->curr_line++;
+	msh->pos_in_line = 0;
 }

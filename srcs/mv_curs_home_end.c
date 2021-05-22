@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:15:17 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 22:37:36 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/18 11:20:18 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,7 @@ void	mv_curs_home(t_master *msh)
 
 void	mv_curs_end(t_master *msh)
 {
-	int i;
-
-	i = msh->line_len;
-	if (msh->is_multiline == 1)
-	{
-		while (msh->line[i] != '\n')
-			i--;
-		if (i != 0)
-			i = msh->line_len - i - 1;
-	}
-	else
-		i = (msh->line_len + msh->prompt_len) % msh->res_x;
-	mv_curs_abs(msh, i, msh->nb_line);
+	mv_curs_abs(msh, msh->line_size[msh->nb_line - 1], msh->nb_line - 1);
 	set_curs_pos(msh, msh->line_len + msh->prompt_len);
-	if (msh->is_multiline == 1)
-		msh->curr_line = msh->nb_line;
+	msh->curr_line = msh->nb_line - 1;
 }

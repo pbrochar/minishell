@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 21:12:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 22:03:44 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/18 11:09:45 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@
 void	mv_curs_abs(t_master *msh, int x, int y)
 {
 	int curr_line;
-
-	if (msh->is_multiline == 1)
+	curr_line = msh->curr_line;
+/*	if (msh->is_multiline == 1)
 		curr_line = msh->curr_line;
 	else
-		curr_line = msh->curs_pos->curs_pos_abs / msh->res_x;
+		curr_line = msh->curs_pos->curs_pos_abs / msh->res_x;*/
 	if (x < 0)
 		return ;
 	if (y < 0 || y > msh->nb_line)

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:16:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 23:28:09 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/22 12:05:32 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,41 +24,71 @@
 ** the line, then the cursor is put at the end of the line (rel = line_len).
 */
 
+static int	add_curs_pos(t_master *msh)
+{
+	int pos;
+	int i;
+	
+	i = 0;
+	pos = 0;
+	while (i < msh->curr_line)
+	{
+	
+		pos += msh->line_size[i];
+		i++;
+	}
+	return (pos);
+}
+
 void	mv_curs_up_multiline(t_master *msh)
 {
-	if (msh->nb_line == 0 ||\
-		msh->curs_pos->curs_pos_abs / msh->res_x == 0)
+	int coef;
+	
+	if (msh->curr_line == 0)
 		return ;
-	if (msh->curs_pos->curs_pos_abs - msh->res_x > msh->prompt_len)
+	coef = 0;
+	if (msh->curr_line == 1)
+		coef = msh->prompt_len;
+	if (msh->pos_in_line >= msh->line_size[msh->curr_line - 1] - coef)
 	{
-		mv_curs_abs(msh, msh->curs_pos->curs_pos_abs % msh->res_x,\
-			(msh->curs_pos->curs_pos_abs / msh->res_x) - 1);
-		set_curs_pos(msh, msh->curs_pos->curs_pos_abs - msh->res_x);
+		mv_curs_abs(msh, msh->line_size[msh->curr_line - 1] - 1,\
+			msh->curr_line - 1);
+		set_curs_pos(msh, add_curs_pos(msh) - 1);
+		msh->pos_in_line = msh->line_size[msh->curr_line - 1];
 	}
 	else
 	{
-		mv_curs_abs(msh, msh->prompt_len,\
-			(msh->curs_pos->curs_pos_abs / msh->res_x) - 1);
-		set_curs_pos(msh, msh->prompt_len);
+		mv_curs_abs(msh, msh->pos_in_line + coef, msh->curr_line - 1);
+		set_curs_pos(msh, msh->curs_pos->curs_pos_abs - msh->pos_in_line\
+					- (msh->line_size[msh->curr_line - 1] - msh->pos_in_line) + coef);
+		msh->pos_in_line += coef;
 	}
+	msh->curr_line--;
 }
 
 void	mv_curs_down_multiline(t_master *msh)
 {
-	if (msh->nb_line == 0 ||\
-		msh->curs_pos->curs_pos_abs / msh->res_x == msh->nb_line)
+	int coef;
+	
+	if (msh->curr_line == msh->nb_line - 1)
 		return ;
-	if (msh->curs_pos->curs_pos_abs + msh->res_x < \
-		msh->line_len + msh->prompt_len)
+	coef = 0;
+	if (msh->curr_line == 0)
+		coef = msh->prompt_len;
+	if (msh->pos_in_line - coef >= msh->line_size[msh->curr_line + 1])
 	{
-		mv_curs_abs(msh, msh->curs_pos->curs_pos_abs % msh->res_x,\
-			(msh->curs_pos->curs_pos_abs / msh->res_x) + 1);
-		set_curs_pos(msh, msh->curs_pos->curs_pos_abs + msh->res_x);
+		mv_curs_abs(msh, msh->line_size[msh->curr_line + 1],\
+			msh->curr_line + 1);
+		set_curs_pos(msh, add_curs_pos(msh) + msh->line_size[msh->curr_line]\
+											+ msh->line_size[msh->curr_line + 1]);
+		msh->pos_in_line = msh->line_size[msh->curr_line + 1];
 	}
 	else
 	{
-		mv_curs_abs(msh, (msh->prompt_len + msh->line_len) % msh->res_x,\
-			(msh->curs_pos->curs_pos_abs / msh->res_x) + 1);
-		set_curs_pos(msh, msh->prompt_len + msh->line_len);
+		mv_curs_abs(msh, msh->pos_in_line - coef, msh->curr_line + 1);
+		set_curs_pos(msh, add_curs_pos(msh) + msh->line_size[msh->curr_line]\
+											+ msh->pos_in_line);
+		msh->pos_in_line += coef;
 	}
+	msh->curr_line++;
 }
