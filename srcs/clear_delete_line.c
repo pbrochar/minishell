@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:51:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/24 14:01:04 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/24 14:43:27 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,18 @@ void		manage_delete_multiline(t_master *msh)
 		mv_curs_right(msh);
 		tputs(msh->term->delete_char, 1, ft_putchar);
 		msh->line_size[msh->curr_line]--;
+		if (msh->curr_line != msh->nb_line - 1 &&\
+			msh->line_size[msh->curr_line] == 1)
+		{
+			tputs(tgetstr("cd", NULL), 1, ft_putchar);
+			ft_putstr_fd(&msh->line[msh->curs_pos->curs_pos_rel + 1], 1);
+			set_curs_pos(msh, msh->curs_pos->curs_pos_abs\
+				+ ft_strlen(&msh->line[msh->curs_pos->curs_pos_rel + 1]));
+			msh->line_size[msh->curr_line] = msh->line_size[msh->curr_line + 1];
+			update_size_array(msh);
+			msh->nb_line--;
+			msh->curr_line = msh->nb_line - 1;
+		}
 		n--;
 	}
 	mv_curs_rel_pos(msh, msh->save_curs_pos->curs_pos_rel);
@@ -96,6 +108,7 @@ void		update_size_array(t_master *msh)
 	}
 	free(msh->line_size);
 	msh->line_size = new;
+	i = 0;
 }
 
 void		delete_key_display(t_master *msh)
@@ -126,7 +139,7 @@ void		delete_key_display(t_master *msh)
 	if (msh->line == NULL)
 		return ;
 	msh->line_len--;
-	if (msh->nb_line != 1 & msh->curr_line != msh->nb_line - 1 &&\
+	if (msh->nb_line != 1 && msh->curr_line != msh->nb_line - 1 &&\
 		msh->line_size[msh->curr_line] == msh->res_x - 1)
 	{
 		//tputs(msh->term->inv_curs, 1, ft_putchar);

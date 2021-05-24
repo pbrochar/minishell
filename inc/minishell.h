@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 20:22:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/24 14:13:44 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ int built_in_cd(t_master *msh, const char *path);
 
 int		paste_clipboard_management(t_master *msh, int clip_len);
 int		key_is_term_select(t_master *msh, char *buf);
-
+void		update_size_array(t_master *msh);
 #endif

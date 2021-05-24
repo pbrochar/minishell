@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/18 11:52:37 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/24 14:22:18 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct	s_prompt
 typedef struct	s_curs_pos
 {
 	int curs_pos_rel;
-	int curs_pos_abs;	
+	int curs_pos_abs;
 }				t_curs_pos;
 
 typedef struct	s_select
