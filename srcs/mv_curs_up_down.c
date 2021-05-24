@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:16:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/22 12:05:32 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/22 13:38:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,21 @@ static int	add_curs_pos(t_master *msh)
 {
 	int pos;
 	int i;
-	
+
 	i = 0;
 	pos = 0;
 	while (i < msh->curr_line)
 	{
-	
 		pos += msh->line_size[i];
 		i++;
 	}
 	return (pos);
 }
 
-void	mv_curs_up_multiline(t_master *msh)
+void		mv_curs_up_multiline(t_master *msh)
 {
 	int coef;
-	
+
 	if (msh->curr_line == 0)
 		return ;
 	coef = 0;
@@ -60,16 +59,17 @@ void	mv_curs_up_multiline(t_master *msh)
 	{
 		mv_curs_abs(msh, msh->pos_in_line + coef, msh->curr_line - 1);
 		set_curs_pos(msh, msh->curs_pos->curs_pos_abs - msh->pos_in_line\
-					- (msh->line_size[msh->curr_line - 1] - msh->pos_in_line) + coef);
+					- (msh->line_size[msh->curr_line - 1] - msh->pos_in_line)\
+					+ coef);
 		msh->pos_in_line += coef;
 	}
 	msh->curr_line--;
 }
 
-void	mv_curs_down_multiline(t_master *msh)
+void		mv_curs_down_multiline(t_master *msh)
 {
 	int coef;
-	
+
 	if (msh->curr_line == msh->nb_line - 1)
 		return ;
 	coef = 0;
@@ -79,8 +79,9 @@ void	mv_curs_down_multiline(t_master *msh)
 	{
 		mv_curs_abs(msh, msh->line_size[msh->curr_line + 1],\
 			msh->curr_line + 1);
-		set_curs_pos(msh, add_curs_pos(msh) + msh->line_size[msh->curr_line]\
-											+ msh->line_size[msh->curr_line + 1]);
+		set_curs_pos(msh, add_curs_pos(msh)\
+							+ msh->line_size[msh->curr_line]\
+							+ msh->line_size[msh->curr_line + 1]);
 		msh->pos_in_line = msh->line_size[msh->curr_line + 1];
 	}
 	else

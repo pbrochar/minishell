@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:13:27 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/22 13:34:28 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/22 15:46:26 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** Function to move cursor from word to word on the right.
 */
 
-static void mv_curs_rel_pos(t_master *msh, int pos)
+void	mv_curs_rel_pos(t_master *msh, int pos)
 {
 	int add_size;
 	int	line_pos;

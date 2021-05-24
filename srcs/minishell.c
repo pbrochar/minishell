@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/18 11:53:29 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/24 13:41:42 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	execute_line(t_master *msh)
 	msh->nb_line = 1;
 	msh->curr_line = 0;
 	msh->is_multiline = 0;
-	msh->pos_in_line = 0;
+	msh->pos_in_line = msh->prompt_len;
 	free(msh->line_size);
 	msh->line_size = malloc(sizeof(int));
 	msh->line_size[msh->curr_line] = msh->prompt_len;
@@ -164,7 +164,7 @@ int print_char_management(t_master *msh, char *buf)
 		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 1);
 		add_in_line(msh, buf[0]);
 		msh->line_len++;
-		update_line_front(msh);
+		//update_line_front(msh);
 		write(1, buf, 1);
 		tputs(msh->term->lve_ipt_mode, 1, ft_putchar);
 		inc_curs_pos(msh);

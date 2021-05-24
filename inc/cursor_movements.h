@@ -3,6 +3,8 @@
 
 # include "msh_structs.h"
 
+void	mv_curs_rel_pos(t_master *msh, int pos);
+
 /*
 ** from srcs/mv_curs_abs.c
 */

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:09:13 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/18 11:54:47 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/24 13:54:49 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@
 
 void	mv_curs_left(t_master *msh)
 {
-	if ((msh->curs_pos->curs_pos_abs % msh->res_x == 0 && msh->nb_line > 0) || 
-		(msh->line[msh->curs_pos->curs_pos_rel - 1] == '\n'))
+	if (msh->pos_in_line == 0)
 		go_to_end_term_line(msh);
 	else if (msh->curs_pos->curs_pos_rel > 0)
 	{
@@ -46,7 +45,7 @@ void	mv_curs_left(t_master *msh)
 
 void	mv_curs_right(t_master *msh)
 {
-	if (((msh->curs_pos->curs_pos_abs + 1) % (msh->res_x) == 0 ) ||
+	if ((msh->pos_in_line == msh->res_x - 1) ||
 		(msh->line[msh->curs_pos->curs_pos_rel] == '\n'))
 		go_to_start_term_line(msh);
 	else if (msh->curs_pos->curs_pos_rel < msh->line_len)
@@ -64,7 +63,7 @@ void	mv_curs_right(t_master *msh)
 void	go_to_end_term_line(t_master *msh)
 {
 	int i;
-	
+
 	i = msh->line_size[msh->curr_line - 1] - 1;
 	mv_curs_abs(msh, i, msh->curr_line - 1);
 	dec_curs_pos(msh);
