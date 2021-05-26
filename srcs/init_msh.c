@@ -6,11 +6,12 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 20:30:57 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/26 20:22:18 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
 int		init_key_terms(t_term **key_terms)
 {
@@ -157,6 +158,27 @@ void	init_buffer(t_master **msh_m)
 	}
 }
 
+static void init_envp(t_master **msh, char **env)
+{
+	int i;
+	int size;
+	
+	i = 0;
+	while (env[i])
+		i++;
+	size = i + 1;
+	(*msh)->envp = malloc(sizeof(char *) * size);
+	if ((*msh)->envp == NULL)
+		return ;
+	i = 0;
+	while (i < size - 1)
+	{
+		(*msh)->envp[i] = ft_strdup(env[i]);
+		i++;
+	}
+	(*msh)->envp[size - 1] = 0;
+}
+
 int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 {
 	*msh_m = malloc(sizeof(t_master));
@@ -184,6 +206,7 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->res_x = tgetnum("co");
 	(*msh_m)->res_y = tgetnum("li");
 	(*msh_m)->envp = envp;
+	init_envp(msh_m, envp);
 	(*msh_m)->term = term_c;
 	(*msh_m)->save_curs_pos->curs_pos_abs = -1;
 	(*msh_m)->save_curs_pos->curs_pos_rel = -1;

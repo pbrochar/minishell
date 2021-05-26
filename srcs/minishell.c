@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 20:01:33 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/05/26 20:32:33 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	print_prompt(t_master *msh_m)
 	if (buf[i + 1] && buf[i] == '/')
 		i++;
 	msh_m->prompt->dir = ft_strdup(&buf[i]);
-
+	msh_m->prompt->dir_len = ft_strlen(msh_m->prompt->dir);
+	msh_m->prompt_len = msh_m->prompt->user_len + msh_m->prompt->dir_len + 5;
 	write(1, TEXT_GREEN, 7);
 	write(1, msh_m->prompt->user, msh_m->prompt->user_len);
 	write(1, TEXT_NORMAL, 4);
@@ -59,14 +60,18 @@ int	is_new_line(char *buf, int ret)
 	return (-1);
 }
 
-
-
 int	execute_line(t_master *msh)
 {
-	//char *toto[] = {"/bin/ls", "--color=tty", NULL}
-	/*
+	char *toto[] = {"/bin/ls", "--color=tty", NULL};
+	if (msh->line_len == 0)
+	{
+		write(1, "\n", 1);
+		print_prompt(msh);
+		return (0);
+	}
+	write(1, "\n", 1);
 	if (ft_strncmp(msh->line, "cd", 2) == 0)
-		built_in_cd(msh, "..");
+		built_in_cd(msh, &msh->line[3]);
 	int pid_ls;
 	if (ft_strncmp(msh->line, "ls", 2) == 0)
 	{
@@ -75,16 +80,15 @@ int	execute_line(t_master *msh)
 		else
 			waitpid(pid_ls, NULL, 0);
 	}
-	waitpid(-1, NULL, 0);*/
-	if (msh->line_len == 0)
-	{
-		write(1, "\n", 1);
-		print_prompt(msh);
-		return (0);
-	}
+	if (ft_strncmp(msh->line, "env", 3) == 0)
+		built_in_env(msh);
+	if (ft_strncmp(msh->line, "pwd", 3) == 0)
+		built_in_pwd(msh);
+	//waitpid(-1, NULL, 0);*/
+	
 	if (ft_strncmp(msh->line, "exit", 4) == 0)
 		return (-1);
-	write(1, "\n", 1);
+//	write(1, "\n", 1);
 	history_management(msh);
 	print_prompt(msh);
 	if (msh->line)
@@ -179,7 +183,6 @@ int	msh_main_loop(t_master *msh_m)
 	char	buf[51];
 	int		ret;
 	int		key_term_v;
-
 
 	print_prompt(msh_m);
 	while ((ret = read(0, buf, 50)) > 0)
