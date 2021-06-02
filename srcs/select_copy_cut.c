@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 18:23:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 19:02:53 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:56:58 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,21 @@
 
 void	copy_select(t_master *msh)
 {
-	int size;
+	int	size;
 
 	if (msh->clipboard)
 		free(msh->clipboard);
-	if (msh->select->begin->curs_pos_abs == -1 ||
+	if (msh->select->begin->curs_pos_abs == -1 || \
 		msh->select->end->curs_pos_abs == -1)
 		return ;
 	if (msh->select->begin->curs_pos_abs > msh->select->end->curs_pos_abs)
 		swap_select_curs(msh);
-	size = msh->select->end->curs_pos_rel -\
+	size = msh->select->end->curs_pos_rel - \
 			msh->select->begin->curs_pos_rel + 1;
 	msh->clipboard = malloc(sizeof(char) * (size + 1));
 	if (msh->clipboard == NULL)
 		return ;
-	ft_strlcpy(msh->clipboard, &msh->line[msh->select->begin->curs_pos_rel],\
+	ft_strlcpy(msh->clipboard, &msh->line[msh->select->begin->curs_pos_rel], \
 				(size_t)size);
 }
 

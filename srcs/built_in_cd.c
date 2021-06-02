@@ -6,42 +6,37 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 16:14:55 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:00:22 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "errno.h"
 
-/*
-** to do : voir avec l'environnement si on doit pas modifier la facon dont s'est gerer
-** gerer cd -- (=cd), cd ~ , et cd -
-*/
-
-static void update_pwd(t_master *msh, char *new_dir)
+static void	update_pwd(t_master *msh, char *new_dir)
 {
-	char *pwd;
-	int i;
+	char	*pwd;
+	int		i;
 
 	i = 0;
 	pwd = malloc(sizeof(char) * (ft_strlen(new_dir) + 5));
 	if (pwd == NULL)
 		return ;
 	while (msh->envp[i] && ft_strncmp(msh->envp[i], "PWD", 3))
-			i++;
+		i++;
 	ft_strlcpy(pwd, "PWD=", 5);
 	ft_strcat(pwd, new_dir);
 	msh->envp[i] = pwd;
 }
 
-static void update_old_pwd(t_master *msh, char *old_dir)
+static void	update_old_pwd(t_master *msh, char *old_dir)
 {
 	char	*old_pwd;
 	int		i;
-	
+
 	old_pwd = malloc(sizeof(char) * (ft_strlen(old_dir) + 8));
 	if (old_dir == NULL)
-		return ; 
+		return ;
 	i = 0;
 	while (msh->envp[i] && ft_strncmp(msh->envp[i], "OLDPWD", 4))
 		i++;
@@ -50,7 +45,7 @@ static void update_old_pwd(t_master *msh, char *old_dir)
 	msh->envp[i] = old_pwd;
 }
 
-static void update_dir_env(t_master *msh, char *old_dir)
+static void	update_dir_env(t_master *msh, char *old_dir)
 {
 	char	buf[101];
 	char	*new_dir;
@@ -62,9 +57,9 @@ static void update_dir_env(t_master *msh, char *old_dir)
 	update_pwd(msh, new_dir);
 }
 
-static char *manage_special_dir(t_master *msh, char **arg)
+static char	*manage_special_dir(t_master *msh, char **arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!arg[1] || arg[1][0] == '~' || ft_strncmp(arg[1], "--\0", 3) == 0)
@@ -91,7 +86,7 @@ static char *manage_special_dir(t_master *msh, char **arg)
 	return (arg[1]);
 }
 
-int built_in_cd(t_master *msh, char **arg)
+int	built_in_cd(t_master *msh, char **arg)
 {
 	int		errnum;
 	int		chdir_ret;

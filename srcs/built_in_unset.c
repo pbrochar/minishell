@@ -6,26 +6,16 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:50:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 15:00:08 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:07:31 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int realloc_env(t_master *msh, int index)
+static char	**fill_new_env(t_master *msh, int index, char **new_env)
 {
-	char **new_env;
-	int i;
-	int size;
+	int	i;
 
-	i = 0;
-	while (msh->envp[i])
-		i++;
-	size = i;
-	new_env = malloc(sizeof(char *) * size);
-	if (new_env == NULL)
-		return (-1);
-	new_env[size - 1] = NULL;
 	i = 0;
 	while (i < index)
 	{
@@ -39,14 +29,32 @@ int realloc_env(t_master *msh, int index)
 		free(msh->envp[i + 1]);
 		i++;
 	}
+	return (new_env);
+}
+
+static int	realloc_env(t_master *msh, int index)
+{
+	char	**new_env;
+	int		i;
+	int		size;
+
+	i = 0;
+	while (msh->envp[i])
+		i++;
+	size = i;
+	new_env = malloc(sizeof(char *) * size);
+	if (new_env == NULL)
+		return (-1);
+	new_env[size - 1] = NULL;
+	new_env = fill_new_env(msh, index, new_env);
 	msh->envp = new_env;
 	return (0);
 }
 
-int built_in_unset(t_master *msh, char **arg)
+int	built_in_unset(t_master *msh, char **arg)
 {
-	int i;
-	int env_index;
+	int	i;
+	int	env_index;
 
 	i = 1;
 	while (arg[i])
@@ -54,10 +62,11 @@ int built_in_unset(t_master *msh, char **arg)
 		env_index = 0;
 		while (msh->envp[env_index])
 		{
-			if (ft_strncmp(msh->envp[env_index], arg[i], ft_strlen(arg[i])) == 0)
+			if (ft_strncmp(msh->envp[env_index], arg[i], \
+				ft_strlen(arg[i])) == 0)
 			{
 				realloc_env(msh, env_index);
-				break;
+				break ;
 			}
 			env_index++;
 		}

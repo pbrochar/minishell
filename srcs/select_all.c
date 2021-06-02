@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 20:56:08 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 21:09:07 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:54:17 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static void	unselect_all(t_master *msh)
 	set_alt_curs_pos(msh, msh->select->begin, msh->curs_pos->curs_pos_abs);
 }
 
-void		select_all(t_master *msh)
+void	select_all(t_master *msh)
 {
-	if (msh->select->end->curs_pos_abs == msh->line_len + msh->prompt_len &&\
+	if (msh->select->end->curs_pos_abs == msh->line_len + msh->prompt_len && \
 		msh->select->begin->curs_pos_rel == 0)
 	{
 		unselect_all(msh);

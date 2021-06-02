@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:09:13 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 20:01:27 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:52:20 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	mv_curs_right(t_master *msh)
 
 void	go_to_end_term_line(t_master *msh)
 {
-	mv_curs_abs(msh, msh->res_x - 1,\
+	mv_curs_abs(msh, msh->res_x - 1, \
 			(msh->curs_pos->curs_pos_abs / msh->res_x) - 1);
 	dec_curs_pos(msh);
 }

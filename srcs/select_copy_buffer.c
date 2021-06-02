@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 18:36:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 18:51:12 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:56:11 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	buffer_select(t_master *msh)
 	int		rang;
 
 	print_mode(msh, 'b', TEXT_BLUE);
-	while ((ret = read(0, buf, 50)) > 0)
+	ret = read(0, buf, 50);
+	while (ret > 0)
 	{
 		buf[ret] = '\0';
 		if (ft_isdigit(buf[0]))
@@ -46,26 +47,27 @@ void	buffer_select(t_master *msh)
 		}
 		else
 			break ;
+		ret = read(0, buf, 50);
 	}
 	print_mode(msh, 's', TEXT_RED);
 }
 
 void	copy_in_buffer(t_master *msh, int rang)
 {
-	int size;
+	int	size;
 
 	if (msh->buffer[rang] != NULL)
 		free(msh->buffer[rang]);
-	if (msh->select->begin->curs_pos_abs == -1 ||
+	if (msh->select->begin->curs_pos_abs == -1 || \
 		msh->select->end->curs_pos_abs == -1)
 		return ;
 	if (msh->select->begin->curs_pos_abs > msh->select->end->curs_pos_abs)
 		swap_select_curs(msh);
-	size = msh->select->end->curs_pos_rel -\
+	size = msh->select->end->curs_pos_rel - \
 			msh->select->begin->curs_pos_rel + 1;
 	msh->buffer[rang] = malloc(sizeof(char) * (size + 1));
 	if (msh->buffer[rang] == NULL)
 		return ;
-	ft_strlcpy(msh->buffer[rang], &msh->line[msh->select->begin->curs_pos_rel],\
+	ft_strlcpy(msh->buffer[rang], &msh->line[msh->select->begin->curs_pos_rel], \
 				(size_t)size);
 }

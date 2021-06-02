@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:13:27 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 20:12:34 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:53:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** Function to move cursor from word to word on the right.
 */
 
-void		mv_curs_right_word(t_master *msh)
+void	mv_curs_right_word(t_master *msh)
 {
 	int	i;
 
@@ -39,7 +39,7 @@ void		mv_curs_right_word(t_master *msh)
 		while (msh->line[i] && ft_isalnum(msh->line[i]) == 0)
 			i++;
 	}
-	mv_curs_abs(msh, (i + msh->prompt_len) % msh->res_x,\
+	mv_curs_abs(msh, (i + msh->prompt_len) % msh->res_x, \
 						(i + msh->prompt_len) / msh->res_x);
 	set_curs_pos(msh, i + msh->prompt_len);
 }
@@ -65,9 +65,9 @@ static int	char_is_not_on_word(t_master *msh, int i)
 	return (i);
 }
 
-void		mv_curs_left_word(t_master *msh)
+void	mv_curs_left_word(t_master *msh)
 {
-	int i;
+	int	i;
 
 	if (msh->line_len == 0)
 		return ;
@@ -81,7 +81,7 @@ void		mv_curs_left_word(t_master *msh)
 	}
 	else
 		i = char_is_not_on_word(msh, i);
-	mv_curs_abs(msh, (i + msh->prompt_len) % msh->res_x,\
+	mv_curs_abs(msh, (i + msh->prompt_len) % msh->res_x, \
 						(i + msh->prompt_len) / msh->res_x);
 	set_curs_pos(msh, i + msh->prompt_len);
 }

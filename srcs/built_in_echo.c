@@ -6,23 +6,23 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:02:34 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 15:37:03 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:00:47 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void manage_n_opt(t_master *msh, char **arg, int i)
+static void	manage_n_opt(t_master *msh, char **arg, int i)
 {
 	msh->prompt_len += ft_strlen(arg[i]);
 	if (arg[i + 1])
 		msh->prompt_len++;
 }
 
-int built_in_echo(t_master *msh, char **arg)
+int	built_in_echo(t_master *msh, char **arg)
 {
-	int i;
-	int print_newline;
+	int	i;
+	int	print_newline;
 
 	i = 1;
 	print_newline = 1;

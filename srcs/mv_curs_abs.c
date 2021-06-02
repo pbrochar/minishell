@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 21:12:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 19:56:08 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:50:57 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 
 void	mv_curs_abs(t_master *msh, int x, int y)
 {
-	int curr_line;
+	int	curr_line;
 
 	curr_line = msh->curs_pos->curs_pos_abs / msh->res_x;
 	if (x < 0)
