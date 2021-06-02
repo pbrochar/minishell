@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 14:29:16 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 15:04:38 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int	execute_line(t_master *msh)
 		built_in_export(msh, arg);
 	if (ft_strncmp(msh->line, "unset", 5) == 0)
 		built_in_unset(msh, arg);
+	if (ft_strncmp(msh->line, "echo", 4) == 0)
+		built_in_echo(msh, arg);
 	//waitpid(-1, NULL, 0);*/
 	
 	if (ft_strncmp(msh->line, "exit", 4) == 0)
