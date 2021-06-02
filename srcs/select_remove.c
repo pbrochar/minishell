@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/16 10:35:51 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 18:03:53 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:21:12 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	remove_select(t_master *msh)
 	if (msh->select->begin->curs_pos_abs > msh->select->end->curs_pos_abs)
 	{
 		swap_select_curs(msh);
-		mv_curs_abs(msh, msh->select->end->curs_pos_abs % msh->res_x,\
+		mv_curs_abs(msh, msh->select->end->curs_pos_abs % msh->res_x, \
 					msh->select->end->curs_pos_abs / msh->res_x);
 		set_curs_pos(msh, msh->select->end->curs_pos_abs);
 	}
@@ -34,7 +34,7 @@ void	remove_select(t_master *msh)
 void	delete_multi_display(t_master *msh)
 {
 	char	*temp;
-	
+
 	temp = remove_multi_char(msh);
 	if (temp == NULL)
 		return ;
@@ -50,35 +50,21 @@ void	delete_multi_display(t_master *msh)
 	msh->line = temp;
 	if (temp[0])
 	{
-		/*write(1, &msh->line[msh->select->begin->curs_pos_rel],\
-			msh->line_len - msh->select->end->curs_pos_rel);*/
 		ft_putstr_fd(&msh->line[msh->select->begin->curs_pos_rel], 1);
 		sleep(1);
-		set_curs_pos(msh, msh->curs_pos->curs_pos_abs + msh->line_len\
+		set_curs_pos(msh, msh->curs_pos->curs_pos_abs + msh->line_len \
 							- msh->select->end->curs_pos_rel);
-		mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x,\
+		mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x, \
 		msh->save_curs_pos->curs_pos_abs / msh->res_x);
 		rest_curs_pos(msh);
 	}
-	
 }
 
-char *remove_multi_char(t_master *msh)
+static char	*fill_new_line(t_master *msh, int len, char *new)
 {
-	char 	*new;
-	int		size;
-	int 	len;
-	int		i;
+	int	i;
 
 	i = 0;
-	len = (msh->select->end->curs_pos_abs - msh->select->begin->curs_pos_abs);
-	size = msh->line_len - len;
-	new = malloc(sizeof(char) * (size + 1));
-	if (new == NULL)
-		return (NULL);
-	new[size] = '\0';
-	if (len == msh->line_len)
-		return (new);
 	while (i < msh->select->begin->curs_pos_rel)
 	{
 		new[i] = msh->line[i];
@@ -90,5 +76,23 @@ char *remove_multi_char(t_master *msh)
 		new[i - len] = msh->line[i];
 		i++;
 	}
+	return (new);
+}
+
+char	*remove_multi_char(t_master *msh)
+{
+	char	*new;
+	int		size;
+	int		len;
+
+	len = (msh->select->end->curs_pos_abs - msh->select->begin->curs_pos_abs);
+	size = msh->line_len - len;
+	new = malloc(sizeof(char) * (size + 1));
+	if (new == NULL)
+		return (NULL);
+	new[size] = '\0';
+	if (len == msh->line_len)
+		return (new);
+	new = fill_new_line(msh, len, new);
 	return (new);
 }

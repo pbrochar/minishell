@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:25:51 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 15:27:52 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:11:05 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 void	update_prompt_values(t_master *msh)
 {
-	char buf[51];
-	int i;
-	
+	char	buf[51];
+	int		i;
+
 	getcwd(buf, 50);
 	i = ft_strlen(buf) - 1;
 	while (i != 0 && buf[i] != '/')

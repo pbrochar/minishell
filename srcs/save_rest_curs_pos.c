@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 19:44:43 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 20:14:06 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:12:34 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@
 ** other mv functions.
 */
 
-void		save_curs_pos(t_master *msh)
+void	save_curs_pos(t_master *msh)
 {
 	msh->save_curs_pos->curs_pos_abs = msh->curs_pos->curs_pos_abs;
 	msh->save_curs_pos->curs_pos_rel = msh->curs_pos->curs_pos_rel;
 }
 
-void		rest_curs_pos(t_master *msh)
+void	rest_curs_pos(t_master *msh)
 {
 	msh->curs_pos->curs_pos_abs = msh->save_curs_pos->curs_pos_abs;
 	msh->curs_pos->curs_pos_rel = msh->save_curs_pos->curs_pos_rel;

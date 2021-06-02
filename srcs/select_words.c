@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 20:47:13 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/15 20:53:37 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:22:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ static void	unselect_for_word_right(t_master *msh)
 	mv_curs_right_word(msh);
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	mv_curs_left_word(msh);
-	write(1, &msh->line[msh->curs_pos->curs_pos_rel],\
+	write(1, &msh->line[msh->curs_pos->curs_pos_rel], \
 		msh->select->end->curs_pos_abs - msh->curs_pos->curs_pos_abs);
 	set_curs_pos(msh, msh->select->end->curs_pos_abs);
 }
 
-void		select_word_right(t_master *msh)
+void	select_word_right(t_master *msh)
 {
 	if (msh->select->end->curs_pos_rel == msh->line_len)
 		return ;
@@ -38,7 +38,7 @@ void		select_word_right(t_master *msh)
 	tputs(tgetstr("so", NULL), 1, ft_putchar);
 	mv_curs_right_word(msh);
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
-	mv_curs_abs(msh, msh->select->begin->curs_pos_abs % msh->res_x,\
+	mv_curs_abs(msh, msh->select->begin->curs_pos_abs % msh->res_x, \
 				msh->select->begin->curs_pos_abs / msh->res_x);
 	write(1, &msh->line[msh->select->begin->curs_pos_rel], \
 		msh->select->end->curs_pos_rel - msh->select->begin->curs_pos_rel);
@@ -49,14 +49,14 @@ void		select_word_right(t_master *msh)
 static void	unselect_for_word_left(t_master *msh)
 {
 	mv_curs_left_word(msh);
-	write(1, &msh->line[msh->curs_pos->curs_pos_rel],\
+	write(1, &msh->line[msh->curs_pos->curs_pos_rel], \
 		msh->select->end->curs_pos_abs - msh->curs_pos->curs_pos_abs);
 	set_curs_pos(msh, msh->select->end->curs_pos_abs);
 	mv_curs_left_word(msh);
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 }
 
-void		select_word_left(t_master *msh)
+void	select_word_left(t_master *msh)
 {
 	if (msh->select->end->curs_pos_rel == 0)
 		return ;
@@ -70,9 +70,9 @@ void		select_word_left(t_master *msh)
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 	write(1, &msh->line[msh->select->end->curs_pos_rel], \
 		msh->select->begin->curs_pos_rel - msh->select->end->curs_pos_rel);
-	set_curs_pos(msh, msh->curs_pos->curs_pos_abs +\
+	set_curs_pos(msh, msh->curs_pos->curs_pos_abs + \
 	(msh->select->begin->curs_pos_rel - msh->select->end->curs_pos_rel));
-	mv_curs_abs(msh, msh->select->end->curs_pos_abs % msh->res_x,\
+	mv_curs_abs(msh, msh->select->end->curs_pos_abs % msh->res_x, \
 				msh->select->end->curs_pos_abs / msh->res_x);
 	set_curs_pos(msh, msh->select->end->curs_pos_abs);
 	tputs(tgetstr("se", NULL), 1, ft_putchar);

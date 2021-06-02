@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:38:55 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 20:15:11 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:08:31 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	history_update_line_graphic(t_master *msh)
 	msh->nb_line = msh->curs_pos->curs_pos_abs / msh->res_x;
 }
 
-void		browse_history_back(t_master *msh)
+void	browse_history_back(t_master *msh)
 {
 	if (!msh->history)
 		return ;
@@ -41,7 +41,7 @@ void		browse_history_back(t_master *msh)
 	history_update_line_graphic(msh);
 }
 
-void		browse_history_front(t_master *msh)
+void	browse_history_front(t_master *msh)
 {
 	if (!msh->history)
 		return ;

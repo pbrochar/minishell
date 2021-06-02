@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 19:51:39 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:14:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,34 @@ void	select_loop(t_master *msh)
 	int		key_term;
 	char	buf[51];
 
-	while ((ret = read(0, buf, 50)) > 0)
+	ret = read(0, buf, 50);
+	while (ret > 0)
 	{
 		buf[ret] = '\0';
-		if ((key_term = key_is_term_select(msh, buf)) != -1)
+		key_term = key_is_term_select(msh, buf);
+		if (key_term != -1)
 		{
 			msh->term->key_fct_select_mode[key_term](msh);
-			if (key_term == S_KEY_C || key_term == S_KEY_BACK ||
-				key_term == S_KEY_X || key_term == S_KEY_P ||
+			if (key_term == S_KEY_C || key_term == S_KEY_BACK || \
+				key_term == S_KEY_X || key_term == S_KEY_P || \
 				key_term == S_CTRL_H_A)
 				return ;
 		}
 		else
 			return ;
 		ft_bzero(buf, 50);
+		ret = read(0, buf, 50);
 	}
 }
 
-int		key_is_term_select(t_master *msh, char *buf)
+int	key_is_term_select(t_master *msh, char *buf)
 {
 	int	i;
 
 	i = 0;
 	while (msh->term->key_term_select_mode[i])
 	{
-		if (ft_strncmp(buf, msh->term->key_term_select_mode[i],\
+		if (ft_strncmp(buf, msh->term->key_term_select_mode[i], \
 			ft_strlen(buf)) == 0)
 			return (i);
 		i++;

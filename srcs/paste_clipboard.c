@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 19:02:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 19:09:35 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:12:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ char	*insert_clipboard_in_line(t_master *msh)
 	i += msh->curs_pos->curs_pos_rel;
 	ft_memcpy(&temp[i], msh->clipboard, ft_strlen(msh->clipboard));
 	i += ft_strlen(msh->clipboard);
-	ft_memcpy(&temp[i], &msh->line[msh->curs_pos->curs_pos_rel],\
+	ft_memcpy(&temp[i], &msh->line[msh->curs_pos->curs_pos_rel], \
 				ft_strlen(&msh->line[msh->curs_pos->curs_pos_rel]));
 	temp[msh->line_len] = '\0';
 	free(msh->line);
 	return (temp);
 }
 
-int		paste_clipboard_management(t_master *msh, int clip_len)
+int	paste_clipboard_management(t_master *msh, int clip_len)
 {
 	if (msh->curs_pos->curs_pos_rel < msh->line_len)
 	{
@@ -67,7 +67,7 @@ int		paste_clipboard_management(t_master *msh, int clip_len)
 	else
 	{
 		write(1, msh->clipboard, clip_len);
-		msh->line = ft_mem_exp(msh->line, msh->line_len,\
+		msh->line = ft_mem_exp(msh->line, msh->line_len, \
 								msh->line_len + clip_len + 1);
 		ft_strcat(msh->line, msh->clipboard);
 		msh->line[msh->line_len + clip_len] = '\0';

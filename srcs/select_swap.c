@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 19:33:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 20:18:55 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:21:46 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 void	swap_select_curs(t_master *msh)
 {
-	t_curs_pos *temp;
+	t_curs_pos	*temp;
 
 	temp = msh->select->begin;
 	msh->select->begin = msh->select->end;

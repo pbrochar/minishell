@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:27:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 20:16:23 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:09:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@
 ** added to the history.
 */
 
-static void		add_in_history(t_master *msh)
+static void	add_in_history(t_master *msh)
 {
-	char *new_line;
+	char	*new_line;
 
 	new_line = ft_strdup(msh->line);
 	if (new_line != NULL)
 		ft_lstadd_front(&msh->history, ft_lstnew(new_line));
 }
 
-static int		line_is_empty(char *line)
+static int	line_is_empty(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!line)
@@ -46,7 +46,7 @@ static int		line_is_empty(char *line)
 	return (1);
 }
 
-void			history_management(t_master *msh)
+void	history_management(t_master *msh)
 {
 	if (line_is_empty(msh->line) == 1)
 		return ;

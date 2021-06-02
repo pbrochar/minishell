@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 18:50:16 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 19:06:21 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 18:16:40 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	paste_buff_select(t_master *msh)
 	int		rang;
 
 	print_mode(msh, 'p', TEXT_YELLOW);
-	while ((ret = read(0, buf, 50)) > 0)
+	ret = read(0, buf, 50);
+	while (ret > 0)
 	{
 		buf[ret] = '\0';
 		if (ft_isdigit(buf[0]))
@@ -73,16 +74,16 @@ char	*insert_buffer_in_line(t_master *msh, int rang)
 	i += msh->curs_pos->curs_pos_rel;
 	ft_memcpy(&temp[i], msh->buffer[rang], ft_strlen(msh->buffer[rang]));
 	i += ft_strlen(msh->buffer[rang]);
-	ft_memcpy(&temp[i], &msh->line[msh->curs_pos->curs_pos_rel],\
+	ft_memcpy(&temp[i], &msh->line[msh->curs_pos->curs_pos_rel], \
 				ft_strlen(&msh->line[msh->curs_pos->curs_pos_rel]));
 	temp[msh->line_len] = '\0';
 	free(msh->line);
 	return (temp);
 }
 
-int		paste_buffer_management(t_master *msh, int rang)
+int	paste_buffer_management(t_master *msh, int rang)
 {
-	int len;
+	int	len;
 
 	len = ft_strlen(msh->buffer[rang]);
 	if (msh->curs_pos->curs_pos_rel < msh->line_len)
@@ -97,7 +98,7 @@ int		paste_buffer_management(t_master *msh, int rang)
 	else
 	{
 		write(1, msh->buffer[rang], len);
-		msh->line = ft_mem_exp(msh->line, msh->line_len,\
+		msh->line = ft_mem_exp(msh->line, msh->line_len, \
 								msh->line_len + len + 1);
 		ft_strcat(msh->line, msh->buffer[rang]);
 		msh->line[msh->line_len + len] = '\0';
