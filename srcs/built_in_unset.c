@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:50:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 12:31:26 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 15:00:08 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,26 @@ int realloc_env(t_master *msh, int index)
 		i++;
 	size = i;
 	new_env = malloc(sizeof(char *) * size);
+	if (new_env == NULL)
+		return (-1);
+	new_env[size - 1] = NULL;
 	i = 0;
 	while (i < index)
 	{
 		new_env[i] = ft_strdup(msh->envp[i]);
+		free(msh->envp[i]);
 		i++;
 	}
-	while (msh->envp[i])
+	while (msh->envp[i + 1])
 	{
-		new_env[i] = ft_strdup(msh->envp[i - 1]);
+		new_env[i] = ft_strdup(msh->envp[i + 1]);
+		free(msh->envp[i + 1]);
 		i++;
 	}
-	new_env[size - 1] = NULL;
+	msh->envp = new_env;
 	return (0);
 }
-/*
+
 int built_in_unset(t_master *msh, char **arg)
 {
 	int i;
@@ -49,11 +54,14 @@ int built_in_unset(t_master *msh, char **arg)
 		env_index = 0;
 		while (msh->envp[env_index])
 		{
-			if (ft_strncmp(arg[i], msh->envp[env_index], ft_strlen(arg[i])) == 0)
+			if (ft_strncmp(msh->envp[env_index], arg[i], ft_strlen(arg[i])) == 0)
 			{
-				
+				realloc_env(msh, env_index);
+				break;
 			}
+			env_index++;
 		}
-		
+		i++;
 	}
-}*/
+	return (0);
+}
