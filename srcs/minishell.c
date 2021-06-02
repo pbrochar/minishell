@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 15:04:38 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 15:31:26 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,7 @@
 #include "colors.h"
 #include "msh_define.h"
 
-void	print_prompt(t_master *msh_m)
-{
-	char buf[50];
-	getcwd(buf, 50);
-	int i;
-	i = ft_strlen(buf) - 1;
-	while (i != 0 && buf[i] != '/')
-		i--;
-	if (buf[i + 1] && buf[i] == '/')
-		i++;
-	msh_m->prompt->dir = ft_strdup(&buf[i]);
-	msh_m->prompt->dir_len = ft_strlen(msh_m->prompt->dir);
-	msh_m->prompt_len = msh_m->prompt->user_len + msh_m->prompt->dir_len + 5;
-	write(1, TEXT_GREEN, 7);
-	write(1, msh_m->prompt->user, msh_m->prompt->user_len);
-	write(1, TEXT_NORMAL, 4);
-	write(1, "@", 1);
-	write(1, TEXT_CYAN, 7);
-	write(1, msh_m->prompt->dir, msh_m->prompt->dir_len);
-	write(1, TEXT_NORMAL, 4);
-	write(1, "[n] ", 4);
-}
+
 
 int	key_is_term(t_master *msh, char *buf)
 {
@@ -64,6 +43,7 @@ int	execute_line(t_master *msh)
 {
 	char *toto[] = {"/bin/ls", "--color=tty", NULL};
 	char **arg = ft_split(msh->line, ' ');
+	update_prompt_values(msh);
 	if (msh->line_len == 0)
 	{
 		write(1, "\n", 1);

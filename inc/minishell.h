@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 15:03:59 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 15:31:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,8 @@ int built_in_pwd(t_master *msh);
 int	built_in_export(t_master *msh, char **arg);
 int built_in_unset(t_master *msh, char **arg);
 int built_in_echo(t_master *msh, char **arg);
+
+void	update_prompt_values(t_master *msh);
+void	print_prompt(t_master *msh);
+
 #endif
