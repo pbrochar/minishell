@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/26 20:32:33 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 12:31:59 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	is_new_line(char *buf, int ret)
 int	execute_line(t_master *msh)
 {
 	char *toto[] = {"/bin/ls", "--color=tty", NULL};
+	char **arg = ft_split(msh->line, ' ');
 	if (msh->line_len == 0)
 	{
 		write(1, "\n", 1);
@@ -84,6 +85,8 @@ int	execute_line(t_master *msh)
 		built_in_env(msh);
 	if (ft_strncmp(msh->line, "pwd", 3) == 0)
 		built_in_pwd(msh);
+	if (ft_strncmp(msh->line, "export", 6) == 0)
+		built_in_export(msh, arg);
 	//waitpid(-1, NULL, 0);*/
 	
 	if (ft_strncmp(msh->line, "exit", 4) == 0)

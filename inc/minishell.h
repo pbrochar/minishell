@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/26 20:31:56 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 12:30:49 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,5 @@ int		key_is_term_select(t_master *msh, char *buf);
 
 int built_in_env(t_master *msh);
 int built_in_pwd(t_master *msh);
+int	built_in_export(t_master *msh, char **arg);
 #endif

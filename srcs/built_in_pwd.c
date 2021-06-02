@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 20:27:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/26 20:33:48 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 12:31:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int built_in_pwd(t_master *msh)
 {
 	int i;
 	int j;
-
+	
 	i = 0;
 	j = 0;
 	while (msh->envp[i] && ft_strncmp(msh->envp[i], "PWD", 3))
