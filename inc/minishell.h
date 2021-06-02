@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 15:31:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 15:55:26 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@ int	init_key_terms(t_term **key_terms);
 
 void	print_mode(t_master *msh, char c, char *color);
 
-int built_in_cd(t_master *msh, char *path);
+
 
 int		paste_clipboard_management(t_master *msh, int clip_len);
 int		key_is_term_select(t_master *msh, char *buf);
 
+int built_in_cd(t_master *msh, char **arg);
 int built_in_env(t_master *msh);
 int built_in_pwd(t_master *msh);
 int	built_in_export(t_master *msh, char **arg);

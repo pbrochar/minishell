@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/26 19:44:31 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 16:14:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,53 @@ static void update_dir_env(t_master *msh, char *old_dir)
 	update_pwd(msh, new_dir);
 }
 
-int built_in_cd(t_master *msh, char *path)
+static char *manage_special_dir(t_master *msh, char **arg)
+{
+	int i;
+
+	i = 0;
+	if (!arg[1] || arg[1][0] == '~' || ft_strncmp(arg[1], "--\0", 3) == 0)
+	{
+		while (msh->envp[i])
+		{
+			if (ft_strncmp(msh->envp[i], "HOME", 4) == 0)
+				return (&msh->envp[i][5]);
+			i++;
+		}
+	}
+	else if (ft_strncmp(arg[1], "-\0", 2) == 0)
+	{
+		while (msh->envp[i])
+		{
+			if (ft_strncmp(msh->envp[i], "OLDPWD", 6) == 0)
+			{
+				ft_printf("%s\n", &msh->envp[i][7]);
+				return (&msh->envp[i][7]);
+			}
+			i++;
+		}
+	}
+	return (arg[1]);
+}
+
+int built_in_cd(t_master *msh, char **arg)
 {
 	int		errnum;
 	int		chdir_ret;
 	char	buf[101];
 	char	*old_dir;
-	
-	if (path[0] == '~' || path[0] == '-' || path[0] == '\0')
-		printf("%c\n", path[0]);
+	char	*folder;
+
+	folder = manage_special_dir(msh, arg);
 	old_dir = getcwd(buf, 100);
-	chdir_ret = chdir(path);
+	chdir_ret = chdir(folder);
 	if (chdir_ret == -1)
 	{
 		errnum = errno;
-		printf("cd :%s: %s\n", strerror(errnum), path);
+		printf("cd : %s: %s\n", arg[1], strerror(errnum));
 	}
 	else
 		update_dir_env(msh, old_dir);
+	update_prompt_values(msh);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 15:31:26 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/02 15:55:47 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	execute_line(t_master *msh)
 	}
 	write(1, "\n", 1);
 	if (ft_strncmp(msh->line, "cd", 2) == 0)
-		built_in_cd(msh, &msh->line[3]);
+		built_in_cd(msh, arg);
 	int pid_ls;
 	if (ft_strncmp(msh->line, "ls", 2) == 0)
 	{
