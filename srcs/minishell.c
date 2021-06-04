@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 15:55:47 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/04 18:32:04 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include "msh_structs.h"
 #include "colors.h"
 #include "msh_define.h"
-
-
 
 int	key_is_term(t_master *msh, char *buf)
 {
@@ -42,7 +40,8 @@ int	is_new_line(char *buf, int ret)
 int	execute_line(t_master *msh)
 {
 	char *toto[] = {"/bin/ls", "--color=tty", NULL};
-	char **arg = ft_split(msh->line, ' ');
+	char **arg = NULL;
+	arg = ft_split(msh->line, ' ');
 	update_prompt_values(msh);
 	if (msh->line_len == 0)
 	{
@@ -74,12 +73,20 @@ int	execute_line(t_master *msh)
 	//waitpid(-1, NULL, 0);*/
 	
 	if (ft_strncmp(msh->line, "exit", 4) == 0)
-		return (-1);
+		built_in_exit(msh, arg);
 //	write(1, "\n", 1);
 	history_management(msh);
 	print_prompt(msh);
 	if (msh->line)
 		free(msh->line);
+	int j = 0;
+	while (arg[j])
+	{
+		free(arg[j]);
+		j++;
+	}
+	if (arg)
+		free(arg);
 	msh->line = NULL;
 	msh->line_len = 0;
 	msh->nb_line = 0;
@@ -180,10 +187,7 @@ int	msh_main_loop(t_master *msh_m)
 		else if (is_new_line(buf, ret) == 1)
 		{
 			if (execute_line(msh_m) == -1)
-			{
-				write(1, "\n", 1);
 				break;
-			}
 		}
 		else if (is_char_to_print(buf, ret) == 1)
 			print_char_management(msh_m, buf);
@@ -195,16 +199,16 @@ int	msh_main_loop(t_master *msh_m)
 int	main(int argc, char **argv, char **envp)
 {
 	t_term		*term_c;
-	t_master	*msh_m;
+	t_master	*msh;
 	
 	(void)argc;
 	(void)argv;
-	msh_m = NULL;
+	msh = NULL;
 	term_c = NULL;
 	init_term(&term_c);
 	init_key_terms(&term_c);
-	init_msh_master_struct(&msh_m, envp, term_c);
-	msh_main_loop(msh_m);
+	init_msh_master_struct(&msh, envp, term_c);
+	msh_main_loop(msh);
 	tcsetattr(0, TCSANOW, &(term_c->backup));
 	return (0);
 }

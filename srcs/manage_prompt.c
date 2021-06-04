@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:25:51 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:11:05 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/04 17:46:46 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	update_prompt_values(t_master *msh)
 		i--;
 	if (buf[i + 1] && buf[i] == '/')
 		i++;
+	free(msh->prompt->dir);
 	msh->prompt->dir = ft_strdup(&buf[i]);
 	msh->prompt->dir_len = ft_strlen(msh->prompt->dir);
 	msh->prompt_len = msh->prompt->user_len + msh->prompt->dir_len + 5;

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 18:36:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 17:56:11 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/04 18:28:36 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ void	copy_in_buffer(t_master *msh, int rang)
 {
 	int	size;
 
-	if (msh->buffer[rang] != NULL)
-		free(msh->buffer[rang]);
+	free(msh->buffer[rang]);
 	if (msh->select->begin->curs_pos_abs == -1 || \
 		msh->select->end->curs_pos_abs == -1)
 		return ;

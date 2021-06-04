@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/26 20:22:18 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/04 18:29:36 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_term[A_KEY_HOME] = tgetstr("kh", NULL);
 	(*key_terms)->key_term[A_KEY_END] = tgetstr("@7", NULL);
 	(*key_terms)->key_term[A_KEY_BACK] = tgetstr("kb", NULL);
-	(*key_terms)->key_term[A_CTRL_L_A] = ft_strdup(CTRL_LEFT_ARROW);
-	(*key_terms)->key_term[A_CTRL_R_A] = ft_strdup(CTRL_RIGHT_ARROW);
-	(*key_terms)->key_term[A_CTRL_U_A] = ft_strdup(CTRL_UP_ARROW);
-	(*key_terms)->key_term[A_CTRL_D_A] = ft_strdup(CTRL_DOWN_ARROW);
-	(*key_terms)->key_term[A_CTRL_H_A] = ft_strdup(CTRL_HOME);
-	(*key_terms)->key_term[A_INSERT_A] = ft_strdup(INSERT);
-	(*key_terms)->key_term[A_KEY_PG_UP] = ft_strdup(PG_UP);
-	(*key_terms)->key_term[A_KEY_PG_DW] = ft_strdup(PG_DOWN);
+	(*key_terms)->key_term[A_CTRL_L_A] = CTRL_LEFT_ARROW;
+	(*key_terms)->key_term[A_CTRL_R_A] = CTRL_RIGHT_ARROW;
+	(*key_terms)->key_term[A_CTRL_U_A] = CTRL_UP_ARROW;
+	(*key_terms)->key_term[A_CTRL_D_A] = CTRL_DOWN_ARROW;
+	(*key_terms)->key_term[A_CTRL_H_A] = CTRL_HOME;
+	(*key_terms)->key_term[A_INSERT_A] = INSERT;
+	(*key_terms)->key_term[A_KEY_PG_UP] = PG_UP;
+	(*key_terms)->key_term[A_KEY_PG_DW] = PG_DOWN;
 	(*key_terms)->key_term[NB_KEY - 1] = NULL;
 	(*key_terms)->key_fct[A_KEY_LEFT] = &mv_curs_left;
 	(*key_terms)->key_fct[A_KEY_RIGHT] = &mv_curs_right;
@@ -54,14 +54,14 @@ int		init_key_terms(t_term **key_terms)
 	(*key_terms)->key_term_select_mode[S_KEY_HOME] = tgetstr("kh", NULL);
 	(*key_terms)->key_term_select_mode[S_KEY_END] = tgetstr("@7", NULL);
 	(*key_terms)->key_term_select_mode[S_KEY_BACK] = tgetstr("kb", NULL);
-	(*key_terms)->key_term_select_mode[S_CTRL_L_A] = ft_strdup(CTRL_LEFT_ARROW);
-	(*key_terms)->key_term_select_mode[S_CTRL_R_A] = ft_strdup(CTRL_RIGHT_ARROW);
-	(*key_terms)->key_term_select_mode[S_CTRL_H_A] = ft_strdup(CTRL_HOME);
-	(*key_terms)->key_term_select_mode[S_KEY_C] = ft_strdup(KEY_C);
-	(*key_terms)->key_term_select_mode[S_KEY_A] = ft_strdup(KEY_A);
-	(*key_terms)->key_term_select_mode[S_KEY_X] = ft_strdup(KEY_X);
-	(*key_terms)->key_term_select_mode[S_KEY_B] = ft_strdup(KEY_B);
-	(*key_terms)->key_term_select_mode[S_KEY_P] = ft_strdup(KEY_P);
+	(*key_terms)->key_term_select_mode[S_CTRL_L_A] = CTRL_LEFT_ARROW;
+	(*key_terms)->key_term_select_mode[S_CTRL_R_A] = CTRL_RIGHT_ARROW;
+	(*key_terms)->key_term_select_mode[S_CTRL_H_A] = CTRL_HOME;
+	(*key_terms)->key_term_select_mode[S_KEY_C] = KEY_C;
+	(*key_terms)->key_term_select_mode[S_KEY_A] = KEY_A;
+	(*key_terms)->key_term_select_mode[S_KEY_X] = KEY_X;
+	(*key_terms)->key_term_select_mode[S_KEY_B] = KEY_B;
+	(*key_terms)->key_term_select_mode[S_KEY_P] = KEY_P;
 	(*key_terms)->key_term_select_mode[NB_KEY_SELECT - 1] = NULL;
 	(*key_terms)->key_fct_select_mode[S_KEY_LEFT] = &select_left;
 	(*key_terms)->key_fct_select_mode[S_KEY_RIGHT] = &select_right;
@@ -148,11 +148,10 @@ void	init_buffer(t_master **msh_m)
 
 	i = 0;
 	(*msh_m)->buffer = malloc(sizeof(char *) * NB_BUFFER);
+	if ((*msh_m)->buffer == NULL)
+		return ;
 	while (i < NB_BUFFER)
 	{
-		(*msh_m)->buffer[i] = malloc(sizeof(char *));
-		if ((*msh_m)->buffer[i] == NULL)
-			return ;
 		(*msh_m)->buffer[i] = NULL;
 		i++;
 	}
@@ -213,7 +212,6 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->commands = NULL;
 	(*msh_m)->history = NULL;
 	(*msh_m)->clipboard = NULL;
-	(*msh_m)->buffer = malloc(sizeof(char *) * NB_BUFFER);
 	init_buffer(msh_m);
 	return (0);
 }
