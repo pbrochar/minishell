@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:02:34 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:00:47 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 14:01:21 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	built_in_echo(t_master *msh, char **arg)
 
 	i = 1;
 	print_newline = 1;
-	if (arg[1] && ft_strncmp(arg[1], "-n", 2) == 0)
+	if (arg[1] && ft_strcmp(arg[1], "-n") == 0)
 	{
 		print_newline = 0;
 		i++;

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:50:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:07:31 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 14:32:57 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,20 @@ static char	**fill_new_env(t_master *msh, int index, char **new_env)
 	while (i < index)
 	{
 		new_env[i] = ft_strdup(msh->envp[i]);
-		free(msh->envp[i]);
 		i++;
 	}
 	while (msh->envp[i + 1])
 	{
 		new_env[i] = ft_strdup(msh->envp[i + 1]);
-		free(msh->envp[i + 1]);
 		i++;
 	}
+	i = 0;
+	while (msh->envp[i])
+	{
+		free(msh->envp[i]);
+		i++;
+	}
+	free(msh->envp);
 	return (new_env);
 }
 

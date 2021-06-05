@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:51:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:10:27 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 14:35:19 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@ static char	*remove_elem(char *line, int pos)
 	int		i;
 
 	i = 0;
-	new = malloc(sizeof(char) * ((int)ft_strlen(line)));
+	new = malloc(sizeof(char) * ft_strlen(line));
 	if (new == NULL)
 		return (NULL);
-	ft_bzero(new, ft_strlen(line) - 1);
 	while (i < pos)
 	{
 		new[i] = line[i];

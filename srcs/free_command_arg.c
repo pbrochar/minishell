@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in_pwd.c                                     :+:      :+:    :+:   */
+/*   free_command_arg.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/26 20:27:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 13:40:30 by pbrochar         ###   ########.fr       */
+/*   Created: 2021/06/05 17:32:48 by pbrochar          #+#    #+#             */
+/*   Updated: 2021/06/05 17:32:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	built_in_pwd(t_master *msh, char **arg)
+void	free_command_arg(char **arg)
 {
 	int	i;
-	int	j;
 
-	(void)arg;
 	i = 0;
-	j = 0;
-	while (msh->envp[i] && ft_strncmp(msh->envp[i], "PWD", 3))
+	if (!arg)
+		return ;
+	while (arg[i])
+	{
+		free(arg[i]);
 		i++;
-	while (msh->envp[i][j] != '=')
-		j++;
-	ft_printf("%s\n", &msh->envp[i][++j]);
-	return (0);
+	}
+	free(arg);
 }

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 10:53:15 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 14:16:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ static void init_envp(t_master **msh, char **env)
 		(*msh)->envp[i] = ft_strdup(env[i]);
 		i++;
 	}
-	(*msh)->envp[size - 1] = 0;
+	(*msh)->envp[size - 1] = NULL;
 }
 
 static void	init_path(t_master **msh)
@@ -189,6 +189,29 @@ static void	init_path(t_master **msh)
 	temp = ft_strchr((*msh)->envp[i], '=');
 	i = 1;
 	(*msh)->path = ft_split(&temp[i], ':');
+}
+
+static void	init_built_in(t_master **msh)
+{
+	(*msh)->built_in = malloc(sizeof(t_built_in));
+	if ((*msh)->built_in == NULL)
+		return ;
+	(*msh)->built_in->built_in_list[0] = BI_CD;
+	(*msh)->built_in->built_in_list[1] = BI_ECHO;
+	(*msh)->built_in->built_in_list[2] = BI_ENV;
+	(*msh)->built_in->built_in_list[3] = BI_EXIT;
+	(*msh)->built_in->built_in_list[4] = BI_EXPORT;
+	(*msh)->built_in->built_in_list[5] = BI_PWD;
+	(*msh)->built_in->built_in_list[6] = BI_UNSET;
+	(*msh)->built_in->built_in_list[7] = NULL;
+	(*msh)->built_in->built_in_fct[0] = &built_in_cd;
+	(*msh)->built_in->built_in_fct[1] = &built_in_echo;
+	(*msh)->built_in->built_in_fct[2] = &built_in_env;
+	(*msh)->built_in->built_in_fct[3] = &built_in_exit;
+	(*msh)->built_in->built_in_fct[4] = &built_in_export;
+	(*msh)->built_in->built_in_fct[5] = &built_in_pwd;
+	(*msh)->built_in->built_in_fct[6] = &built_in_unset;
+	(*msh)->built_in->built_in_fct[7] = NULL;
 }
 
 int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
@@ -227,5 +250,6 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->clipboard = NULL;
 	init_buffer(msh_m);
 	init_path(msh_m);
+	init_built_in(msh_m);
 	return (0);
 }

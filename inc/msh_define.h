@@ -1,17 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define_msh.h                                       :+:      :+:    :+:   */
+/*   msh_define.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 20:41:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/13 19:12:52 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 13:55:22 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINE_MSH_H
 # define DEFINE_MSH_H
+
+# define NB_BUILT_IN 8
+# define BI_CD "cd"
+# define BI_ECHO "echo"
+# define BI_ENV "env"
+# define BI_EXIT "exit"
+# define BI_EXPORT "export"
+# define BI_PWD "pwd"
+# define BI_UNSET "unset"
 
 # define NB_BUFFER 10
 

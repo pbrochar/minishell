@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 12:06:44 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 13:01:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,19 @@
 
 int search_command(t_master *msh, char **arg)
 {
-	DIR *directory;
-	struct dirent *files;
-	int	i;
+	DIR				*directory;
+	struct dirent	*files;
+	int				i;
 
 	i = 0;
 	while (msh->path[i])
 	{
 		directory = opendir(msh->path[i]);
-		if (directory == NULL)
+		while (msh->path[i] && directory == NULL)
+		{
 			i++;
+			directory = opendir(msh->path[i]);
+		}
 		files = readdir(directory);
 		while (files != NULL)
 		{
@@ -41,13 +44,27 @@ int search_command(t_master *msh, char **arg)
 	return (-1);
 }
 
-int	add_path_exec_command(t_master *msh, char **arg)
+char	*add_path_in_command(t_master *msh, char *name, int path_index)
 {
-	int	i;
-	char *command;
-	size_t command_len;
-	int pid;
+	char	*command;
+	size_t	command_len;
 	
+	command_len = ft_strlen(msh->path[path_index]) + ft_strlen(name) + 2;
+	command = malloc(sizeof(char) * command_len);
+	if (command == NULL)
+		return (NULL);
+	ft_strlcpy(command, msh->path[path_index], command_len);
+	ft_strlcat(command, "/", command_len);
+	ft_strlcat(command, name, command_len);
+	return (command);
+}
+
+int	exec_command(t_master *msh, char **arg)
+{
+	int		i;
+	int		pid;
+	char	*command;
+
 	if (arg[0][0] == '.' || arg[0][0] == '/')
 		command = arg[0];
 	else
@@ -56,13 +73,9 @@ int	add_path_exec_command(t_master *msh, char **arg)
 		if (i == -1)
 		{
 			ft_printf("msh: command not found: %s\n", arg[0]);
-			return (0);
+			return (-1);
 		}
-		command_len = ft_strlen(msh->path[i]) + ft_strlen(arg[0]) + 2;
-		command = malloc(sizeof(char) * command_len);
-		ft_strlcpy(command, msh->path[i], command_len);
-		ft_strlcat(command, "/", command_len);
-		ft_strlcat(command, arg[0], command_len);
+		command = add_path_in_command(msh, arg[0], i);
 	}
 	if (!(pid = fork()))
 		execve(command, arg, msh->envp);

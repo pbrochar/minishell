@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 11:05:16 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 14:06:54 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,61 +37,62 @@ int	is_new_line(char *buf, int ret)
 	return (-1);
 }
 
-int	execute_line(t_master *msh)
+int	is_built_in(t_master *msh, char *name)
 {
-//	char *toto[] = {"/bin/ls", "--color=tty", NULL};
-	char **arg = NULL;
-	arg = ft_split(msh->line, ' ');
-	update_prompt_values(msh);
-	if (msh->line_len == 0)
+	int	i;
+
+	i = 0;
+	while (msh->built_in->built_in_list[i])
 	{
-		write(1, "\n", 1);
-		print_prompt(msh);
-		return (0);
+		if (ft_strcmp(name, msh->built_in->built_in_list[i]) == 0)
+			return (i);
+		i++;
 	}
-	write(1, "\n", 1);
-	if (ft_strncmp(msh->line, "cd", 2) == 0)
-		built_in_cd(msh, arg);
-	add_path_exec_command(msh, arg);
-	//int pid;
-/*	if (ft_strncmp(msh->line, "ls", 2) == 0)
-	{
-		if (!(pid = fork()))
-			execve("/bin/ls", toto, msh->envp);
-		else
-			waitpid(pid, NULL, 0);
-	}*/
-	if (ft_strncmp(msh->line, "env", 3) == 0)
-		built_in_env(msh);
-	if (ft_strncmp(msh->line, "pwd", 3) == 0)
-		built_in_pwd(msh);
-	if (ft_strncmp(msh->line, "export", 6) == 0)
-		built_in_export(msh, arg);
-	if (ft_strncmp(msh->line, "unset", 5) == 0)
-		built_in_unset(msh, arg);
-	if (ft_strncmp(msh->line, "echo", 4) == 0)
-		built_in_echo(msh, arg);
-	//waitpid(-1, NULL, 0);*/
-	
-	if (ft_strncmp(msh->line, "exit", 4) == 0)
-		built_in_exit(msh, arg);
-//	write(1, "\n", 1);
-	history_management(msh);
-	print_prompt(msh);
+	return (-1);
+}
+
+void rest_struct_after_exec(t_master *msh, char **arg)
+{
+	int	i;
+
+	i = 0;
 	if (msh->line)
 		free(msh->line);
-	int j = 0;
-	while (arg[j])
-	{
-		free(arg[j]);
-		j++;
-	}
 	if (arg)
+	{
+		while (arg[i])
+		{
+			free(arg[i]);
+			i++;
+		}
 		free(arg);
+	}
 	msh->line = NULL;
 	msh->line_len = 0;
 	msh->nb_line = 0;
-	reset_curs_pos(msh);
+	reset_curs_pos(msh);	
+}
+
+int	execute_line(t_master *msh)
+{
+	char	**arg;
+	int		built_in_i;
+	
+	update_prompt_values(msh);
+	arg = NULL;
+	write(1, "\n", 1);
+	if (msh->line_len != 0)
+	{
+		arg = ft_split(msh->line, ' ');
+		built_in_i = is_built_in(msh, arg[0]);
+		if (built_in_i != -1)
+			msh->built_in->built_in_fct[built_in_i](msh, arg);
+		else
+			exec_command(msh, arg);
+		history_management(msh);
+	}
+	print_prompt(msh);
+	rest_struct_after_exec(msh, arg);
 	return (0);
 }
 

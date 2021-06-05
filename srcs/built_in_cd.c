@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:00:22 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 14:18:18 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	update_pwd(t_master *msh, char *new_dir)
 		i++;
 	ft_strlcpy(pwd, "PWD=", 5);
 	ft_strcat(pwd, new_dir);
+	free(msh->envp[i]);
 	msh->envp[i] = pwd;
 }
 
@@ -42,6 +43,7 @@ static void	update_old_pwd(t_master *msh, char *old_dir)
 		i++;
 	ft_strlcpy(old_pwd, "OLDPWD=", 8);
 	ft_strcat(old_pwd, old_dir);
+	free(msh->envp[i]);
 	msh->envp[i] = old_pwd;
 }
 

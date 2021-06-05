@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   select_mode.h                                      :+:      :+:    :+:   */
+/*   msh_select_mode.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 19:53:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/17 19:56:25 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 17:36:54 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SELECT_MODE_H
-# define SELECT_MODE_H
+#ifndef MSH_SELECT_MODE_H
+# define MSH_SELECT_MODE_H
 
 # include "msh_structs.h"
 

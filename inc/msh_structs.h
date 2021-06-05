@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 10:44:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 13:46:23 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,18 @@ typedef struct	s_select
 	t_curs_pos	*end;
 }				t_select;
 
+typedef	struct	s_built_in
+{
+	char	*built_in_list[NB_BUILT_IN];
+	int		(*built_in_fct[NB_BUILT_IN])(t_master *, char **);
+}				t_built_in;
+
 typedef struct	s_master
 {
 	t_curs_pos	*curs_pos;
 	t_curs_pos	*save_curs_pos;
 	t_select	*select;
+	t_built_in	*built_in;
 	int			prompt_len;
 	int			line_len;
 	int			nb_line;

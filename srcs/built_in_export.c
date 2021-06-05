@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:39:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:03:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 14:28:03 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ static int	realloc_env(t_master *msh, char *new_var)
 		free(msh->envp[i]);
 		i++;
 	}
+	free(msh->envp);
 	new_env[size - 2] = ft_strdup(new_var);
-	new_env[size - 1] = 0;
+	new_env[size - 1] = NULL;
 	msh->envp = new_env;
 	return (0);
 }

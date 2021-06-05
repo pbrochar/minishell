@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in_pwd.c                                     :+:      :+:    :+:   */
+/*   msh_curs_pos.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/26 20:27:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 13:40:30 by pbrochar         ###   ########.fr       */
+/*   Created: 2021/06/05 17:34:40 by pbrochar          #+#    #+#             */
+/*   Updated: 2021/06/05 17:36:27 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef MSH_CURS_POS_H
+# define MSH_CURS_POS_H
 
-int	built_in_pwd(t_master *msh, char **arg)
-{
-	int	i;
-	int	j;
+# include "msh_structs.h"
 
-	(void)arg;
-	i = 0;
-	j = 0;
-	while (msh->envp[i] && ft_strncmp(msh->envp[i], "PWD", 3))
-		i++;
-	while (msh->envp[i][j] != '=')
-		j++;
-	ft_printf("%s\n", &msh->envp[i][++j]);
-	return (0);
-}
+/*
+** from srcs/set_curs_pos.c
+*/
+void		dec_curs_pos(t_master *msh);
+void		inc_curs_pos(t_master *msh);
+void		reset_curs_pos(t_master *msh);
+void		set_alt_curs_pos(t_master *msh, t_curs_pos *pos, int abs);
+void		set_curs_pos(t_master *msh, int abs);
+
+#endif
