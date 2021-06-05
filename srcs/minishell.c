@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/04 18:32:04 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 11:05:16 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	is_new_line(char *buf, int ret)
 
 int	execute_line(t_master *msh)
 {
-	char *toto[] = {"/bin/ls", "--color=tty", NULL};
+//	char *toto[] = {"/bin/ls", "--color=tty", NULL};
 	char **arg = NULL;
 	arg = ft_split(msh->line, ' ');
 	update_prompt_values(msh);
@@ -52,14 +52,15 @@ int	execute_line(t_master *msh)
 	write(1, "\n", 1);
 	if (ft_strncmp(msh->line, "cd", 2) == 0)
 		built_in_cd(msh, arg);
-	int pid_ls;
-	if (ft_strncmp(msh->line, "ls", 2) == 0)
+	add_path_exec_command(msh, arg);
+	//int pid;
+/*	if (ft_strncmp(msh->line, "ls", 2) == 0)
 	{
-		if (!(pid_ls = fork()))
+		if (!(pid = fork()))
 			execve("/bin/ls", toto, msh->envp);
 		else
-			waitpid(pid_ls, NULL, 0);
-	}
+			waitpid(pid, NULL, 0);
+	}*/
 	if (ft_strncmp(msh->line, "env", 3) == 0)
 		built_in_env(msh);
 	if (ft_strncmp(msh->line, "pwd", 3) == 0)

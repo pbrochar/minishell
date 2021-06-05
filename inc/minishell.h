@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:32:00 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 11:04:21 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,7 @@ int	built_in_exit(t_master *msh, char **arg);
 
 void	update_prompt_values(t_master *msh);
 void	print_prompt(t_master *msh);
+
+int	add_path_exec_command(t_master *msh, char **arg);
 
 #endif

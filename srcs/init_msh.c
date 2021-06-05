@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/04 18:29:36 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 10:53:15 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,19 @@ static void init_envp(t_master **msh, char **env)
 	(*msh)->envp[size - 1] = 0;
 }
 
+static void	init_path(t_master **msh)
+{
+	int	i;
+	char *temp;
+
+	i = 0;
+	while (ft_strncmp((*msh)->envp[i], "PATH=", 5) != 0)
+		i++;
+	temp = ft_strchr((*msh)->envp[i], '=');
+	i = 1;
+	(*msh)->path = ft_split(&temp[i], ':');
+}
+
 int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 {
 	*msh_m = malloc(sizeof(t_master));
@@ -213,5 +226,6 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->history = NULL;
 	(*msh_m)->clipboard = NULL;
 	init_buffer(msh_m);
+	init_path(msh_m);
 	return (0);
 }
