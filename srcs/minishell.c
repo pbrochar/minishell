@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 14:06:54 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 17:59:31 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void add_in_line(t_master *msh, char c)
 		i--;
 	}
 	msh->line[msh->curs_pos->curs_pos_rel] = c;
-	msh->line[msh->line_len] = '\0';
+	msh->line[msh->line_len + 1] = '\0';
 }
 
 void	update_line_front(t_master *msh)
@@ -151,7 +151,7 @@ int print_char_management(t_master *msh, char *buf)
 	if (msh->curs_pos->curs_pos_rel < msh->line_len)
 	{
 		tputs(msh->term->ipt_mode, 1, ft_putchar);
-		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 1);
+		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 2);
 		add_in_line(msh, buf[0]);
 		msh->line_len++;
 		update_line_front(msh);

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:31:14 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 17:31:45 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 17:48:23 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_history(t_master *msh)
 {
-	t_list *temp;
-	
+	t_list	*temp;
+
 	while (msh->history != NULL)
 	{
 		if (msh->history->content)
