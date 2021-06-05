@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 13:01:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/05 18:15:34 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	exec_command(t_master *msh, char **arg)
 		}
 		command = add_path_in_command(msh, arg[0], i);
 	}
+	tcsetattr(0, TCSANOW, &(msh->term->backup));
 	if (!(pid = fork()))
 		execve(command, arg, msh->envp);
 	else
@@ -84,5 +85,7 @@ int	exec_command(t_master *msh, char **arg)
 		waitpid(pid, NULL, 0);
 		free(command);
 	}
+	if (tcsetattr(0, TCSANOW, &msh->term->term) == -1)
+		return (-1);
 	return (0);
 }
