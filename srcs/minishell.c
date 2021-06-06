@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 17:59:31 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/06 14:31:12 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	execute_line(t_master *msh)
 	write(1, "\n", 1);
 	if (msh->line_len != 0)
 	{
+		msh_split_command(msh->line, msh->line_len);
 		arg = ft_split(msh->line, ' ');
 		built_in_i = is_built_in(msh, arg[0]);
 		if (built_in_i != -1)
