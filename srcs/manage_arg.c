@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/07 18:11:16 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/07 18:13:48 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,9 @@ char **manage_arg(t_master *msh, char **arg)
 	while (arg[i])
 	{
 		if (arg[i][0] == 34)
-			manage_double_quote(msh, arg, i);
+		{
+			arg[i] = manage_dollar(msh, arg[i]);
+		}	//manage_double_quote(msh, arg, i);
 		else if (arg[i][0] == 39)
 			manage_single_quote(arg, i);
 		else
