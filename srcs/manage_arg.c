@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/07 16:46:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/07 18:11:16 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char *find_in_env(t_master *msh, char *var)
 	char	buf[4096];
 
 	i = 1;
-	while (var[i] && (var[i] != 32 && var[i] != '$'))
+	while (var[i] && ft_isalnum(var[i]))
 		i++;
 	ft_strlcpy(buf, &var[1], i);
 	size = ft_strlen(buf);
@@ -74,7 +74,7 @@ int	len_without_var(char *line)
 	{
 		if (line[i] == '$')
 		{
-			while (line[i] && line[i] != 32)
+			while (line[i] && ft_isalnum(line[i]))
 				i++;
 			if (!line[i])
 				return (count);
@@ -109,32 +109,57 @@ int	len_all_var_in_line(t_master *msh, char *line)
 char	*manage_dollar(t_master *msh, char *arg)
 {
 	int	i;
+	int j;
 	int	size;
 	char	*new_line;
 	char *temp;
 	
 	i = 0;
-	size = len_without_var(arg) + len_all_var_in_line(msh, arg) + 1;
+	j = 0;
+	size = len_without_var(arg) + 1;
 	new_line = malloc(sizeof(char) * size);
 	if (new_line == NULL)
 		return (NULL);
-	while(new_line[i])
+	ft_bzero(new_line, size);
+	while(arg[i])
+	{
+		if (arg[i] == '$')
+		{
+			i++;
+			while (arg[i] && ft_isalnum(arg[i]))
+				i++;
+			if (!arg[i])
+				break ;
+		}
+		else
+		{
+			new_line[j] = arg[i];
+			i++;
+			j++;
+		}
+	}
+	i = 0;
+	j = 0;
+	int a = 0;
+	while (arg[i])
 	{
 		if (arg[i] == '$')
 		{
 			temp = find_in_env(msh, &arg[i]);
 			if (temp)
-				new_line = ft_strdup(temp);
-			while(arg[i] && arg[i] != '$')
+			{
 				i++;
-			if (!arg[i])
-				return (new_line);
+				a = ft_strlen(temp);
+				temp = ft_strinstr(new_line, temp, j);
+				free(new_line);
+				new_line = temp;
+				j += a - 1;
+				while(arg[i + 1] && ft_isalnum(arg[i + 1]))
+					i++;
+			}
 		}
-		else
-		{
-			new_line[i] = arg[i];
-			i++;
-		}
+		i++;
+		j++;
 	}
 	return (new_line);
 }
