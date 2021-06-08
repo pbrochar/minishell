@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/06 15:53:22 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/08 15:16:40 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,8 @@ void	print_prompt(t_master *msh);
 int	exec_command(t_master *msh, char **arg);
 char **msh_split_command(char *command, int op_pos);
 char **manage_arg(t_master *msh, char **arg);
+
+char *find_in_env(t_master *msh, char *var);
+char	*env_value(char *env_var);
+char	*manage_env_variable(t_master *msh, char *arg);
 #endif
