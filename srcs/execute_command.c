@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/09 16:43:57 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/15 17:25:08 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	exec_command(t_master *msh, char **arg)
 	char	*command;
 
 	if (arg[0][0] == '.' || arg[0][0] == '/')
-		command = arg[0];
+		command = ft_strdup(arg[0]);
 	else
 	{
 		i = search_command(msh, arg);

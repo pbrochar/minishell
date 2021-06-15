@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/15 16:50:30 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/15 17:21:19 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ int	execute_line(t_master *msh)
 		arg = msh_split_command(msh->line, msh->line_len);
 		arg = manage_arg(msh, arg);
 		built_in_i = is_built_in(msh, arg[0]);
+		history_management(msh);
 		if (built_in_i != -1)
 			msh->built_in->built_in_fct[built_in_i](msh, arg);
 		else
 			exec_command(msh, arg);
-		history_management(msh);
 	}
 	print_prompt(msh);
 	rest_struct_after_exec(msh, arg);

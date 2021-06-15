@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 10:38:55 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:08:31 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/15 17:18:57 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	browse_history_back(t_master *msh)
 	if (!msh->history)
 		return ;
 	clear_line_display(msh);
-	free(msh->line);
+	if (msh->line)
+		free(msh->line);
 	msh->line = ft_strdup(msh->pos_in_history->content);
 	msh->line_len = ft_strlen(msh->line);
 	if (msh->pos_in_history->next)
