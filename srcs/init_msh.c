@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 14:16:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/15 16:36:35 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,7 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->prompt = malloc(sizeof(t_prompt));
 	if ((*msh_m)->prompt == NULL)
 		return (-1);
+	(*msh_m)->line = NULL;
 	(*msh_m)->line_len = 0;
 	init_prompt(msh_m);
 	(*msh_m)->curs_pos = malloc(sizeof(t_curs_pos));

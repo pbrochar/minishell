@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:32:48 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 17:32:55 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/09 16:07:32 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ void	free_command_arg(char **arg)
 		return ;
 	while (arg[i])
 	{
-		free(arg[i]);
+		if (arg[i])
+			free(arg[i]);
 		i++;
 	}
-	free(arg);
+	if (arg)
+		free(arg);
 }

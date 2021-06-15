@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:29:58 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 17:30:20 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/09 16:08:11 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	free_buffer(t_master *msh)
 	i = 0;
 	while (i < NB_BUFFER)
 	{
-		free(msh->buffer[i]);
+		if (msh->buffer[i])
+			free(msh->buffer[i]);
 		i++;
 	}
-	free(msh->buffer);
+	if (msh->buffer)
+		free(msh->buffer);
 }

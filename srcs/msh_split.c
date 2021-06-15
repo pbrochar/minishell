@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/06 15:38:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/15 16:54:19 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	**msh_split_command(char *command, int op_pos)
 	if (command_array == NULL)
 		return (NULL);
 	command_array[nb_word] = NULL;
-	while (command[i] && i < op_pos)
+	while (i < op_pos)
 	{
 		command_array[j] = return_word(command, op_pos, &i);
 		j++;

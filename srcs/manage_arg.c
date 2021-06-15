@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/08 15:11:55 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/09 16:06:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char **manage_arg(t_master *msh, char **arg)
 {
 	int	i;
 	
-	i = 1;
+	i = 0;
 	while (arg[i])
 	{
 		if (arg[i][0] == 34)

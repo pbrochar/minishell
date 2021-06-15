@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/06 15:53:30 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/15 16:50:30 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,9 @@ int	is_built_in(t_master *msh, char *name)
 
 void rest_struct_after_exec(t_master *msh, char **arg)
 {
-	int	i;
-
-	i = 0;
 	if (msh->line)
 		free(msh->line);
-	if (arg)
-	{
-		while (arg[i])
-		{
-			free(arg[i]);
-			i++;
-		}
-		free(arg);
-	}
+	free_command_arg(arg);
 	msh->line = NULL;
 	msh->line_len = 0;
 	msh->nb_line = 0;
@@ -152,7 +141,8 @@ int print_char_management(t_master *msh, char *buf)
 	if (msh->curs_pos->curs_pos_rel < msh->line_len)
 	{
 		tputs(msh->term->ipt_mode, 1, ft_putchar);
-		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 2);
+		msh->line = ft_mem_exp(msh->line, sizeof(char) * msh->line_len, \
+			sizeof(char) * msh->line_len + 2);
 		add_in_line(msh, buf[0]);
 		msh->line_len++;
 		update_line_front(msh);
@@ -163,7 +153,8 @@ int print_char_management(t_master *msh, char *buf)
 	else
 	{
 		write(1, buf, 1);
-		msh->line = ft_mem_exp(msh->line, msh->line_len, msh->line_len + 2);
+		msh->line = ft_mem_exp(msh->line, sizeof(char) * msh->line_len, \
+			sizeof(char) * msh->line_len + 2);
 		msh->line_len++;
 		msh->line[msh->line_len - 1] = buf[0];
 		msh->line[msh->line_len] = '\0';
