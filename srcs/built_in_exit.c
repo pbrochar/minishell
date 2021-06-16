@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 18:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 17:45:35 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 15:34:49 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	built_in_exit(t_master *msh, char **arg)
 {
+	(void)arg;
 	tcsetattr(0, TCSANOW, &(msh->term->backup));
-	free_main(msh, arg);
+	free_main(msh);
 	exit(0);
 }

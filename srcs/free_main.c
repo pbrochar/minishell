@@ -6,13 +6,13 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:42:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 17:48:33 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 15:31:06 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_main(t_master *msh, char **arg)
+void	free_main(t_master *msh)
 {
 	if (msh->line)
 		free(msh->line);
@@ -37,5 +37,5 @@ void	free_main(t_master *msh, char **arg)
 	free_env(msh);
 	free_history(msh);
 	free_buffer(msh);
-	free_command_arg(arg);
+	free_command_arg(msh);
 }

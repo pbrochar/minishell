@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 12:55:51 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:52:18 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef struct	s_term
 
 typedef struct	s_command
 {
-	char **command_arg;
+	char	*op;
+	char	**command_arg;
 	void	(*op_fct)(t_master *);
 }				t_command;
 
@@ -95,6 +96,7 @@ typedef struct	s_master
 	int			res_y;
 	t_prompt	*prompt;
 	t_list		*commands;
+	t_list		*save_commands_list;
 	t_list		*history;
 	t_list		*pos_in_history;
 	t_term		*term;

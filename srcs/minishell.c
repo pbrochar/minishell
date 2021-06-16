@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 11:39:37 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 17:05:52 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,39 +51,43 @@ int	is_built_in(t_master *msh, char *name)
 	return (-1);
 }
 
-void rest_struct_after_exec(t_master *msh, char **arg)
+void rest_struct_after_exec(t_master *msh)
 {
 	if (msh->line)
 		free(msh->line);
-	free_command_arg(arg);
+	free_command_arg(msh);
 	msh->line = NULL;
 	msh->line_len = 0;
 	msh->nb_line = 0;
+	msh->commands = NULL;
+	msh->save_commands_list = NULL;
 	reset_curs_pos(msh);	
+}
+
+void	execute_list(t_master *msh)
+{
+	msh->commands = msh->commands->next;
+	while (msh->commands)
+	{
+		((t_command *)msh->commands->content)->op_fct(msh);
+		if (((t_command *)msh->commands->content)->op[0] == '\0')
+			return ;
+		msh->commands = msh->commands->next->next;	
+	}
 }
 
 int	execute_line(t_master *msh)
 {
-	char	**arg;
-	int		built_in_i;
-	
 	update_prompt_values(msh);
-	arg = NULL;
 	write(1, "\n", 1);
 	if (msh->line_len != 0)
 	{
 		msh_split_ops(msh);
-		arg = msh_split_command(msh->line, msh->line_len);
-		arg = manage_arg(msh, arg);
-		built_in_i = is_built_in(msh, arg[0]);
 		history_management(msh);
-		if (built_in_i != -1)
-			msh->built_in->built_in_fct[built_in_i](msh, arg);
-		else
-			exec_command(msh, arg);
+		execute_list(msh);
 	}
 	print_prompt(msh);
-	rest_struct_after_exec(msh, arg);
+	rest_struct_after_exec(msh);
 	return (0);
 }
 

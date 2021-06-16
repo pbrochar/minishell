@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:46:06 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 17:46:15 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 15:31:24 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		free_buffer(t_master *msh);
 /*
 ** from srcs/free_command_arg.c
 */
-void		free_command_arg(char **arg);
+void		free_command_arg(t_master *msh);
 
 /*
 ** from srcs/free_env.c
@@ -38,7 +38,7 @@ void		free_history(t_master *msh);
 /*
 ** from srcs/free_main.c
 */
-void		free_main(t_master *msh, char **arg);
+void		free_main(t_master *msh);
 
 /*
 ** from srcs/free_path.c
