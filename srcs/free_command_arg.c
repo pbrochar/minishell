@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:32:48 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 17:06:42 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 19:31:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_command_arg(t_master *msh)
 		temp = msh->commands;
 		i = 0;
 		arg = ((t_command *)msh->commands->content)->command_arg;
-		if (arg)
+		if (arg != NULL)
 		{
 			while (arg[i])
 			{

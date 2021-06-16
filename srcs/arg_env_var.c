@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:11:24 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/15 16:42:05 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 20:19:26 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int	len_without_var(char *line)
 	count = 0;
 	while (line[i])
 	{
-		if (line[i] == '$' && line[i - 1] != '\\')
+		if ((line[i] == '$' && i == 0) || \
+			(i > 0 && line[i] == '$' && line[i - 1] != '\\'))
 		{
 			i++;
 			while (line[i] && ft_isalnum(line[i]))
@@ -59,7 +60,8 @@ static char	*insert_env_value(t_master *msh, char *new_line, char *arg)
 	a = 0;
 	while (arg[i])
 	{
-		if (arg[i] == '$' && arg[i - 1] != '\\')
+		if ((arg[i] == '$' && i == 0) || \
+			(i > 0 && arg[i] == '$' && arg[i - 1] != '\\'))
 		{
 			temp = find_in_env(msh, &arg[i]);
 			if (temp)
@@ -100,7 +102,8 @@ char	*manage_env_variable(t_master *msh, char *arg)
 	new_line = create_new_line(arg);
 	while (arg[i])
 	{
-		if (arg[i] == '$' && arg[i - 1] != '\\')
+		if ((arg[i] == '$' && i == 0) || \
+			(i > 0 && arg[i] == '$' && arg[i - 1] != '\\'))
 		{
 			i++;
 			while (arg[i] && ft_isalnum(arg[i]))
