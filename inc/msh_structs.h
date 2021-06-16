@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 13:46:23 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 12:55:51 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ typedef struct	s_term
 	char			*vis_curs;
 }				t_term;
 
+
 typedef struct	s_command
 {
-	char *command;
-	char **command_args;
+	char **command_arg;
+	void	(*op_fct)(t_master *);
 }				t_command;
+
 
 typedef struct	s_prompt
 {
@@ -101,6 +103,8 @@ typedef struct	s_master
 	char		**envp;
 	char		**buffer;
 	char		**path;
+	char		*operands[NB_OPERAND];
+	void		(*ops_fct[NB_OPERAND])(t_master *);
 }				t_master;
 
 #endif

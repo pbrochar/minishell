@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/15 16:36:35 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 11:33:47 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,26 @@ static void	init_built_in(t_master **msh)
 	(*msh)->built_in->built_in_fct[7] = NULL;
 }
 
+static void	init_operands(t_master **msh)
+{
+	(*msh)->operands[0] = SEMICOLON;
+	(*msh)->operands[1] = PIPE;
+	(*msh)->operands[2] = CHEVRON_RIGHT;
+	(*msh)->operands[3] = DB_CHEVRON_RIGHT;
+	(*msh)->operands[4] = CHEVRON_LEFT;
+	(*msh)->operands[5] = DB_CHEVRON_LEFT;
+	(*msh)->operands[6] = NULL;
+}
+static void init_operands_fct(t_master **msh)
+{
+	(*msh)->ops_fct[0] = &semicolon_fct;
+	(*msh)->ops_fct[1] = &pipe_fct;
+	(*msh)->ops_fct[2] = &chevron_right_fct;
+	(*msh)->ops_fct[3] = &db_chevron_right_fct;
+	(*msh)->ops_fct[4] = &chevron_left_fct;
+	(*msh)->ops_fct[5] = &db_chevron_left_fct;
+	(*msh)->ops_fct[6] = NULL;
+}
 int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 {
 	*msh_m = malloc(sizeof(t_master));
@@ -252,5 +272,7 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	init_buffer(msh_m);
 	init_path(msh_m);
 	init_built_in(msh_m);
+	init_operands(msh_m);
+	init_operands_fct(msh_m);
 	return (0);
 }

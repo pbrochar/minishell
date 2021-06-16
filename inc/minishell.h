@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/08 15:16:40 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 11:38:47 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,11 @@ char **manage_arg(t_master *msh, char **arg);
 char *find_in_env(t_master *msh, char *var);
 char	*env_value(char *env_var);
 char	*manage_env_variable(t_master *msh, char *arg);
+void semicolon_fct(t_master *msh);
+void pipe_fct(t_master *msh);
+void chevron_right_fct(t_master *msh);
+void db_chevron_right_fct(t_master *msh);
+void chevron_left_fct(t_master *msh);
+void db_chevron_left_fct(t_master *msh);
+void msh_split_ops(t_master *msh);
 #endif

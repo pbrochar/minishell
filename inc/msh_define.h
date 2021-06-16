@@ -6,12 +6,20 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 20:41:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 13:55:22 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 11:57:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINE_MSH_H
 # define DEFINE_MSH_H
+
+# define NB_OPERAND 7
+# define SEMICOLON ";"
+# define PIPE "|"
+# define CHEVRON_RIGHT ">"
+# define DB_CHEVRON_RIGHT ">>"
+# define CHEVRON_LEFT "<"
+# define DB_CHEVRON_LEFT "<<"
 
 # define NB_BUILT_IN 8
 # define BI_CD "cd"
