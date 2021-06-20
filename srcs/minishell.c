@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 17:05:52 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/20 15:37:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	is_built_in(t_master *msh, char *name)
 	int	i;
 
 	i = 0;
+	if (!name)
+		return (-1);
 	while (msh->built_in->built_in_list[i])
 	{
 		if (ft_strcmp(name, msh->built_in->built_in_list[i]) == 0)

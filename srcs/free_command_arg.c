@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:32:48 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 20:30:46 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/20 15:53:11 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ void	free_command_arg(t_master *msh)
 		}
 		if (((t_command *)msh->commands->content)->op != NULL)
 			free(((t_command *)msh->commands->content)->op);
-		free(msh->commands->content);
+		if (msh->commands->content)
+			free(msh->commands->content);
 		msh->commands = msh->commands->next;
-		free(temp);
+		if (temp)
+			free(temp);
 	}
 	free(msh->commands);
 }

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/20 15:24:40 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/20 16:14:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	execute_fct(t_master *msh, char **arg)
 {
 	int built_in_i;
 
+	if (!arg)
+		return ;
 	built_in_i = is_built_in(msh, arg[0]);
 	if (built_in_i != -1)
 		msh->built_in->built_in_fct[built_in_i](msh, arg);
@@ -44,15 +46,16 @@ void chevron_right_fct(t_master *msh)
 
 	if (((t_command *)msh->commands->next->content)->command_arg == NULL)
 	{
-		printf("error\n");
+		printf("Error, need a file name\n");
 		return ;
 	}
 	else
-		fd = open(((t_command *)msh->commands->next->content)->command_arg[0], O_RDWR | O_CREAT, 0777);
+		fd = open(((t_command *)msh->commands->next->content)->command_arg[0], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	save_out = dup(STDOUT_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	execute_fct(msh, ((t_command *)msh->commands->prev->content)->command_arg);
 	dup2(save_out, STDOUT_FILENO);
+	close(save_out);
 	close(fd);
 }
 
