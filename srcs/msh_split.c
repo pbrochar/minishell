@@ -6,35 +6,11 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/20 13:58:56 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/20 14:10:48 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	pass_char(char *command, int *i, int op_pos, int c)
-{
-	(*i)++;
-	while (command[*i] && *i < op_pos && command[*i] != c)
-		(*i)++;
-	(*i)++;
-}
-
-static void	manage_quote(char *command, int *i, int op_pos, int *nb_word)
-{
-	if (command[*i] == 34 && command[*i + 1])
-	{
-		pass_char(command, i, op_pos, 34);
-		(*nb_word)++;
-		return ;
-	}
-	if (command[*i] == 39 && command[*i + 1])
-	{
-		pass_char(command, i, op_pos, 39);
-		(*nb_word)++;
-		return ;
-	}
-}
 
 static int	count_words(char *command, int op_pos)
 {
@@ -51,12 +27,8 @@ static int	count_words(char *command, int op_pos)
 			i++;
 		if (command[i] == 34 || command[i] == 39)
 			manage_quote(command, &i, op_pos, &nb_word);
-		else if (ft_isalnum(command[i]))
-		{
-			nb_word++;
-			while (i < op_pos && command[i] && ft_isalnum(command[i]))
-				i++;	
-		}
+		else
+			manage_word(command, &i, op_pos, &nb_word);
 		if (i >= op_pos || i > len)
 			break ;
 		i++;
