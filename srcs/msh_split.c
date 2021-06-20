@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 19:52:59 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/20 13:58:56 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,25 @@ static int	count_words(char *command, int op_pos)
 {
 	int	i;
 	int	nb_word;
+	int	len;
 
 	i = 0;
 	nb_word = 0;
+	len = ft_strlen(command);
 	while (command[i] && i < op_pos)
 	{
-		while (command[i] && command[i] == 32)
+		while (command[i] && command[i] == 32 && i < op_pos)
 			i++;
 		if (command[i] == 34 || command[i] == 39)
 			manage_quote(command, &i, op_pos, &nb_word);
-		else if (!command[i + 1] || (command[i] == 32 && \
-				command[i + 1] != 32) || (command[i + 1] == 32 && \
-				!command[i + 1]))
+		else if (ft_isalnum(command[i]))
+		{
 			nb_word++;
+			while (i < op_pos && command[i] && ft_isalnum(command[i]))
+				i++;	
+		}
+		if (i >= op_pos || i > len)
+			break ;
 		i++;
 	}
 	if (nb_word == 0)

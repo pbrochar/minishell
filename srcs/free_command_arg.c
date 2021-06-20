@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:32:48 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 19:31:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/16 20:30:46 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	free_command_arg(t_master *msh)
 		{
 			while (arg[i])
 			{
-				free(arg[i]);
+				if (arg[i])
+					free(arg[i]);
 				i++;
 			}
 			free(arg);
