@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 15:38:33 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/20 15:24:40 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,21 @@ void pipe_fct(t_master *msh)
 
 void chevron_right_fct(t_master *msh)
 {
-	(void)msh;
-	printf("chevron right fct\n");
+	int	fd;
+	int	save_out;
+
+	if (((t_command *)msh->commands->next->content)->command_arg == NULL)
+	{
+		printf("error\n");
+		return ;
+	}
+	else
+		fd = open(((t_command *)msh->commands->next->content)->command_arg[0], O_RDWR | O_CREAT, 0777);
+	save_out = dup(STDOUT_FILENO);
+	dup2(fd, STDOUT_FILENO);
+	execute_fct(msh, ((t_command *)msh->commands->prev->content)->command_arg);
+	dup2(save_out, STDOUT_FILENO);
+	close(fd);
 }
 
 void db_chevron_right_fct(t_master *msh)

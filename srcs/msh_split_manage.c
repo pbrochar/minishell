@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 14:04:59 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/20 14:09:28 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/20 14:12:41 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,3 @@ void	manage_word(char *command, int *i, int op_pos, int *nb_word)
 	while (*i < op_pos && command[*i] && command[*i] != 32)
 		(*i)++;
 }
-

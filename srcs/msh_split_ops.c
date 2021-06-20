@@ -6,13 +6,13 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 19:34:06 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/06/20 14:17:19 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int is_operand(char *op)
+static int	is_operand(char *op)
 {
 	int	i;
 
@@ -38,9 +38,9 @@ static int is_operand(char *op)
 	return (-1);
 }
 
-static int fill_list_command(t_master *msh, int a, int i)
+static int	fill_list_command(t_master *msh, int a, int i)
 {
-	t_command *new_command;
+	t_command	*new_command;
 
 	new_command = malloc(sizeof(t_command));
 	if (new_command == NULL)
@@ -53,9 +53,9 @@ static int fill_list_command(t_master *msh, int a, int i)
 	return (0);
 }
 
-static int fill_list_op(t_master *msh, int ret)
+static int	fill_list_op(t_master *msh, int ret)
 {
-	t_command *new_op;
+	t_command	*new_op;
 
 	new_op = malloc(sizeof(t_command));
 	if (new_op == NULL)
@@ -67,10 +67,10 @@ static int fill_list_op(t_master *msh, int ret)
 	return (0);
 }
 
-static int fill_end_list(t_master *msh)
+static int	fill_end_list(t_master *msh)
 {
-	t_command *end_op;
-	
+	t_command	*end_op;
+
 	end_op = malloc(sizeof(t_command));
 	if (end_op == NULL)
 		return (-1);
@@ -81,18 +81,29 @@ static int fill_end_list(t_master *msh)
 	return (0);
 }
 
-static void pass_quote(t_master *msh, int *i, int c)
+static void	pass_quote(t_master *msh, int *i)
 {
-	(*i)++;
-	while (msh->line[*i] && msh->line[*i] != c)
+	if (msh->line[*i] == 39)
+	{
 		(*i)++;
+		while (msh->line[*i] && msh->line[*i] != 39)
+			(*i)++;
+		return ;
+	}
+	else if (msh->line[*i] == 34)
+	{
+		(*i)++;
+		while (msh->line[*i] && msh->line[*i] != 34)
+			(*i)++;
+		return ;
+	}
 }
 
-void msh_split_ops(t_master *msh)
+void	msh_split_ops(t_master *msh)
 {
 	int	i;
-	int a;
-	int ret;
+	int	a;
+	int	ret;
 
 	i = 0;
 	a = 0;
@@ -104,10 +115,8 @@ void msh_split_ops(t_master *msh)
 			ret = is_operand(&msh->line[i]);
 			if (ret != -1)
 				break ;
-			if (msh->line[i] == 34)
-				pass_quote(msh, &i, 34);
-			if (msh->line[i] == 39)
-				pass_quote(msh, &i, 39);
+			if (msh->line[i] == 34 || msh->line[i] == 39)
+				pass_quote(msh, &i);
 			i++;
 		}
 		if (ret != -1 || !msh->line[i])
