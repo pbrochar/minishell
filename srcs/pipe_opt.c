@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 17:02:50 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/06 17:32:59 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/06 17:51:16 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int parse_pipes(t_master *msh)
 	return (pipes);
 }
 
-void	manage_child_old_fd(int i, int old_fd[2])
+void	manage_child_fd(int i, int old_fd[2], int new_fd[2], int pipe_count)
 {
 	if (i > 0)
 	{
@@ -71,9 +71,6 @@ void	manage_child_old_fd(int i, int old_fd[2])
 		close(old_fd[0]);
 		close(old_fd[1]);
 	}
-}
-void	manage_child_new_fd(int i, int new_fd[2], int pipe_count)
-{
 	if (i < (pipe_count - 1))
 	{
 		close(new_fd[0]);
@@ -100,13 +97,12 @@ void	pipe_fct(t_master *msh)
 {
 	int	old_fd[2];
 	int	new_fd[2];
-	t_list *temp;
-	int pid;
-	int i;
+	int	pid;
+	int	i;
+	int	pipe_count;
+	
+	pipe_count = parse_pipes(msh);
 	i = 0;
-	int pipe_count = parse_pipes(msh);
-
-	temp = msh->commands;
 	tcsetattr(0, TCSANOW, &(msh->term->backup));
 	while (i < pipe_count)
 	{
@@ -115,22 +111,18 @@ void	pipe_fct(t_master *msh)
 		pid = fork();
 		if (!pid)
 		{
-			manage_child_old_fd(i, old_fd);
-			manage_child_new_fd(i, new_fd, pipe_count);
-			//execve(((t_command *)temp->prev->content)->command_arg[0], \
-			//	((t_command *)temp->prev->content)->command_arg, msh->envp);	
-			execute_fct_pipe(msh, ((t_command *)temp->prev->content)->command_arg);
+			manage_child_fd(i, old_fd, new_fd, pipe_count);
+			execute_fct_pipe(msh, ((t_command *)msh->commands->prev->content)\
+									->command_arg);
 		}
 		else
 		{
 			manage_parent_fd(old_fd, new_fd, i, pipe_count);
 			waitpid(pid, NULL, 0);
-			i++;
-			if (i < pipe_count) 
-				temp = temp->next->next;
+			if (++i < pipe_count) 
+				msh->commands = msh->commands->next->next;
 		}
 	}
-	msh->commands = temp;
 	close(old_fd[0]);
 	close(old_fd[1]);
 	tcsetattr(0, TCSANOW, &msh->term->term);

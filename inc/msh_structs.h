@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 16:52:18 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/06 19:06:57 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ typedef struct	s_master
 	char		**path;
 	char		*operands[NB_OPERAND];
 	void		(*ops_fct[NB_OPERAND])(t_master *);
+	int			return_value;
 }				t_master;
 
 #endif

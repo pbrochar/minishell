@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 12:28:56 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 11:33:47 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/06 19:00:16 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,6 +269,7 @@ int		init_msh_master_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->commands = NULL;
 	(*msh_m)->history = NULL;
 	(*msh_m)->clipboard = NULL;
+	(*msh_m)->return_value = 0;
 	init_buffer(msh_m);
 	init_path(msh_m);
 	init_built_in(msh_m);

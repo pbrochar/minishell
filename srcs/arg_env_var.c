@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:11:24 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 20:19:26 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/06 19:22:10 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	*manage_env_variable(t_master *msh, char *arg)
 			(i > 0 && arg[i] == '$' && arg[i - 1] != '\\'))
 		{
 			i++;
-			while (arg[i] && ft_isalnum(arg[i]))
+			while (arg[i] && (ft_isalnum(arg[i]) || arg[i] == '?'))
 				i++;
 		}
 		else
