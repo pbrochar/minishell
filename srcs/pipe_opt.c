@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 17:02:50 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/06 17:51:16 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/06 19:23:47 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	pipe_fct(t_master *msh)
 	int	pid;
 	int	i;
 	int	pipe_count;
+	int return_value;
 	
 	pipe_count = parse_pipes(msh);
 	i = 0;
@@ -118,7 +119,9 @@ void	pipe_fct(t_master *msh)
 		else
 		{
 			manage_parent_fd(old_fd, new_fd, i, pipe_count);
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &return_value, 0);
+			if (WIFEXITED(return_value))
+            	msh->return_value = WEXITSTATUS(return_value);
 			if (++i < pipe_count) 
 				msh->commands = msh->commands->next->next;
 		}
