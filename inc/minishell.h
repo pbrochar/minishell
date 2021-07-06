@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/20 14:06:16 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/06 17:33:41 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ int	is_built_in(t_master *msh, char *name);
 void	manage_word(char *command, int *i, int op_pos, int *nb_word);
 void	manage_quote(char *command, int *i, int op_pos, int *nb_word);
 void	pass_char(char *command, int *i, int op_pos, int c);
+char	*add_path_in_command(t_master *msh, char *name, int path_index);
+int search_command(t_master *msh, char **arg);
 
 #endif
