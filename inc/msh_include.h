@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:40:10 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 17:40:42 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:03:52 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@
 # include "msh_curs_pos.h"
 # include "msh_free.h"
 # include "msh_built_in.h"
+# include "msh_opt.h"
 
 #endif

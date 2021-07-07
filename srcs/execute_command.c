@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 13:29:21 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:05:09 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,6 @@ static int	manage_command(t_master *msh, char **arg, char **command)
 	}
 	*command = add_path_in_command(msh, arg[0], i);
 	return (0);
-}
-
-static void	parent_wait_pid(t_master *msh)
-{
-	int	return_value;
-
-	waitpid(msh->pid, &return_value, 0);
-	if (WIFEXITED(return_value))
-		msh->return_value = WEXITSTATUS(return_value);
 }
 
 int	exec_command(t_master *msh, char **arg)
