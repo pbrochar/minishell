@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 17:02:50 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/06 19:23:47 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:08:28 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ int	exec_command_pipe(t_master *msh, char **arg)
 	return (0);
 }
 
-void	execute_fct_pipe(t_master *msh, char **arg)
+void	execute_fct_pipe(t_master *msh)
 {
-	int built_in_i;
+	int		built_in_i;
+	char	**arg;
 
+	arg = ((t_command *)msh->commands->prev->content)->command_arg;
 	if (!arg)
 		return ;
 	built_in_i = is_built_in(msh, arg[0]);
@@ -48,7 +50,7 @@ void	execute_fct_pipe(t_master *msh, char **arg)
 		exec_command_pipe(msh, arg);
 }
 
-static int parse_pipes(t_master *msh)
+static int	parse_pipes(t_master *msh)
 {
 	int		pipes;
 	t_list	*temp;
@@ -93,40 +95,54 @@ void	manage_parent_fd(int old_fd[2], int new_fd[2], int i, int pipe_count)
 	}
 }
 
+void	parent_wait_pid(t_master *msh)
+{
+	int	return_value;
+
+	waitpid(msh->pid, &return_value, 0);
+	if (WIFEXITED(return_value))
+		msh->return_value = WEXITSTATUS(return_value);
+}
+
+void	init_pipe_fct(t_master *msh, int *pipe_count, int *i)
+{
+	*pipe_count = parse_pipes(msh);
+	*i = 0;
+	tcsetattr(0, TCSANOW, &(msh->term->backup));
+}
+
+void	rest_pipe_fct(t_master *msh, int old_fd[2])
+{
+	close(old_fd[0]);
+	close(old_fd[1]);
+	tcsetattr(0, TCSANOW, &msh->term->term);
+}
+
 void	pipe_fct(t_master *msh)
 {
 	int	old_fd[2];
 	int	new_fd[2];
-	int	pid;
 	int	i;
 	int	pipe_count;
-	int return_value;
-	
-	pipe_count = parse_pipes(msh);
-	i = 0;
-	tcsetattr(0, TCSANOW, &(msh->term->backup));
+
+	init_pipe_fct(msh, &pipe_count, &i);
 	while (i < pipe_count)
 	{
 		if (i < (pipe_count - 1))
 			pipe(new_fd);
-		pid = fork();
-		if (!pid)
+		msh->pid = fork();
+		if (!msh->pid)
 		{
 			manage_child_fd(i, old_fd, new_fd, pipe_count);
-			execute_fct_pipe(msh, ((t_command *)msh->commands->prev->content)\
-									->command_arg);
+			execute_fct_pipe(msh);
 		}
 		else
 		{
 			manage_parent_fd(old_fd, new_fd, i, pipe_count);
-			waitpid(pid, &return_value, 0);
-			if (WIFEXITED(return_value))
-            	msh->return_value = WEXITSTATUS(return_value);
-			if (++i < pipe_count) 
+			parent_wait_pid(msh);
+			if (++i < pipe_count)
 				msh->commands = msh->commands->next->next;
 		}
 	}
-	close(old_fd[0]);
-	close(old_fd[1]);
-	tcsetattr(0, TCSANOW, &msh->term->term);
+	rest_pipe_fct(msh, old_fd);
 }

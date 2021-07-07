@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/06 19:01:11 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:10:13 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ char	*add_path_in_command(t_master *msh, char *name, int path_index)
 int	exec_command(t_master *msh, char **arg)
 {
 	int		i;
-	int		pid;
 	char	*command;
 	int		return_value;
 
@@ -81,11 +80,12 @@ int	exec_command(t_master *msh, char **arg)
 		command = add_path_in_command(msh, arg[0], i);
 	}
 	tcsetattr(0, TCSANOW, &(msh->term->backup));
-	if (!(pid = fork()))
+	msh->pid = fork();
+	if (!msh->pid)
 		execve(command, arg, msh->envp);
 	else
 	{
-		waitpid(pid, &return_value, 0);
+		waitpid(msh->pid, &return_value, 0);
 		if (WIFEXITED(return_value))
             msh->return_value = WEXITSTATUS(return_value);
 		free(command);
