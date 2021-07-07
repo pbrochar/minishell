@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 19:07:48 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 19:34:41 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,6 @@ void chevron_right_fct(t_master *msh)
 	msh->commands = msh->commands->prev;
 	lst_del_one(msh->commands->next);
 	lst_del_one(msh->commands->next);
-/*	save_out = dup(STDOUT_FILENO);
-	dup2(fd, STDOUT_FILENO);
-	execute_fct(msh, ((t_command *)msh->commands->prev->content)->command_arg);
-	dup2(save_out, STDOUT_FILENO);
-	close(save_out);
-	close(fd);*/
 }
 
 void db_chevron_right_fct(t_master *msh)
@@ -82,7 +76,6 @@ void db_chevron_right_fct(t_master *msh)
 void chevron_left_fct(t_master *msh)
 {
 	int	fd;
-	int	save_out;
 
 	if (((t_command *)msh->commands->next->content)->command_arg == NULL)
 	{
@@ -90,13 +83,11 @@ void chevron_left_fct(t_master *msh)
 		return ;
 	}
 	else
-		fd = open(((t_command *)msh->commands->next->content)->command_arg[0], O_RDWR | O_CREAT | O_APPEND, 0644);
-	save_out = dup(STDIN_FILENO);
-	dup2(fd, STDIN_FILENO);
-	execute_fct(msh, ((t_command *)msh->commands->prev->content)->command_arg);
-	dup2(save_out, STDIN_FILENO);
-	close(save_out);
-	close(fd);
+		fd = open(((t_command *)msh->commands->next->content)->command_arg[0], O_RDONLY);
+	((t_command *)msh->commands->prev->content)->std_in = fd;
+	msh->commands = msh->commands->prev;
+	lst_del_one(msh->commands->next);
+	lst_del_one(msh->commands->next);
 }
 
 void db_chevron_left_fct(t_master *msh)

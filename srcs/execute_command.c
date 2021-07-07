@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 19:06:25 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 19:37:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void setup_fd(t_master *msh, int *old_stdout, int *old_stdin)
 	if (((t_command *)msh->commands->prev->content)->std_in != STDIN_FILENO)
 	{
 		*old_stdin = dup(STDIN_FILENO);
-		dup2(((t_command *)msh->commands->prev->content)->std_in, STDOUT_FILENO);
+		dup2(((t_command *)msh->commands->prev->content)->std_in, STDIN_FILENO);
 	}
 }
 
