@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 16:01:40 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 18:57:22 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,29 @@ void rest_struct_after_exec(t_master *msh)
 	msh->save_commands_list = NULL;
 	reset_curs_pos(msh);	
 }
-
+void	print_list(t_master *msh)
+{
+	t_list *temp;
+	temp = msh->commands;
+	while (temp)
+	{
+		printf("%d\n", ((t_command *)temp->content)->std_out);
+		temp = temp->next;
+	}
+}
 void	execute_list(t_master *msh)
 {
+//	print_list(msh);
 	msh->commands = msh->commands->next;
 	while (msh->commands)
 	{
 		((t_command *)msh->commands->content)->op_fct(msh);
-		if (((t_command *)msh->commands->content)->op[0] == '\0')
+		if (((t_command *)msh->commands->content)->op != NULL && \
+			((t_command *)msh->commands->content)->op[0] == '\0')
 			return ;
-		msh->commands = msh->commands->next->next;	
+		msh->commands = msh->commands->next;
+		while (((t_command *)msh->commands->content)->op == NULL)
+			msh->commands = msh->commands->next;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 14:05:09 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 19:06:25 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,36 @@ static int	manage_command(t_master *msh, char **arg, char **command)
 	}
 	*command = add_path_in_command(msh, arg[0], i);
 	return (0);
+}
+
+void setup_fd(t_master *msh, int *old_stdout, int *old_stdin)
+{
+	if (((t_command *)msh->commands->prev->content)->std_out != STDOUT_FILENO)
+	{
+		*old_stdout = dup(STDOUT_FILENO);
+		dup2(((t_command *)msh->commands->prev->content)->std_out, STDOUT_FILENO);
+	}
+	if (((t_command *)msh->commands->prev->content)->std_in != STDIN_FILENO)
+	{
+		*old_stdin = dup(STDIN_FILENO);
+		dup2(((t_command *)msh->commands->prev->content)->std_in, STDOUT_FILENO);
+	}
+}
+
+void	restore_fd(t_master *msh, int old_stdout, int old_stdin)
+{
+	if (((t_command *)msh->commands->prev->content)->std_out != STDOUT_FILENO)
+	{
+		dup2(old_stdout, STDOUT_FILENO);
+		close(old_stdout);
+		close(((t_command *)msh->commands->prev->content)->std_out);
+	}
+	if (((t_command *)msh->commands->prev->content)->std_in != STDIN_FILENO)
+	{
+		dup2(old_stdin, STDIN_FILENO);
+		close(old_stdin);
+		close(((t_command *)msh->commands->prev->content)->std_in);
+	}
 }
 
 int	exec_command(t_master *msh, char **arg)

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 14:35:26 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 18:52:16 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	fill_list_command(t_master *msh, int a, int i)
 		new_command->command_arg = msh_split_command(&msh->line[a], i - a);
 	new_command->op_fct = NULL;
 	new_command->op = NULL;
+	new_command->std_in = STDIN_FILENO;
+	new_command->std_out = STDOUT_FILENO;
 	ft_lstadd_back(&msh->commands, ft_lstnew(new_command));
 	return (0);
 }
@@ -65,6 +67,8 @@ static int	fill_list_op(t_master *msh, int ret)
 	new_op->op_fct = msh->ops_fct[ret];
 	new_op->command_arg = NULL;
 	new_op->op = ft_strdup(msh->operands[ret]);
+	new_op->std_in = STDIN_FILENO;
+	new_op->std_out = STDOUT_FILENO;
 	ft_lstadd_back(&msh->commands, ft_lstnew(new_op));
 	return (0);
 }

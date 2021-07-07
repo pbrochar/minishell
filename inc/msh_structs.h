@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 14:11:59 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 17:30:30 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct	s_command
 	char	*op;
 	char	**command_arg;
 	void	(*op_fct)(t_master *);
+	int		std_in;
+	int		std_out;
 }				t_command;
 
 

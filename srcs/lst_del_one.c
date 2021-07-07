@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   lst_del_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/18 19:09:41 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 17:39:42 by pbrochar         ###   ########.fr       */
+/*   Created: 2021/07/07 17:40:11 by pbrochar          #+#    #+#             */
+/*   Updated: 2021/07/07 17:42:23 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
+void lst_del_one(t_list *lst)
 {
-	del(lst->content);
+	if (lst->prev)
+		lst->prev->next = lst->next;
+	if (lst->next)
+		lst->next->prev = lst->prev;
 	free(lst);
 }

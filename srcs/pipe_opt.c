@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 17:02:50 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 16:50:17 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 17:06:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	pipe_fct(t_master *msh)
 		if (!msh->pid)
 		{
 			manage_child_fd(i, old_fd, new_fd, pipe_count);
-			execute_fct_pipe(msh);
+			if (execute_fct_pipe(msh) == -1)
+				exit(1);
 		}
 		else
 		{
