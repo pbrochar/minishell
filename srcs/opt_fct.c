@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ops_fct.c                                          :+:      :+:    :+:   */
+/*   opt_fct.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/06 17:32:07 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:33:38 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	execute_fct(t_master *msh, char **arg)
 
 	if (!arg)
 		return ;
+	arg = manage_arg(msh, arg);
 	built_in_i = is_built_in(msh, arg[0]);
 	if (built_in_i != -1)
 		msh->built_in->built_in_fct[built_in_i](msh, arg);

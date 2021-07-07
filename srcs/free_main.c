@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:42:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 15:31:06 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:14:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	free_main(t_master *msh)
 		free(msh->select);
 	if (msh->built_in)
 		free(msh->built_in);
+	if (msh->return_value_char)
+		free(msh->return_value_char);
 	free_env(msh);
 	free_history(msh);
 	free_buffer(msh);

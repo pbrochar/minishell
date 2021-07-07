@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 14:00:26 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 14:01:34 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:34:28 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	execute_fct_pipe(t_master *msh)
 	char	**arg;
 
 	arg = ((t_command *)msh->commands->prev->content)->command_arg;
+	arg = manage_arg(msh, arg);
 	if (!arg)
 		return ;
 	built_in_i = is_built_in(msh, arg[0]);

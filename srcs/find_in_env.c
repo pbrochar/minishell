@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:05:34 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/06 22:09:17 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:24:38 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*find_in_env(t_master *msh, char *var)
 	ft_strlcpy(buf, &var[1], i);
 	size = ft_strlen(buf);
 	if (ft_strncmp(buf, "?", size) == 0)
-		return (ft_itoa(msh->return_value)); //LEAKS
+		return (msh->return_value_char);
 	i = 0;
 	while (msh->envp[i])
 	{
