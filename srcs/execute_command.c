@@ -6,43 +6,11 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 13:10:13 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 13:12:44 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <dirent.h>
-
-int search_command(t_master *msh, char **arg)
-{
-	DIR				*directory;
-	struct dirent	*files;
-	int				i;
-
-	i = 0;
-	while (msh->path[i])
-	{
-		directory = opendir(msh->path[i]);
-		while (msh->path[i] && directory == NULL)
-		{
-			i++;
-			directory = opendir(msh->path[i]);
-		}
-		files = readdir(directory);
-		while (files != NULL)
-		{
-			if (ft_strcmp(arg[0], files->d_name) == 0)
-			{
-				closedir(directory);
-				return (i);
-			}
-			files = readdir(directory);
-		}
-		closedir(directory);
-		i++;
-	}
-	return (-1);
-}
 
 char	*add_path_in_command(t_master *msh, char *name, int path_index)
 {
