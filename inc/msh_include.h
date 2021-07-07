@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:40:10 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 14:03:52 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 19:50:16 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/types.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <signal.h>
 # include "msh_structs.h"
 # include "msh_select_mode.h"
 # include "msh_cursor_movements.h"

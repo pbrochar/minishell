@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 18:57:22 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 20:47:41 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,17 +186,30 @@ int print_char_management(t_master *msh, char *buf)
 	return (0);
 }
 
+void	signal_fct(int i)
+{
+	printf("coucou : %d\n", i);
+}
 int	msh_main_loop(t_master *msh_m)
 {
 	char	buf[51];
 	int		ret;
 	int		key_term_v;
 
+	signal(SIGINT, signal_fct);
 	print_prompt(msh_m);
 	while ((ret = read(0, buf, 50)) > 0)
 	{
 		buf[ret] = '\0';
-		if ((key_term_v = key_is_term(msh_m, buf)) != -1)
+		if (buf[0] == 3)
+		{
+			write(1, "^C", 2);
+			write(1, "\n", 1);
+			free(msh_m->line);
+			msh_m->line = NULL;
+			print_prompt(msh_m);
+		}
+		else if ((key_term_v = key_is_term(msh_m, buf)) != -1)
 			msh_m->term->key_fct[key_term_v](msh_m);
 		else if (is_new_line(buf, ret) == 1)
 		{
@@ -205,6 +218,7 @@ int	msh_main_loop(t_master *msh_m)
 		}
 		else if (is_char_to_print(buf, ret) == 1)
 			print_char_management(msh_m, buf);
+		
 		ft_bzero(buf, 50);
 	}
 	return (0);
