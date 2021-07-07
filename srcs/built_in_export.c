@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:39:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 14:28:03 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:50:45 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	built_in_export(t_master *msh, char **arg)
 		if (check_format(arg[i]) == -1)
 		{
 			ft_printf("Bad identifier\n");
+			ret_value(msh, 2);
 			return (-1);
 		}
 		ret = var_already_exist(msh, arg[i]);
@@ -102,5 +103,6 @@ int	built_in_export(t_master *msh, char **arg)
 			realloc_env(msh, arg[i]);
 		i++;
 	}
+	ret_value(msh, 0);
 	return (0);
 }

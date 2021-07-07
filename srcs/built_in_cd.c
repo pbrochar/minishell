@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 14:18:18 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:49:21 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,11 @@ int	built_in_cd(t_master *msh, char **arg)
 	{
 		errnum = errno;
 		printf("cd : %s: %s\n", arg[1], strerror(errnum));
+		ret_value(msh, 2);
 	}
 	else
 		update_dir_env(msh, old_dir);
 	update_prompt_values(msh);
+	ret_value(msh, 0);
 	return (0);
 }

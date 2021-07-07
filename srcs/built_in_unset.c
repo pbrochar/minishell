@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:50:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/05 14:32:57 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:51:14 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ int	built_in_unset(t_master *msh, char **arg)
 		}
 		i++;
 	}
+	ret_value(msh, 0);
 	return (0);
 }
