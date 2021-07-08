@@ -1,42 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   built_in_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 20:34:22 by pbrochar         ###   ########.fr       */
+/*   Created: 2021/07/08 20:24:05 by pbrochar          #+#    #+#             */
+/*   Updated: 2021/07/08 20:24:26 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+int	is_built_in(t_master *msh, char *name)
 {
-	t_term		*term_c;
-	t_master	*msh;
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	msh = NULL;
-	term_c = NULL;
-	if (init_term(&term_c) == -1)
-	{
-		free_main(msh);
+	i = 0;
+	if (!name)
 		return (-1);
-	}
-	if (init_key_terms(&term_c) == -1)
+	while (msh->built_in->built_in_list[i])
 	{
-		free_main(msh);
-		return (-1);
+		if (ft_strcmp(name, msh->built_in->built_in_list[i]) == 0)
+			return (i);
+		i++;
 	}
-	if (init_msh_master_struct(&msh, envp, term_c) == -1)
-	{
-		free_main(msh);
-		return (-1);
-	}
-	msh_main_loop(msh);
-	tcsetattr(0, TCSANOW, &(term_c->backup));
-	return (0);
+	return (-1);
 }

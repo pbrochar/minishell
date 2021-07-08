@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 14:00:26 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 19:05:42 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 20:38:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ static int	exec_command_pipe(t_master *msh, char **arg)
 		i = search_command(msh, arg);
 		if (i == -1)
 		{
-			fprintf(stderr, "msh: command not found: %s\n", arg[0]); //NOT ALLOWED
+			ft_putstr_fd("msh: command not found: ", 2);
+			ft_putstr_fd(arg[0], 2);
+			ft_putchar('\n');
 			return (-1);
 		}
 		command = add_path_in_command(msh, arg[0], i);
@@ -39,8 +41,8 @@ int	execute_fct_pipe(t_master *msh)
 {
 	int		built_in_i;
 	char	**arg;
-	int old_stdout;
-	int	old_stdin;
+	int		old_stdout;
+	int		old_stdin;
 
 	arg = ((t_command *)msh->commands->prev->content)->command_arg;
 	arg = manage_arg(msh, arg);

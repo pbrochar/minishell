@@ -1,0 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
+/*   Updated: 2021/07/08 20:33:23 by pbrochar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+void	execute_list(t_master *msh)
+{
+	msh->commands = msh->commands->next;
+	while (msh->commands)
+	{
+		((t_command *)msh->commands->content)->op_fct(msh);
+		if (((t_command *)msh->commands->content)->op != NULL && \
+			((t_command *)msh->commands->content)->op[0] == '\0')
+			return ;
+		msh->commands = msh->commands->next;
+		while (((t_command *)msh->commands->content)->op == NULL)
+			msh->commands = msh->commands->next;
+	}
+}
+
+void	rest_struct_after_exec(t_master *msh)
+{
+	if (msh->line)
+		free(msh->line);
+	free_command_arg(msh);
+	msh->line = NULL;
+	msh->line_len = 0;
+	msh->nb_line = 0;
+	msh->commands = NULL;
+	msh->save_commands_list = NULL;
+	reset_curs_pos(msh);
+}
+
+int	execute_line(t_master *msh)
+{
+	update_prompt_values(msh);
+	write(1, "\n", 1);
+	if (msh->line_len != 0)
+	{
+		msh_split_ops(msh);
+		history_management(msh);
+		execute_list(msh);
+	}
+	print_prompt(msh);
+	rest_struct_after_exec(msh);
+	return (0);
+}

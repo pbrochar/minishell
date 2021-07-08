@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 20:09:03 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 20:34:48 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,11 @@ int	init_struct(t_master **msh_m);
 int	init_main_struct(t_master **msh_m, char **envp, t_term *term_c);
 void	init_built_in(t_master **msh);
 int	init_term(t_term **term_conf);
+void	execute_list(t_master *msh);
+int	execute_line(t_master *msh);
+int	is_built_in(t_master *msh, char *name);
+int	msh_main_loop(t_master *msh_m);
+int	print_char_management(t_master *msh, char *buf);
+void	add_in_line(t_master *msh, char c);
 
 #endif
