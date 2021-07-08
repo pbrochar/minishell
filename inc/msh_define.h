@@ -6,13 +6,14 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 20:41:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 19:42:01 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 19:58:40 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINE_MSH_H
 # define DEFINE_MSH_H
 
+# define USER "user"
 # define NB_OPERAND 7
 # define SEMICOLON ";"
 # define PIPE "|"

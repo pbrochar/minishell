@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 18:59:36 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 20:09:03 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,17 @@ void	pass_quote(t_master *msh, int *i);
 int	is_operand(char *op);
 void	pass_backspace(char *arg, char *new_line, int *i, int *j);
 int	is_env_var(char *arg, int i);
+int	init_termcaps_values(t_term **key_terms);
+int	init_key_term_select(t_term **key_terms);
+void	init_key_fct_select(t_term **key_terms);
+
+void	init_operands_fct(t_master **msh);
+void	init_operands(t_master **msh);
+
+int	init_select_struct(t_master **msh);
+int	init_struct(t_master **msh_m);
+int	init_main_struct(t_master **msh_m, char **envp, t_term *term_c);
+void	init_built_in(t_master **msh);
+int	init_term(t_term **term_conf);
 
 #endif
