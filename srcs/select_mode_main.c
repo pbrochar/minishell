@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 14:45:01 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:14:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:53:00 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,4 @@ void	leave_select_mode(t_master *msh)
 	msh->select->is_select = 0;
 	print_mode(msh, 'n', TEXT_NORMAL);
 	tputs(msh->term->vis_curs, 1, ft_putchar);
-}
-
-void	manage_page_up(t_master *msh)
-{
-	(void)msh;
-	printf("pg up\n");
-}
-
-void	manage_page_dw(t_master *msh)
-{
-	(void)msh;
-	printf("pg dw\n");
 }

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/06 19:03:42 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:22:37 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	remove_quote(char **arg, int i)
 {
-	int j;
-	char *temp;
+	int		j;
+	char	*temp;
 
 	j = ft_strlen(&arg[i][1]);
 	temp = malloc(sizeof(char) * j);
@@ -26,10 +26,10 @@ void	remove_quote(char **arg, int i)
 	arg[i] = temp;
 }
 
-char **manage_arg(t_master *msh, char **arg)
+char	**manage_arg(t_master *msh, char **arg)
 {
 	int	i;
-	
+
 	i = 0;
 	if (!arg)
 		return (arg);

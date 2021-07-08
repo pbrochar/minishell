@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 19:37:01 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:28:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,13 @@ static int	manage_command(t_master *msh, char **arg, char **command)
 	return (0);
 }
 
-void setup_fd(t_master *msh, int *old_stdout, int *old_stdin)
+void	setup_fd(t_master *msh, int *old_stdout, int *old_stdin)
 {
 	if (((t_command *)msh->commands->prev->content)->std_out != STDOUT_FILENO)
 	{
 		*old_stdout = dup(STDOUT_FILENO);
-		dup2(((t_command *)msh->commands->prev->content)->std_out, STDOUT_FILENO);
+		dup2(((t_command *)msh->commands->prev->content)->std_out, \
+							STDOUT_FILENO);
 	}
 	if (((t_command *)msh->commands->prev->content)->std_in != STDIN_FILENO)
 	{

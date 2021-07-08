@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 17:02:50 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 17:06:55 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:51:42 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ static void	rest_pipe_fct(t_master *msh, int old_fd[2])
 	tcsetattr(0, TCSANOW, &msh->term->term);
 }
 
+static void	pipe_new_fd(int i, int pipe_count, int new_fd[2])
+{
+	if (i < (pipe_count - 1))
+		pipe(new_fd);
+}
+
 void	pipe_fct(t_master *msh)
 {
 	int	old_fd[2];
@@ -51,8 +57,7 @@ void	pipe_fct(t_master *msh)
 	init_pipe_fct(msh, &pipe_count, &i);
 	while (i < pipe_count)
 	{
-		if (i < (pipe_count - 1))
-			pipe(new_fd);
+		pipe_new_fd(i, pipe_count, new_fd);
 		msh->pid = fork();
 		if (!msh->pid)
 		{

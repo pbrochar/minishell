@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 20:47:41 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 19:31:34 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	update_line_front(t_master *msh)
 	mv_curs_end(msh);
 	if (msh->curs_pos->curs_pos_abs % msh->res_x == 0)
 	{
-		tputs(tgetstr("sf", NULL), 1, ft_putchar);
+		tputs(msh->term->scroll_line_up, 1, ft_putchar);
 		msh->nb_line++;
 		n++;
 	}
@@ -147,7 +147,7 @@ void	update_line_front(t_master *msh)
 		mv_curs_abs(msh, 0, msh->curs_pos->curs_pos_abs / msh->res_x);
 		set_curs_pos(msh, msh->curs_pos->curs_pos_abs - (msh->curs_pos->curs_pos_abs % msh->res_x));
 		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
-		tputs(tgetstr("up", NULL), 1, ft_putchar);
+		tputs(msh->term->up_curs, 1, ft_putchar);
 		set_curs_pos(msh, (msh->curs_pos->curs_pos_abs - msh->res_x) + 1);
 		n--;
 	}
@@ -233,7 +233,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	msh = NULL;
 	term_c = NULL;
-	init_term(&term_c);
+	if (init_term(&term_c) == -1)
+		return (-1);
 	init_key_terms(&term_c);
 	init_msh_master_struct(&msh, envp, term_c);
 	msh_main_loop(msh);

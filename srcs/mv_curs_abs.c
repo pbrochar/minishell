@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 21:12:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 17:50:57 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 19:32:04 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	mv_curs_abs(t_master *msh, int x, int y)
 	{
 		while (y < curr_line)
 		{
-			tputs(tgetstr("up", NULL), 1, ft_putchar);
+			tputs(msh->term->up_curs, 1, ft_putchar);
 			y++;
 		}
 	}
@@ -54,9 +54,9 @@ void	mv_curs_abs(t_master *msh, int x, int y)
 	{
 		while (y > curr_line)
 		{
-			tputs(tgetstr("sf", NULL), 1, ft_putchar);
+			tputs(msh->term->scroll_line_up, 1, ft_putchar);
 			y--;
 		}
 	}
-	tputs(tgoto(tgetstr("ch", NULL), 0, x), 1, ft_putchar);
+	tputs(tgoto(msh->term->set_curs_on_line, 0, x), 1, ft_putchar);
 }

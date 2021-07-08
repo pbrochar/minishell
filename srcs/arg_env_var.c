@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:11:24 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/06 19:22:10 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:59:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ static char	*insert_env_value(t_master *msh, char *new_line, char *arg)
 	a = 0;
 	while (arg[i])
 	{
-		if ((arg[i] == '$' && i == 0) || \
-			(i > 0 && arg[i] == '$' && arg[i - 1] != '\\'))
+		if (is_env_var(arg, i))
 		{
 			temp = find_in_env(msh, &arg[i]);
 			if (temp)
@@ -110,13 +109,7 @@ char	*manage_env_variable(t_master *msh, char *arg)
 				i++;
 		}
 		else
-		{
-			if (arg[i] == '\\')
-				i++;
-			new_line[j] = arg[i];
-			i++;
-			j++;
-		}
+			pass_backspace(arg, new_line, &i, &j);
 	}
 	return (insert_env_value(msh, new_line, arg));
 }

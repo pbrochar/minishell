@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 20:56:08 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 17:54:17 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 19:32:37 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	select_all(t_master *msh)
 	}
 	mv_curs_home(msh);
 	set_alt_curs_pos(msh, msh->select->begin, msh->curs_pos->curs_pos_abs);
-	tputs(tgetstr("so", NULL), 1, ft_putchar);
+	tputs(msh->term->standout_enter, 1, ft_putchar);
 	write(1, msh->line, msh->line_len);
-	tputs(tgetstr("se", NULL), 1, ft_putchar);
+	tputs(msh->term->standout_leave, 1, ft_putchar);
 	set_curs_pos(msh, msh->line_len + msh->prompt_len);
 	set_alt_curs_pos(msh, msh->select->end, msh->curs_pos->curs_pos_abs);
 }

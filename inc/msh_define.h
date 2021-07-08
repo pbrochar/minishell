@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 20:41:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/16 11:57:55 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 19:42:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 /*
 ** define for main loop key
 */
-# define NB_KEY 16
+# define NB_KEY 14
 # define A_KEY_LEFT 0
 # define A_KEY_RIGHT 1
 # define A_KEY_UP 2
@@ -49,8 +49,6 @@
 # define A_CTRL_D_A 10
 # define A_CTRL_H_A 11
 # define A_INSERT_A 12
-# define A_KEY_PG_UP 13
-# define A_KEY_PG_DW 14
 
 /*
 ** define for select mode loop

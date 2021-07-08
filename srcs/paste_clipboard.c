@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 19:02:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/02 18:12:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 19:27:44 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	paste_clipboard_management(t_master *msh, int clip_len)
 		tputs(msh->term->ipt_mode, 1, ft_putchar);
 		msh->line_len += clip_len + 1;
 		msh->line = insert_clipboard_in_line(msh);
-		tputs(tgetstr("cd", NULL), 1, ft_putchar);
+		tputs(msh->term->clean_line, 1, ft_putchar);
 		ft_putstr_fd(&msh->line[msh->curs_pos->curs_pos_rel], 1);
 		set_curs_pos(msh, msh->line_len + msh->prompt_len);
 		tputs(msh->term->lve_ipt_mode, 1, ft_putchar);
