@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 19:28:59 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 21:29:19 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "msh_define.h"
 # include "minishell.h"
 
-typedef struct	s_master t_master;
+typedef struct s_master	t_master;
 
 /*
 ** key_term array contains only the keyboard keys that will have a particular 
@@ -28,7 +28,7 @@ typedef struct	s_master t_master;
 ** functions of the keyboard keys as well as the keyboard shortcuts.
 ** It works with the key_term array.
 */
-typedef struct	s_term
+typedef struct s_term
 {
 	struct termios	term;
 	struct termios	backup;
@@ -42,7 +42,7 @@ typedef struct	s_term
 	char			*mv_left;
 	char			*mv_right;
 	char			*ipt_mode;
-	char 			*lve_ipt_mode;
+	char			*lve_ipt_mode;
 	char			*inv_curs;
 	char			*vis_curs;
 	char			*standout_enter;
@@ -52,8 +52,7 @@ typedef struct	s_term
 	char			*set_curs_on_line;
 }				t_term;
 
-
-typedef struct	s_command
+typedef struct s_command
 {
 	char	*op;
 	char	**command_arg;
@@ -62,8 +61,7 @@ typedef struct	s_command
 	int		std_out;
 }				t_command;
 
-
-typedef struct	s_prompt
+typedef struct s_prompt
 {
 	char	*user;
 	char	*dir;
@@ -71,26 +69,26 @@ typedef struct	s_prompt
 	int		dir_len;
 }				t_prompt;
 
-typedef struct	s_curs_pos
+typedef struct s_curs_pos
 {
-	int curs_pos_rel;
-	int curs_pos_abs;	
+	int	curs_pos_rel;
+	int	curs_pos_abs;	
 }				t_curs_pos;
 
-typedef struct	s_select
+typedef struct s_select
 {
 	int			is_select;
 	t_curs_pos	*begin;
 	t_curs_pos	*end;
 }				t_select;
 
-typedef	struct	s_built_in
+typedef struct s_built_in
 {
 	char	*built_in_list[NB_BUILT_IN];
 	int		(*built_in_fct[NB_BUILT_IN])(t_master *, char **);
 }				t_built_in;
 
-typedef struct	s_master
+typedef struct s_master
 {
 	t_curs_pos	*curs_pos;
 	t_curs_pos	*save_curs_pos;

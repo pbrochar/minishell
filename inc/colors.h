@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 18:58:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/05/01 19:42:46 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 21:26:39 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define TEXT_CYAN		"\033[0;36m"
 # define TEXT_NORMAL	"\033[0m"
 
-void ft_putstr_color(const char *str, char *color_term);
-void ft_putchar_color(int c, char *color_term);
+void	ft_putstr_color(const char *str, char *color_term);
+void	ft_putchar_color(int c, char *color_term);
 
 #endif

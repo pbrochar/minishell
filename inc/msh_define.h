@@ -6,12 +6,12 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 20:41:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 19:58:40 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 21:26:59 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_MSH_H
-# define DEFINE_MSH_H
+#ifndef MSH_DEFINE_H
+# define MSH_DEFINE_H
 
 # define USER "user"
 # define NB_OPERAND 7
@@ -68,7 +68,6 @@
 # define S_KEY_X 10
 # define S_KEY_B 11
 # define S_KEY_P 12
-
 
 # define CTRL_LEFT_ARROW "\e[1;5D"
 # define CTRL_RIGHT_ARROW "\e[1;5C"
