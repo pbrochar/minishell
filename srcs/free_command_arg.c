@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:32:48 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 19:41:10 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 21:08:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,32 @@ static void	free_arg(char **arg)
 			free(arg[i]);
 		i++;
 	}
-	free(arg);
+	if (arg)
+		free(arg);
 }
 
 void	free_command_arg(t_master *msh)
 {
-	int		i;
 	char	**arg;
 	t_list	*temp;
 
+	if (msh->save_commands_list == NULL || msh->commands == NULL)
+		return ;
 	msh->commands = msh->save_commands_list;
 	while (msh->commands)
 	{
 		temp = msh->commands;
-		i = 0;
 		arg = ((t_command *)msh->commands->content)->command_arg;
 		if (arg != NULL)
 			free_arg(arg);
 		if (((t_command *)msh->commands->content)->op != NULL)
 			free(((t_command *)msh->commands->content)->op);
-		if (msh->commands->content)
+		if (msh->commands->content != NULL)
 			free(msh->commands->content);
 		msh->commands = msh->commands->next;
 		if (temp)
 			free(temp);
 	}
-	free(msh->commands);
+	if (msh->commands)
+		free(msh->commands);
 }

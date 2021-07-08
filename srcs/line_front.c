@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:27:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 20:34:27 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 20:58:23 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,16 @@ int	print_char_management(t_master *msh, char *buf)
 	return (0);
 }
 
+static void	update_line(t_master *msh)
+{
+	mv_curs_abs(msh, 0, msh->curs_pos->curs_pos_abs / msh->res_x);
+	set_curs_pos(msh, msh->curs_pos->curs_pos_abs - \
+				(msh->curs_pos->curs_pos_abs % msh->res_x));
+	write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
+	tputs(msh->term->up_curs, 1, ft_putchar);
+	set_curs_pos(msh, (msh->curs_pos->curs_pos_abs - msh->res_x) + 1);
+}
+
 void	update_line_front(t_master *msh)
 {
 	int	n;
@@ -64,12 +74,7 @@ void	update_line_front(t_master *msh)
 	}
 	while (n > 0)
 	{
-		mv_curs_abs(msh, 0, msh->curs_pos->curs_pos_abs / msh->res_x);
-		set_curs_pos(msh, msh->curs_pos->curs_pos_abs - \
-					(msh->curs_pos->curs_pos_abs % msh->res_x));
-		write(1, &msh->line[msh->curs_pos->curs_pos_rel], 1);
-		tputs(msh->term->up_curs, 1, ft_putchar);
-		set_curs_pos(msh, (msh->curs_pos->curs_pos_abs - msh->res_x) + 1);
+		update_line(msh);
 		n--;
 	}
 	mv_curs_abs(msh, msh->save_curs_pos->curs_pos_abs % msh->res_x, \

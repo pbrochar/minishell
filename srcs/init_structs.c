@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:01:28 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 20:05:39 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 21:08:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	init_main_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->save_curs_pos->curs_pos_abs = -1;
 	(*msh_m)->save_curs_pos->curs_pos_rel = -1;
 	(*msh_m)->commands = NULL;
+	(*msh_m)->save_commands_list = NULL;
 	(*msh_m)->history = NULL;
 	(*msh_m)->clipboard = NULL;
 	(*msh_m)->return_value = 0;

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 20:33:23 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/08 21:17:08 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,25 @@ void	rest_struct_after_exec(t_master *msh)
 	reset_curs_pos(msh);
 }
 
+static int	str_is_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isspace(str[i]) == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	execute_line(t_master *msh)
 {
 	update_prompt_values(msh);
 	write(1, "\n", 1);
-	if (msh->line_len != 0)
+	if (msh->line_len != 0 && !str_is_space(msh->line))
 	{
 		msh_split_ops(msh);
 		history_management(msh);
