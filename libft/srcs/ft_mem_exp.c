@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 16:05:34 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/09 16:33:50 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 15:17:05 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void	*ft_mem_exp(void *ptr, size_t old_size, size_t new_size)
 		return (NULL);
 	ft_bzero(new_ptr, new_size);
 	if (old_size == 0 || !ptr)
+	{
+		free(ptr);
 		return (new_ptr);
+	}
 	new_ptr = ft_memmove(new_ptr, ptr, old_size);
 	free(ptr);
 	return (new_ptr);
