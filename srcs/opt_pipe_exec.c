@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_opt_exec.c                                    :+:      :+:    :+:   */
+/*   opt_pipe_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 14:00:26 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 20:38:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 20:13:08 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ int	execute_fct_pipe(t_master *msh)
 	char	**arg;
 	int		old_stdout;
 	int		old_stdin;
+	int		ret;
 
+	ret = 0;
 	arg = ((t_command *)msh->commands->prev->content)->command_arg;
 	arg = manage_arg(msh, arg);
 	if (!arg)
@@ -53,7 +55,7 @@ int	execute_fct_pipe(t_master *msh)
 	if (built_in_i != -1)
 		msh->built_in->built_in_fct[built_in_i](msh, arg);
 	else
-		exec_command_pipe(msh, arg);
+		ret = exec_command_pipe(msh, arg);
 	restore_fd(msh, old_stdout, old_stdin);
-	return (0);
+	return (ret);
 }

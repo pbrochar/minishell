@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 17:02:50 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 17:38:52 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 20:14:14 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,15 @@ void	pipe_fct(t_master *msh)
 	{
 		pipe_new_fd(i, pipe_count, new_fd);
 		msh->commmand_running = true;
-		msh->pid = fork();
+		if (strcmp("cd", ((t_command *)msh->commands->prev->content)->command_arg[0]) == 0) // not allowed
+			execute_fct(msh, ((t_command *)msh->commands->prev->content)->command_arg);
+		else
+			msh->pid = fork();
 		if (!msh->pid)
 		{
 			manage_child_fd(i, old_fd, new_fd, pipe_count);
-			if (execute_fct_pipe(msh) == -1)
-				exit(1);
+			execute_fct_pipe(msh);
+			exit(0);
 		}
 		else
 		{

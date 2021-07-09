@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 17:31:46 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 19:15:04 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_command
 	void	(*op_fct)(t_master *);
 	int		std_in;
 	int		std_out;
+	char	*std_in_data;
 }				t_command;
 
 typedef struct s_prompt
