@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:24:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 20:35:16 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 19:01:31 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,32 @@ int	is_char_to_print(char *buf, int ret)
 	return (-1);
 }
 
-void	signal_fct(int i)
+void	sigint_handler(int sig)
 {
-	printf("coucou : %d\n", i);
+	if (g_msh->commmand_running == true)
+	{
+		kill(g_msh->pid, sig);
+		write(1, "\n", 1);
+	}
+	else
+	{
+		write(1, "^C", 2);
+		write(1, "\n", 1);
+		rest_struct_after_exec((t_master *)(g_msh));
+		print_prompt((t_master *)(g_msh));
+	}
+}
+
+void	sigquit_handler(int sig)
+{
+	(void)sig;
+	return ;
+}
+
+void	eot_handler(t_master *msh)
+{
+	write(1, "exit\n", 5);
+	built_in_exit(msh, NULL);
 }
 
 int	msh_main_loop(t_master *msh_m)
@@ -51,20 +74,16 @@ int	msh_main_loop(t_master *msh_m)
 	int		ret;
 	int		key_term_v;
 
-	signal(SIGINT, signal_fct);
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 	print_prompt(msh_m);
+	g_msh = msh_m;
 	ret = read(STDIN_FILENO, buf, 50);
 	while (ret > 0)
 	{
 		buf[ret] = '\0';
-		/*if (buf[0] == 3)
-		{
-			write(1, "^C", 2);
-			write(1, "\n", 1);
-			free(msh_m->line);
-			msh_m->line = NULL;
-			print_prompt(msh_m);
-		}*/
+		if (buf[0] == 4 && msh_m->line_len == 0)
+			eot_handler(msh_m);
 		key_term_v = key_is_term(msh_m, buf);
 		if (key_term_v != -1)
 			msh_m->term->key_fct[key_term_v](msh_m);

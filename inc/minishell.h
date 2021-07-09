@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 21:42:08 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 16:46:52 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "msh_include.h"
+const static t_master *g_msh;
 
 void	paste_clipboard(t_master *msh);
 void	manage_delete_multiline(t_master *msh);
@@ -54,5 +55,5 @@ int		is_built_in(t_master *msh, char *name);
 int		msh_main_loop(t_master *msh_m);
 int		print_char_management(t_master *msh, char *buf);
 void	add_in_line(t_master *msh, char c);
-
+void	rest_struct_after_exec(t_master *msh);
 #endif

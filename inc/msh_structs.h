@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 21:29:19 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 17:31:46 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ typedef struct s_master
 	int			return_value;
 	char		*return_value_char;
 	int			pid;
+	bool		commmand_running;
 }				t_master;
 
 #endif

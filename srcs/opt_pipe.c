@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_opt.c                                         :+:      :+:    :+:   */
+/*   opt_pipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 17:02:50 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 18:51:42 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 17:38:52 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	pipe_fct(t_master *msh)
 	while (i < pipe_count)
 	{
 		pipe_new_fd(i, pipe_count, new_fd);
+		msh->commmand_running = true;
 		msh->pid = fork();
 		if (!msh->pid)
 		{
@@ -69,6 +70,7 @@ void	pipe_fct(t_master *msh)
 		{
 			manage_parent_fd(old_fd, new_fd, i, pipe_count);
 			parent_wait_pid(msh);
+			msh->commmand_running = false;
 			if (++i < pipe_count)
 				msh->commands = msh->commands->next->next;
 		}

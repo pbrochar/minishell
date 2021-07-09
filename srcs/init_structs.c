@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:01:28 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 21:08:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 17:32:26 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	init_main_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->history = NULL;
 	(*msh_m)->clipboard = NULL;
 	(*msh_m)->return_value = 0;
+	(*msh_m)->pid = -1;
+	(*msh_m)->commmand_running = false;
 	(*msh_m)->return_value_char = NULL;
 	(*msh_m)->res_x = tgetnum("co");
 	(*msh_m)->res_y = tgetnum("li");
