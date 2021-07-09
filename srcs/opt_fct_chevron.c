@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 18:53:46 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 18:54:18 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 21:43:48 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,26 @@ void	chevron_left_fct(t_master *msh)
 
 void	db_chevron_left_fct(t_master *msh)
 {
+	int		ret;
+	char	buf[51];
+
 	(void)msh;
-	printf("db chevron left fct\n");
+	write(1, "> ", 2);
+	ret = read(STDIN_FILENO, buf, 50);
+	while (ret > 0)
+	{
+		buf[ret] = '\0';
+		//printf("%d\n", buf[0]);
+		if (buf[0] == 'a')
+			printf("toto\n");
+		else if (ret == 1 && buf[0] == '\n')
+		{
+			write(1, "\n> ", 3);
+		}
+		else if (ft_isalnum(buf[0]) != 0)
+			write(1, buf, 1);
+		ft_bzero(buf, 51);
+		ret = read(STDIN_FILENO, buf, 50);
+		printf("coucou\n");
+	}
 }

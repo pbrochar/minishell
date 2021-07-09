@@ -6,11 +6,24 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 16:49:12 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/09 20:45:51 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	heredoc_parser(t_master *msh)
+{
+	t_list *temp;
+
+	temp = msh->commands;
+	while (temp)
+	{
+		if (((t_command *)temp->content)->op && ft_strcmp(((t_command *)temp->content)->op, "<<") == 0)
+			((t_command *)temp->content)->op_fct(msh);
+		temp = temp->next;
+	}	
+}
 
 void	execute_list(t_master *msh)
 {
@@ -62,6 +75,7 @@ int	execute_line(t_master *msh)
 	{
 		msh_split_ops(msh);
 		history_management(msh);
+		heredoc_parser(msh);
 		execute_list(msh);
 	}
 	print_prompt(msh);
