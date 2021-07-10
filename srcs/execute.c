@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/10 18:40:46 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/10 19:22:53 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,18 @@ void	heredoc_parser(t_master *msh)
 	t_list *temp;
 
 	temp = msh->commands;
-	while (temp)
+	while (msh->commands)
 	{
-		if (((t_command *)temp->content)->op && ft_strcmp(((t_command *)temp->content)->op, "<<") == 0)
-			((t_command *)temp->content)->op_fct(msh);
+		while (((t_command *)msh->commands->content)->op == NULL)
+			msh->commands = msh->commands->next;
+		if (((t_command *)msh->commands->content)->op != NULL && \
+			ft_strcmp(((t_command *)msh->commands->content)->op, "<<") == 0)
+			((t_command *)msh->commands->content)->op_fct(msh);
 		if (msh->sigint_signal == true)
 			break ;
-		temp = temp->next;
-	}	
+		msh->commands = msh->commands->next;
+	}
+	msh->commands = temp;
 }
 
 void	execute_list(t_master *msh)

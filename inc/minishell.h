@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 16:46:52 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/10 18:45:39 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,6 @@ int		msh_main_loop(t_master *msh_m);
 int		print_char_management(t_master *msh, char *buf);
 void	add_in_line(t_master *msh, char c);
 void	rest_struct_after_exec(t_master *msh);
+int		is_char_to_print(char *buf, int ret);
+
 #endif
