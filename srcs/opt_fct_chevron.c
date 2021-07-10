@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 18:53:46 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 21:43:48 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/10 18:26:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	db_chevron_left_fct(t_master *msh)
 	int		ret;
 	char	buf[51];
 
-	(void)msh;
+	msh->heredoc_running = true;
 	write(1, "> ", 2);
 	ret = read(STDIN_FILENO, buf, 50);
 	while (ret > 0)
@@ -88,6 +88,12 @@ void	db_chevron_left_fct(t_master *msh)
 			write(1, buf, 1);
 		ft_bzero(buf, 51);
 		ret = read(STDIN_FILENO, buf, 50);
-		printf("coucou\n");
 	}
+	if (msh->sigint_signal == true)
+	{
+		msh->term->term.c_cc[VMIN] = 1;
+		msh->term->term.c_cc[VTIME] = 0;
+		tcsetattr(0, TCSANOW, &((msh->term)->term));
+	}
+	msh->heredoc_running = false;
 }

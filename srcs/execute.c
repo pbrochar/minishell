@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 20:45:51 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/10 18:40:46 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	heredoc_parser(t_master *msh)
 	{
 		if (((t_command *)temp->content)->op && ft_strcmp(((t_command *)temp->content)->op, "<<") == 0)
 			((t_command *)temp->content)->op_fct(msh);
+		if (msh->sigint_signal == true)
+			break ;
 		temp = temp->next;
 	}	
 }
@@ -76,9 +78,11 @@ int	execute_line(t_master *msh)
 		msh_split_ops(msh);
 		history_management(msh);
 		heredoc_parser(msh);
-		execute_list(msh);
+		if (msh->sigint_signal == false)
+			execute_list(msh);
 	}
 	print_prompt(msh);
 	rest_struct_after_exec(msh);
+	msh->sigint_signal = false;
 	return (0);
 }

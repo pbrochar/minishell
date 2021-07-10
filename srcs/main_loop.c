@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:24:49 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 21:33:14 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/10 18:39:08 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,27 @@ int	is_char_to_print(char *buf, int ret)
 
 void	sigint_handler(int sig)
 {
+	((t_master *)g_msh)->sigint_signal = true;
 	if (g_msh->commmand_running == true)
 	{
 		kill(g_msh->pid, sig);
 		write(1, "\n", 1);
 	}
-	else
+	else if (g_msh->heredoc_running == false)
 	{
 		write(1, "^C", 2);
 		write(1, "\n", 1);
 		rest_struct_after_exec((t_master *)(g_msh));
 		print_prompt((t_master *)(g_msh));
 	}
-	write(STDIN_FILENO, "a", 1);
+	if (g_msh->heredoc_running == true)
+	{
+		write(1, "^C", 2);
+		write(1, "\n", 1);
+		g_msh->term->term.c_cc[VMIN] = 0;
+		g_msh->term->term.c_cc[VTIME] = 1;
+		tcsetattr(0, TCSANOW, &((g_msh->term)->term));	
+	}
 }
 
 void	sigquit_handler(int sig)
