@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:39:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:55:51 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 20:29:36 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	var_already_exist(t_master *msh, char *arg)
 	return (-1);
 }
 
-static void	change_env_value(t_master *msh, char *arg, int index)
+void	change_env_value(t_master *msh, char *arg, int index)
 {
 	free(msh->envp[index]);
 	msh->envp[index] = ft_strdup(arg);

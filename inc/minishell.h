@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 18:39:49 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 20:44:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,6 @@ void	add_in_line(t_master *msh, char c);
 void	rest_struct_after_exec(t_master *msh);
 int		is_char_to_print(char *buf, int ret);
 void	init_path(t_master **msh);
+void	change_env_value(t_master *msh, char *arg, int index);
+void	change_shlvl(t_master *msh);
 #endif

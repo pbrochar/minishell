@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 19:20:22 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:28:29 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 20:43:03 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void	exec_manage_child_process(t_master *msh, int fd_pipe[2], \
 									char *command, char **arg)
 {
 	manage_heredoc_child(msh, fd_pipe);
+	change_shlvl(msh);
 	execve(command, arg, msh->envp);
 }

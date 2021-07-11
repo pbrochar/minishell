@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:37:14 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 20:03:10 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,14 @@ int	main(int argc, char **argv, char **envp)
 	msh = NULL;
 	term_c = NULL;
 	if (init_term(&term_c) == -1 || \
-		init_key_terms(&term_c) == -1 || \
-		init_msh_master_struct(&msh, envp, term_c) == -1)
+		init_key_terms(&term_c) == -1)
+		
+	{
+		tcsetattr(0, TCSANOW, &(term_c->backup));
+		free(term_c);
+		return (-1);
+	}
+	if (init_msh_master_struct(&msh, envp, term_c) == -1)
 	{
 		free_main(msh);
 		return (-1);

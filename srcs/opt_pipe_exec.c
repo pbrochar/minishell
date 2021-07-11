@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 14:00:26 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 18:51:31 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 20:43:31 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,14 @@ static int	exec_command_pipe(t_master *msh, char **arg)
 		i = search_command(msh, arg);
 		if (i == -1)
 		{
-			ft_putstr_fd("msh: command not found: ", 2);
-			ft_putstr_fd(arg[0], 2);
-			ft_putchar('\n');
+			ft_putstr_fd("msh: ", STDERR_FILENO);
+			ft_putstr_fd(arg[0], STDERR_FILENO);
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 			return (-1);
 		}
 		command = add_path_in_command(msh, arg[0], i);
 	}
+	change_shlvl(msh);
 	execve(command, arg, msh->envp);
 	return (0);
 }
