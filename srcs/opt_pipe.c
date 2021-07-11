@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 17:02:50 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 20:35:14 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 16:35:19 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,13 @@ void	pipe_fct(t_master *msh)
 			msh->pid = fork();
 		if (!msh->pid)
 		{
-			manage_child_fd(i, old_fd, new_fd, pipe_count);
+			if (((t_command *)msh->commands->prev->content)->std_in_data != NULL)
+			{
+				dup2(old_fd[0], STDIN_FILENO);
+				close(old_fd[1]);
+			}
+			else
+				manage_child_fd(i, old_fd, new_fd, pipe_count);
 			execute_fct_pipe(msh);
 			exit(0);
 		}

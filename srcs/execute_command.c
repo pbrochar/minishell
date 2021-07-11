@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 13:26:28 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 16:43:47 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	exec_command(t_master *msh, char **arg)
 {
 	int		ret;
 	char	*command;
+	int		fd_pipe[2];
 
 	if (arg[0] == NULL || arg[0][0] == 32)
 		return (-1);
@@ -89,18 +90,26 @@ int	exec_command(t_master *msh, char **arg)
 	}
 	tcsetattr(0, TCSANOW, &(msh->term->backup));
 	msh->commmand_running = true;
+	if (((t_command *)msh->commands->prev->content)->std_in_data != NULL)
+		pipe(fd_pipe);
 	msh->pid = fork();
 	if (!msh->pid)
 	{
 		if (((t_command *)msh->commands->prev->content)->std_in_data != NULL)
 		{
-			write(0, ((t_command *)msh->commands->prev->content)->std_in_data, ft_strlen(((t_command *)msh->commands->prev->content)->std_in_data));
-			write(0, (char *)3, 1);
+			dup2(fd_pipe[0], STDIN_FILENO);
+			close(fd_pipe[1]);
 		}
 		execve(command, arg, msh->envp);
 	}
 	else
 	{
+		if (((t_command *)msh->commands->prev->content)->std_in_data != NULL)
+		{
+			write(fd_pipe[1], ((t_command *)msh->commands->prev->content)->std_in_data, ft_strlen(((t_command *)msh->commands->prev->content)->std_in_data));
+			close(fd_pipe[0]);
+			close(fd_pipe[1]);
+		}
 		parent_wait_pid(msh);
 		msh->commmand_running = false;
 		free(command);
