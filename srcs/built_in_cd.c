@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 14:49:21 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 19:47:07 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static char	*manage_special_dir(t_master *msh, char **arg)
 	int	i;
 
 	i = 0;
-	if (!arg[1] || arg[1][0] == '~' || ft_strncmp(arg[1], "--\0", 3) == 0)
+	if (!arg[1] || arg[1][0] == '~')
 	{
 		while (msh->envp[i])
 		{
