@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:47:07 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 21:18:36 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ static char	*manage_special_dir(t_master *msh, char **arg)
 				return (&msh->envp[i][5]);
 			i++;
 		}
+		ft_putstr_fd("msh: cd: HOME not set\n", STDERR_FILENO);
+		ret_value(msh, 1);
+		return (NULL);
 	}
 	else if (ft_strncmp(arg[1], "-\0", 2) == 0)
 	{
@@ -98,16 +101,19 @@ int	built_in_cd(t_master *msh, char **arg)
 
 	folder = manage_special_dir(msh, arg);
 	old_dir = getcwd(buf, 100);
-	chdir_ret = chdir(folder);
-	if (chdir_ret == -1)
+	if (folder != NULL)
+		chdir_ret = chdir(folder);
+	if (folder != NULL && chdir_ret == -1)
 	{
 		errnum = errno;
 		printf("cd : %s: %s\n", arg[1], strerror(errnum));
 		ret_value(msh, 2);
 	}
 	else
+	{
 		update_dir_env(msh, old_dir);
+		ret_value(msh, 0);
+	}
 	update_prompt_values(msh);
-	ret_value(msh, 0);
 	return (0);
 }
