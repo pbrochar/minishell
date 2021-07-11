@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 21:18:36 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 22:23:42 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	built_in_cd(t_master *msh, char **arg)
 	{
 		errnum = errno;
 		printf("cd : %s: %s\n", arg[1], strerror(errnum));
-		ret_value(msh, 2);
+		ret_value(msh, 1);
 	}
 	else
 	{
