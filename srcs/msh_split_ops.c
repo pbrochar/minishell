@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 19:16:20 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 12:42:32 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ static int	fill_end_list(t_master *msh)
 	end_op->op_fct = &end_of_list;
 	end_op->command_arg = NULL;
 	end_op->op = ft_strdup("\0");
+	end_op->std_in_data = NULL;
+	end_op->std_in = STDIN_FILENO;
+	end_op->std_out = STDOUT_FILENO;
 	ft_lstadd_back(&msh->commands, ft_lstnew(end_op));
 	return (0);
 }

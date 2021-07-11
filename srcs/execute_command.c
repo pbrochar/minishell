@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/09 17:37:15 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 13:26:28 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,14 @@ int	exec_command(t_master *msh, char **arg)
 	msh->commmand_running = true;
 	msh->pid = fork();
 	if (!msh->pid)
+	{
+		if (((t_command *)msh->commands->prev->content)->std_in_data != NULL)
+		{
+			write(0, ((t_command *)msh->commands->prev->content)->std_in_data, ft_strlen(((t_command *)msh->commands->prev->content)->std_in_data));
+			write(0, (char *)3, 1);
+		}
 		execve(command, arg, msh->envp);
+	}
 	else
 	{
 		parent_wait_pid(msh);

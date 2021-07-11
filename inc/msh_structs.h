@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/10 18:23:35 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 13:57:47 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ typedef struct s_master
 	int			pid;
 	bool		commmand_running;
 	bool		heredoc_running;
+	bool		heredoc_env_var;
 	bool		sigint_signal;
 }				t_master;
 
