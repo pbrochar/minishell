@@ -6,11 +6,30 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 18:54:22 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 19:04:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	init_path(t_master **msh)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	while ((*msh)->envp[i] && ft_strncmp((*msh)->envp[i], "PATH=", 5) != 0)
+		i++;
+	if (!(*msh)->envp[i])
+	{
+		(*msh)->path = malloc(sizeof(char *));
+		(*msh)->path[0] = NULL;
+		return ;
+	}
+	temp = ft_strchr((*msh)->envp[i], '=');
+	i = 1;
+	(*msh)->path = ft_split(&temp[i], ':');
+}
 
 void	execute_fct(t_master *msh, char **arg)
 {
@@ -26,7 +45,11 @@ void	execute_fct(t_master *msh, char **arg)
 	if (built_in_i != -1)
 		msh->built_in->built_in_fct[built_in_i](msh, arg);
 	else
+	{
+		init_path(&msh);
 		exec_command(msh, arg);
+		free_path(msh);
+	}
 	restore_fd(msh, old_stdout, old_stdin);
 }
 

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 13:57:47 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 18:45:09 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,9 @@ typedef struct s_master
 	bool		heredoc_running;
 	bool		heredoc_env_var;
 	bool		sigint_signal;
+	int			old_fd[2];
+	int			new_fd[2];
+	int			heredoc_fd[2];
 }				t_master;
 
 #endif

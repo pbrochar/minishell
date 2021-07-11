@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:50:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 16:54:18 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 19:41:50 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,17 @@ int	built_in_unset(t_master *msh, char **arg)
 {
 	int	i;
 	int	env_index;
+	int	size;
 
 	i = 1;
 	while (arg[i])
 	{
 		env_index = 0;
+		size = ft_strlen(arg[i]);
 		while (msh->envp[env_index])
 		{
 			if (ft_strncmp(msh->envp[env_index], arg[i], \
-				ft_strlen(arg[i])) == 0)
+				size) == 0 && msh->envp[env_index][size] == '=')
 			{
 				realloc_env(msh, env_index);
 				break ;

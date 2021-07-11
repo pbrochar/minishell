@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 16:50:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 19:11:52 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	heredoc_parser(t_master *msh)
 {
-	t_list *temp;
+	t_list	*temp;
 
 	temp = msh->commands;
 	while (msh->commands)

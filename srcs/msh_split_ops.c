@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 12:42:32 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 17:14:40 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ static int	fill_list(t_master *msh, int a, int ret, int *i)
 	{
 		fill_list_command(msh, a, *i);
 		if (ret != -1)
+		{
 			fill_list_op(msh, ret);
-		(*i) += ft_strlen(msh->operands[ret]);
+			(*i) += ft_strlen(msh->operands[ret]);
+		}
 		if (*i > msh->line_len)
 			return (0);
 	}

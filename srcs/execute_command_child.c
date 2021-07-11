@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   opt_pipe_parent.c                                  :+:      :+:    :+:   */
+/*   execute_command_child.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/07 13:59:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:03:13 by pbrochar         ###   ########.fr       */
+/*   Created: 2021/07/11 19:20:22 by pbrochar          #+#    #+#             */
+/*   Updated: 2021/07/11 19:28:29 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	manage_parent_process(t_master *msh, int i, int pipe_count)
+void	manage_heredoc_child(t_master *msh, int fd_pipe[2])
 {
-	manage_parent_fd(msh->old_fd, msh->new_fd, i, pipe_count);
-	heredoc_pipe_parent(msh, msh->heredoc_fd);
-	parent_wait_pid(msh);
+	if (((t_command *)msh->commands->prev->content)->std_in_data != NULL)
+	{
+		dup2(fd_pipe[0], STDIN_FILENO);
+		close(fd_pipe[1]);
+	}
 }
 
-void	manage_parent_fd(int old_fd[2], int new_fd[2], int i, int pipe_count)
+void	exec_manage_child_process(t_master *msh, int fd_pipe[2], \
+									char *command, char **arg)
 {
-	if (i > 0)
-	{
-		close(old_fd[0]);
-		close(old_fd[1]);
-	}
-	if (i < (pipe_count - 1))
-	{
-		old_fd[0] = new_fd[0];
-		old_fd[1] = new_fd[1];
-	}
+	manage_heredoc_child(msh, fd_pipe);
+	execve(command, arg, msh->envp);
 }

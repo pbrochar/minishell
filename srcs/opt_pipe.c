@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 17:02:50 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 16:35:19 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 19:03:39 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,40 +49,29 @@ static void	pipe_new_fd(int i, int pipe_count, int new_fd[2])
 
 void	pipe_fct(t_master *msh)
 {
-	int	old_fd[2];
-	int	new_fd[2];
 	int	i;
 	int	pipe_count;
 
 	init_pipe_fct(msh, &pipe_count, &i);
 	while (i < pipe_count)
 	{
-		pipe_new_fd(i, pipe_count, new_fd);
-		msh->commmand_running = true;
-		if (ft_strcmp("cd", ((t_command *)msh->commands->prev->content)->command_arg[0]) == 0)
-			execute_fct(msh, ((t_command *)msh->commands->prev->content)->command_arg);
+		pipe_new_fd(i, pipe_count, msh->new_fd);
+		pipe_heredoc(msh);
+		if (ft_strcmp("cd", ((t_command *)msh->commands->prev->content) \
+			->command_arg[0]) == 0)
+			execute_fct(msh, ((t_command *)msh->commands->prev->content) \
+			->command_arg);
 		else
 			msh->pid = fork();
 		if (!msh->pid)
-		{
-			if (((t_command *)msh->commands->prev->content)->std_in_data != NULL)
-			{
-				dup2(old_fd[0], STDIN_FILENO);
-				close(old_fd[1]);
-			}
-			else
-				manage_child_fd(i, old_fd, new_fd, pipe_count);
-			execute_fct_pipe(msh);
-			exit(0);
-		}
+			manage_child_process(msh, i, pipe_count);
 		else
 		{
-			manage_parent_fd(old_fd, new_fd, i, pipe_count);
-			parent_wait_pid(msh);
+			manage_parent_process(msh, i, pipe_count);
 			msh->commmand_running = false;
 			if (++i < pipe_count)
 				msh->commands = msh->commands->next->next;
 		}
 	}
-	rest_pipe_fct(msh, old_fd);
+	rest_pipe_fct(msh, msh->old_fd);
 }

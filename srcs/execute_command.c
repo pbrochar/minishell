@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 10:58:21 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 16:43:47 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 19:27:54 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,37 +41,6 @@ static int	manage_command(t_master *msh, char **arg, char **command)
 	return (0);
 }
 
-void	setup_fd(t_master *msh, int *old_stdout, int *old_stdin)
-{
-	if (((t_command *)msh->commands->prev->content)->std_out != STDOUT_FILENO)
-	{
-		*old_stdout = dup(STDOUT_FILENO);
-		dup2(((t_command *)msh->commands->prev->content)->std_out, \
-							STDOUT_FILENO);
-	}
-	if (((t_command *)msh->commands->prev->content)->std_in != STDIN_FILENO)
-	{
-		*old_stdin = dup(STDIN_FILENO);
-		dup2(((t_command *)msh->commands->prev->content)->std_in, STDIN_FILENO);
-	}
-}
-
-void	restore_fd(t_master *msh, int old_stdout, int old_stdin)
-{
-	if (((t_command *)msh->commands->prev->content)->std_out != STDOUT_FILENO)
-	{
-		dup2(old_stdout, STDOUT_FILENO);
-		close(old_stdout);
-		close(((t_command *)msh->commands->prev->content)->std_out);
-	}
-	if (((t_command *)msh->commands->prev->content)->std_in != STDIN_FILENO)
-	{
-		dup2(old_stdin, STDIN_FILENO);
-		close(old_stdin);
-		close(((t_command *)msh->commands->prev->content)->std_in);
-	}
-}
-
 int	exec_command(t_master *msh, char **arg)
 {
 	int		ret;
@@ -94,27 +63,8 @@ int	exec_command(t_master *msh, char **arg)
 		pipe(fd_pipe);
 	msh->pid = fork();
 	if (!msh->pid)
-	{
-		if (((t_command *)msh->commands->prev->content)->std_in_data != NULL)
-		{
-			dup2(fd_pipe[0], STDIN_FILENO);
-			close(fd_pipe[1]);
-		}
-		execve(command, arg, msh->envp);
-	}
+		exec_manage_child_process(msh, fd_pipe, command, arg);
 	else
-	{
-		if (((t_command *)msh->commands->prev->content)->std_in_data != NULL)
-		{
-			write(fd_pipe[1], ((t_command *)msh->commands->prev->content)->std_in_data, ft_strlen(((t_command *)msh->commands->prev->content)->std_in_data));
-			close(fd_pipe[0]);
-			close(fd_pipe[1]);
-		}
-		parent_wait_pid(msh);
-		msh->commmand_running = false;
-		free(command);
-	}
-	if (tcsetattr(0, TCSANOW, &msh->term->term) == -1)
-		return (-1);
-	return (0);
+		exec_manage_parent_process(msh, fd_pipe, command);
+	return (tcsetattr(0, TCSANOW, &msh->term->term));
 }
