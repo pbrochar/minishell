@@ -6,11 +6,12 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 20:03:10 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 20:45:38 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 void	sigint_handler(int sig)
 {
 	((t_master *)g_msh)->sigint_signal = true;
@@ -60,7 +61,6 @@ int	main(int argc, char **argv, char **envp)
 	term_c = NULL;
 	if (init_term(&term_c) == -1 || \
 		init_key_terms(&term_c) == -1)
-		
 	{
 		tcsetattr(0, TCSANOW, &(term_c->backup));
 		free(term_c);
