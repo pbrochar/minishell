@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:39:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 21:23:57 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/11 19:55:51 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	var_already_exist(t_master *msh, char *arg)
 	i = 0;
 	while (msh->envp[i])
 	{
-		if (ft_strncmp(msh->envp[i], arg, var_name_size) == 0)
+		if (ft_strncmp(msh->envp[i], arg, var_name_size + 1) == 0)
 			return (i);
 		i++;
 	}
