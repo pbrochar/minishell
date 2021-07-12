@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 20:44:01 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/12 15:39:56 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	manage_quote(char *command, int *i, int op_pos, int *nb_word);
 void	pass_char(char *command, int *i, int op_pos, int c);
 char	*add_path_in_command(t_master *msh, char *name, int path_index);
 int		search_command(t_master *msh, char **arg);
-void	ret_value(t_master *msh, int ret);
+int		ret_value(t_master *msh, int ret);
 void	lst_del_one(t_list *lst);
 void	setup_fd(t_master *msh, int *old_stdout, int *old_stdin);
 void	restore_fd(t_master *msh, int old_stdout, int old_stdin);

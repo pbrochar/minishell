@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 18:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 21:07:29 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/12 15:47:20 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static int	str_is_digit(char *str)
 
 int	built_in_exit(t_master *msh, char **arg)
 {
-	int ret;
-	
+	int	ret;
+
 	ret = msh->return_value;
 	if (arg && arg[0] && ft_strcmp(arg[0], "exit") == 0)
 		write(STDERR_FILENO, "exit\n", 5);

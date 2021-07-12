@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:42:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 20:00:35 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/12 15:47:31 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	free_main(t_master *msh)
 {
 	if (msh)
 	{
-			free_string(msh);
+		free_string(msh);
 		if (msh->prompt)
 			free(msh->prompt);
 		if (msh->curs_pos)

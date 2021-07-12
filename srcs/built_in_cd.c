@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 22:23:42 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/12 15:45:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,59 +61,33 @@ static void	update_dir_env(t_master *msh, char *old_dir)
 
 static char	*manage_special_dir(t_master *msh, char **arg)
 {
-	int	i;
-
-	i = 0;
 	if (!arg[1] || arg[1][0] == '~')
-	{
-		while (msh->envp[i])
-		{
-			if (ft_strncmp(msh->envp[i], "HOME", 4) == 0)
-				return (&msh->envp[i][5]);
-			i++;
-		}
-		ft_putstr_fd("msh: cd: HOME not set\n", STDERR_FILENO);
-		ret_value(msh, 1);
-		return (NULL);
-	}
+		return (cd_return_home(msh));
 	else if (ft_strncmp(arg[1], "-\0", 2) == 0)
-	{
-		while (msh->envp[i])
-		{
-			if (ft_strncmp(msh->envp[i], "OLDPWD", 6) == 0)
-			{
-				ft_printf("%s\n", &msh->envp[i][7]);
-				return (&msh->envp[i][7]);
-			}
-			i++;
-		}
-	}
+		return (cd_return_oldpwd(msh, arg[1]));
 	return (arg[1]);
 }
 
 int	built_in_cd(t_master *msh, char **arg)
 {
-	int		errnum;
 	int		chdir_ret;
 	char	buf[101];
 	char	*old_dir;
 	char	*folder;
 
 	folder = manage_special_dir(msh, arg);
+	if (folder && folder[0] == '\0')
+		return (ret_value(msh, 0));
 	old_dir = getcwd(buf, 100);
-	if (folder != NULL)
+	if (folder != NULL && folder[0] != '\0')
 		chdir_ret = chdir(folder);
 	if (folder != NULL && chdir_ret == -1)
 	{
-		errnum = errno;
-		printf("cd : %s: %s\n", arg[1], strerror(errnum));
-		ret_value(msh, 1);
+		printf("cd : %s: %s\n", arg[1], strerror(errno));
+		return (ret_value(msh, 1));
 	}
-	else
-	{
+	else if (folder != NULL && folder[0] != '\0')
 		update_dir_env(msh, old_dir);
-		ret_value(msh, 0);
-	}
 	update_prompt_values(msh);
-	return (0);
+	return (ret_value(msh, 0));
 }

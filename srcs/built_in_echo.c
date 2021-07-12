@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:02:34 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 22:13:08 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/12 15:46:14 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	manage_n_opt(t_master *msh, char **arg, int i)
 		msh->prompt_len++;
 }
 
-static int check_arg_opt(char **arg)
+static int	check_arg_opt(char **arg)
 {
 	int	i;
 	int	a;
@@ -28,7 +28,6 @@ static int check_arg_opt(char **arg)
 	a = 0;
 	while (arg[i])
 	{
-		
 		if (arg[i] && arg[1][0] == '-')
 		{
 			a = 1;
@@ -39,7 +38,7 @@ static int check_arg_opt(char **arg)
 		}
 		else
 			return (-1);
-		i++;	
+		i++;
 	}
 	return (-1);
 }
