@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/12 15:45:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/12 15:54:18 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ int	built_in_cd(t_master *msh, char **arg)
 	char	*old_dir;
 	char	*folder;
 
+	if (arg && arg[0] && arg[1] && arg[2])
+	{
+		ft_putstr_fd("msh: cd: too many arguments\n", STDERR_FILENO);
+		return (ret_value(msh, 1));
+	}
 	folder = manage_special_dir(msh, arg);
 	if (folder && folder[0] == '\0')
 		return (ret_value(msh, 0));
@@ -83,7 +88,7 @@ int	built_in_cd(t_master *msh, char **arg)
 		chdir_ret = chdir(folder);
 	if (folder != NULL && chdir_ret == -1)
 	{
-		printf("cd : %s: %s\n", arg[1], strerror(errno));
+		printf("cd : %s: %s\n", folder, strerror(errno));
 		return (ret_value(msh, 1));
 	}
 	else if (folder != NULL && folder[0] != '\0')
