@@ -6,22 +6,67 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 18:22:37 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/18 15:23:42 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	remove_quote(char **arg, int i)
+int		remove_quote_size(char *line, int quote)
 {
-	int		j;
-	char	*temp;
+	int	i;
+	int	count;
 
-	j = ft_strlen(&arg[i][1]);
-	temp = malloc(sizeof(char) * j);
+	i = 0;
+	count = 0;
+	while(line[i])
+	{
+		if (line[i] == '\\')
+		{
+			i += 2;
+			count += 2;
+			if (!line[i])
+				break ;
+		}
+		if (line[i] == quote)
+			i++;
+		if (!line[i])
+			break ;
+		i++;
+		count++;
+	}
+	return (count);
+}
+
+void	remove_quote(char **arg, int i, int quote)
+{
+	int		size;
+	char	*temp;
+	int		j;
+	int		a;
+
+	j = 0;
+	a = 0;
+	size = remove_quote_size(arg[i], quote);
+	temp = malloc(sizeof(char) * (size + 1));
 	if (temp == NULL)
 		return ;
-	ft_strlcpy(temp, &arg[i][1], j);
+	ft_bzero(temp, size + 1);
+	while (arg[i][j])
+	{
+		if (arg[i][j] == '\\')
+		{
+			temp[a] = arg[i][j];
+			temp[++a] = arg[i][++j];
+		}
+		if (arg[i][j] == quote)
+			j++;
+		if (!arg[i][j] || a >= size)
+			break ;
+		temp[a] = arg[i][j];
+		j++;
+		a++;
+	}
 	free(arg[i]);
 	arg[i] = temp;
 }
@@ -35,15 +80,8 @@ char	**manage_arg(t_master *msh, char **arg)
 		return (arg);
 	while (arg[i])
 	{
-		if (arg[i] && arg[i][0] == 34)
-		{
-			arg[i] = manage_env_variable(msh, arg[i]);
-			remove_quote(arg, i);
-		}
-		else if (arg[i] && arg[i][0] == 39)
-			remove_quote(arg, i);
-		else
-			arg[i] = manage_env_variable(msh, arg[i]);
+		remove_quote(arg, i, 34);
+		arg[i] = manage_env_variable(msh, arg[i]);
 		i++;
 	}
 	return (arg);

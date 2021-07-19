@@ -6,31 +6,31 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 18:56:31 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 18:57:49 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/14 12:45:37 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_operand(char *op)
+int	is_operand(char *op, int i)
 {
-	int	i;
+	int	j;
 
-	i = 0;
-	if (op[0] == ';')
+	j = 0;
+	if (op[i] == ';')
 		return (0);
-	else if (op[0] == '|')
+	else if (op[i] == '|')
 		return (1);
-	else if (op[0] == '>')
+	else if (op[i] == '>')
 	{
-		if (op[1] && op[1] == '>')
+		if (op[i + 1] && op[i + 1] == '>')
 			return (3);
 		else
 			return (2);
 	}
-	else if (op[0] == '<')
+	else if (op[i] == '<')
 	{
-		if (op[1] && op[1] == '<')
+		if (op[i + 1] && op[i + 1] == '<')
 			return (5);
 		else
 			return (4);

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/15 17:33:52 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/12 15:54:18 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/12 16:01:54 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int	built_in_cd(t_master *msh, char **arg)
 	if (folder && folder[0] == '\0')
 		return (ret_value(msh, 0));
 	old_dir = getcwd(buf, 100);
+	if (old_dir == NULL)
+		printf("%s\n", strerror(errno));
 	if (folder != NULL && folder[0] != '\0')
 		chdir_ret = chdir(folder);
 	if (folder != NULL && chdir_ret == -1)

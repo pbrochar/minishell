@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/20 14:04:59 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/20 14:12:41 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/18 13:37:51 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ void	manage_quote(char *command, int *i, int op_pos, int *nb_word)
 void	manage_word(char *command, int *i, int op_pos, int *nb_word)
 {
 	(*nb_word)++;
-	while (*i < op_pos && command[*i] && command[*i] != 32)
+	while (*i < op_pos && command[*i] && !ft_isspace(command[*i]))
 		(*i)++;
 }

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 17:14:40 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/18 14:08:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,14 @@ static int	fill_end_list(t_master *msh)
 
 static int	fill_list(t_master *msh, int a, int ret, int *i)
 {
-	if (ret != -1 || !msh->line[*i])
+	fill_list_command(msh, a, *i);
+	if (ret != -1)
 	{
-		fill_list_command(msh, a, *i);
-		if (ret != -1)
-		{
-			fill_list_op(msh, ret);
-			(*i) += ft_strlen(msh->operands[ret]);
-		}
-		if (*i > msh->line_len)
-			return (0);
+		fill_list_op(msh, ret);
+		(*i) += ft_strlen(msh->operands[ret]);
 	}
+	if (*i > msh->line_len)
+		return (0);
 	return (1);
 }
 
@@ -92,19 +89,39 @@ void	msh_split_ops(t_master *msh)
 	a = 0;
 	while (msh->line[i])
 	{
-		a = i;
-		while (msh->line[i])
+		if (msh->line[i] == '\\')
+			i += 2;
+		if (msh->line[i] == '\'')
 		{
-			ret = is_operand(&msh->line[i]);
-			if (ret != -1)
-				break ;
-			if (msh->line[i] == 34 || msh->line[i] == 39)
-				pass_quote(msh, &i);
+			i++;
+			while (msh->line[i] != '\'')
+				i++;
 			i++;
 		}
-		if (fill_list(msh, a, ret, &i) == 0)
-			break ;
+		if (msh->line[i] == '\"')
+		{
+			i++;
+			while (msh->line[i] != '\"')
+			{
+				if (msh->line[i] == '\\')
+				{
+					i++;
+				}
+				i++;
+			}
+			i++;
+		}
+		ret = is_operand(msh->line, i);
+		if (ret != -1)
+		{
+			fill_list(msh, a, ret, &i);
+			a = i;
+			i++;
+		}
+		else
+			i++;
 	}
+	fill_list(msh, a, ret, &i);
 	msh->save_commands_list = msh->commands;
 	fill_end_list(msh);
 }

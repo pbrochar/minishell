@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/12 15:39:56 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/14 11:25:20 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	lst_del_one(t_list *lst);
 void	setup_fd(t_master *msh, int *old_stdout, int *old_stdin);
 void	restore_fd(t_master *msh, int old_stdout, int old_stdin);
 void	pass_quote(t_master *msh, int *i);
-int		is_operand(char *op);
+int		is_operand(char *op, int i);
 void	pass_backspace(char *arg, char *new_line, int *i, int *j);
 int		is_env_var(char *arg, int i);
 void	execute_list(t_master *msh);

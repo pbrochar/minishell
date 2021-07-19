@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/06/20 14:10:48 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/18 14:46:42 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,32 @@ static int	count_words(char *command, int op_pos)
 	len = ft_strlen(command);
 	while (command[i] && i < op_pos)
 	{
-		while (command[i] && command[i] == 32 && i < op_pos)
+		while (command[i] && ft_isspace(command[i]) && i < op_pos)
 			i++;
-		if (command[i] == 34 || command[i] == 39)
-			manage_quote(command, &i, op_pos, &nb_word);
-		else
-			manage_word(command, &i, op_pos, &nb_word);
+		if (command[i] == '\\')
+			i += 2;
+		if (command[i] == '\'')
+		{
+			i++;
+			while (command[i] != '\'')
+				i++;
+			i++;
+		}
+		if (command[i] == '\"')
+		{
+			i++;
+			while (command[i] != '\"')
+			{
+				if (command[i] == '\\')
+					i++;
+				i++;
+			}
+			i++;
+		}
+		while (command[i] && ft_isalnum(command[i]) && command[i] != 32)
+			i++;
+		if (command[i] == 32 || !command[i])
+			nb_word++;
 		if (i >= op_pos || i > len)
 			break ;
 		i++;
@@ -43,18 +63,31 @@ static char	*return_word(char *command, int op_pos, int *i)
 	int		j;
 	char	*word;
 
-	while (command[*i] && (*i) < op_pos && command[*i] == 32)
+	while (command[*i] && ft_isspace(command[*i]) && *i < op_pos)
 		(*i)++;
 	j = *i;
-	if (command[*i] == 34 && command[*i + 1])
-		pass_char(command, i, op_pos, 34);
-	else if (command[*i] == 39 && command[(*i) + 1])
-		pass_char(command, i, op_pos, 39);
-	else
+	if (command[*i] == '\'')
 	{
-		while (command[*i] && command[*i] != 32 && *i < op_pos)
+		(*i)++;
+		while (command[*i] != '\'')
 			(*i)++;
+		(*i)++;
 	}
+	if (command[*i] == '\"')
+	{
+		(*i)++;
+		while (command[*i] != '\"')
+		{
+			if (command[*i] == '\\')
+			{
+				(*i) += 2;
+				continue ;
+			}
+			(*i)++;
+		}
+	}
+	while (command[*i] && !ft_isspace(command[*i]) && *i < op_pos)
+		(*i)++;
 	word = malloc(sizeof(char *) * ((*i) - j + 1));
 	if (!word)
 		return (NULL);
