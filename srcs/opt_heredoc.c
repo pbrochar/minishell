@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 19:07:32 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:08:56 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 17:17:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	leave_db_chevron_left(t_master *msh, char *heredoc_str)
 {
 	heredoc_str = remove_key_word(heredoc_str);
-	if (msh->heredoc_env_var == true)
-		heredoc_str = manage_env_variable(msh, heredoc_str);
+//	if (msh->heredoc_env_var == true)
+//		heredoc_str = manage_env_variable(msh, heredoc_str);
 	rest_term(msh);
 	((t_command *)msh->commands->prev->content)->std_in_data = heredoc_str;
 	remove_lst_elem(msh);

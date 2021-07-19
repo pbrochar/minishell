@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/18 14:08:01 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 18:44:03 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,26 +87,27 @@ void	msh_split_ops(t_master *msh)
 
 	i = 0;
 	a = 0;
-	while (msh->line[i])
+	while (i < msh->line_len)
 	{
 		if (msh->line[i] == '\\')
+		{
 			i += 2;
-		if (msh->line[i] == '\'')
+			continue ;
+		}
+		else if (msh->line[i] == '\'')
 		{
 			i++;
 			while (msh->line[i] != '\'')
 				i++;
 			i++;
 		}
-		if (msh->line[i] == '\"')
+		else if (msh->line[i] == '\"')
 		{
 			i++;
 			while (msh->line[i] != '\"')
 			{
 				if (msh->line[i] == '\\')
-				{
 					i++;
-				}
 				i++;
 			}
 			i++;

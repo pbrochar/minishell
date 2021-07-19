@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/18 14:46:42 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 19:28:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,77 +17,81 @@ static int	count_words(char *command, int op_pos)
 	int	i;
 	int	nb_word;
 	int	len;
+	int is_quote;
 
 	i = 0;
 	nb_word = 0;
 	len = ft_strlen(command);
-	while (command[i] && i < op_pos)
+	is_quote = 0;
+	while (command[i] && ft_isspace(command[i]) && i < op_pos)
+		i++;
+	while (i < len)
 	{
-		while (command[i] && ft_isspace(command[i]) && i < op_pos)
-			i++;
-		if (command[i] == '\\')
-			i += 2;
 		if (command[i] == '\'')
 		{
-			i++;
-			while (command[i] != '\'')
-				i++;
-			i++;
+			if (is_quote == '\'')
+				is_quote = 0;
+			else
+				is_quote = '\'';
 		}
-		if (command[i] == '\"')
+		else if (!is_quote && command[i] == '\\')
+			i++;
+		else if (!is_quote && command[i] == '\"')
+		{
+			if (is_quote == '\"')
+				is_quote = 0;
+			else
+				is_quote = '\"';
+		}
+		if (!is_quote && ft_isspace(command[i]))
+		{
+			nb_word++;
+			while (ft_isspace(command[i]))
+				i++;
+		}
+		else
 		{
 			i++;
-			while (command[i] != '\"')
-			{
-				if (command[i] == '\\')
-					i++;
-				i++;
-			}
-			i++;
+			if (!command[i]) {
+				nb_word++;
+			}			
 		}
-		while (command[i] && ft_isalnum(command[i]) && command[i] != 32)
-			i++;
-		if (command[i] == 32 || !command[i])
-			nb_word++;
-		if (i >= op_pos || i > len)
-			break ;
-		i++;
 	}
-	if (nb_word == 0)
-		nb_word++;
 	return (nb_word);
 }
 
 static char	*return_word(char *command, int op_pos, int *i)
 {
 	int		j;
+	int		is_quote;
 	char	*word;
 
+	is_quote = 0;
 	while (command[*i] && ft_isspace(command[*i]) && *i < op_pos)
 		(*i)++;
 	j = *i;
-	if (command[*i] == '\'')
+	(*i)--;
+	while (command[++(*i)] && !is_quote && !ft_isspace(command[*i]))
 	{
-		(*i)++;
-		while (command[*i] != '\'')
-			(*i)++;
-		(*i)++;
-	}
-	if (command[*i] == '\"')
-	{
-		(*i)++;
-		while (command[*i] != '\"')
+		if (command[*i] == '\'')
 		{
-			if (command[*i] == '\\')
-			{
-				(*i) += 2;
-				continue ;
-			}
+			if (is_quote == '\'')
+				is_quote = 0;
+			else
+				is_quote = '\'';
+			continue ;
+		}
+		else if (!is_quote && command[*i] == '\\')
 			(*i)++;
+		else if (!is_quote && command[*i] == '\"')
+		{
+			if (is_quote == '\"')
+				is_quote = 0;
+			else
+				is_quote = '\"';
+			continue ;
 		}
 	}
-	while (command[*i] && !ft_isspace(command[*i]) && *i < op_pos)
-		(*i)++;
 	word = malloc(sizeof(char *) * ((*i) - j + 1));
 	if (!word)
 		return (NULL);
@@ -111,13 +115,11 @@ char	**msh_split_command(char *command, int op_pos)
 	command_array = malloc(sizeof(char *) * (nb_word + 1));
 	if (command_array == NULL)
 		return (NULL);
-	command_array[nb_word] = NULL;
-	while (i < op_pos)
+	ft_bzero(command_array, (nb_word + 1));
+	while (j < nb_word)
 	{
 		command_array[j] = return_word(command, op_pos, &i);
 		j++;
-		if (i > len)
-			break ;
 	}
 	return (command_array);
 }

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/18 15:22:54 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 16:10:37 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	t_term		*term_c;
 	t_master	*msh;
 
-	printf("%d\n",argc);
+	(void)argc;
 	(void)argv;
 	msh = NULL;
 	term_c = NULL;

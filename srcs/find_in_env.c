@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:05:34 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 14:24:38 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 18:10:07 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ char	*find_in_env(t_master *msh, char *var)
 	char	buf[4096];
 
 	i = 1;
-	while (var[i] && ft_isalnum(var[i]))
+	if (var[1] == '?')
+		return (msh->return_value_char);
+	while (var[i] && (ft_isalnum(var[i]) || var[i] == '_'))
 		i++;
 	ft_strlcpy(buf, &var[1], i);
 	size = ft_strlen(buf);
-	if (ft_strncmp(buf, "?", size) == 0)
-		return (msh->return_value_char);
 	i = 0;
 	while (msh->envp[i])
 	{

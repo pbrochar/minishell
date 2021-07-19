@@ -6,12 +6,12 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:11:24 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 18:59:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 18:10:20 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 static int	len_without_var(char *line)
 {
 	int	i;
@@ -34,49 +34,34 @@ static int	len_without_var(char *line)
 		count++;
 	}
 	return (count);
-}
+}*/
 
-static void	add_value_in_arg(char *temp, int *i, int *j, char **new_line)
+static void	add_value_in_arg(char *temp, int pos, char **new_line)
 {
-	int	a;
-
-	(*i)++;
-	a = ft_strlen(temp);
-	temp = ft_strinstr(*new_line, temp, *j);
-	(*j) += a - 1;
+	temp = ft_strinstr(*new_line, temp, pos);
 	free(*new_line);
 	*new_line = temp;
 }
 
-static char	*insert_env_value(t_master *msh, char *new_line, char *arg)
+int insert_env_value(t_master *msh, char **new_line, char *arg, int *pos)
 {
-	int		i;
-	int		j;
-	int		a;
 	char	*temp;
+	int		i;
 
-	i = 0;
-	j = 0;
-	a = 0;
-	while (arg[i])
+	i = 1;
+	temp = find_in_env(msh, &arg[0]);
+	if (temp)
 	{
-		if (is_env_var(arg, i))
-		{
-			temp = find_in_env(msh, &arg[i]);
-			if (temp)
-			{
-				add_value_in_arg(temp, &i, &j, &new_line);
-				while (arg[i + 1] && ft_isalnum(arg[i + 1]))
-					i++;
-			}
-		}
-		i++;
-		j++;
+		add_value_in_arg(temp, *pos, new_line);
+		*pos = ft_strlen(temp);
 	}
-	free(arg);
-	return (new_line);
+	if (arg[i] == '?')
+		return (2);
+	while (&arg[i] && (ft_isalnum(arg[i]) || arg[i] == '_'))
+		i++;
+	return (i);
 }
-
+/*
 static char	*create_new_line(char *arg)
 {
 	int		size;
@@ -112,4 +97,4 @@ char	*manage_env_variable(t_master *msh, char *arg)
 			pass_backspace(arg, new_line, &i, &j);
 	}
 	return (insert_env_value(msh, new_line, arg));
-}
+}*/

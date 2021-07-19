@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:39:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 20:29:36 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 17:18:13 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	built_in_export(t_master *msh, char **arg)
 			ret_value(msh, 2);
 			return (-1);
 		}
-		arg[i] = manage_env_variable(msh, arg[i]);
+//		arg[i] = manage_env_variable(msh, arg[i]);
 		ret = var_already_exist(msh, arg[i]);
 		if (ret != -1)
 			change_env_value(msh, arg[i], ret);
