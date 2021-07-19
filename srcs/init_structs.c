@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:01:28 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/10 18:43:17 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 20:14:34 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	init_main_struct(t_master **msh_m, char **envp, t_term *term_c)
 	(*msh_m)->heredoc_running = false;
 	(*msh_m)->sigint_signal = false;
 	(*msh_m)->return_value_char = NULL;
+	ret_value(*msh_m, 0);
 	(*msh_m)->res_x = tgetnum("co");
 	(*msh_m)->res_y = tgetnum("li");
 	if ((*msh_m)->res_x == -1 || (*msh_m)->res_y == -1)

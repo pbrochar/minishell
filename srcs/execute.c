@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/18 14:46:04 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 19:49:19 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	execute_line(t_master *msh)
 	if (msh->line_len != 0 && !str_is_space(msh->line))
 	{
 		msh_split_ops(msh);
-		history_management(msh);
+		history_management(msh);	
 		heredoc_parser(msh);
 		if (msh->sigint_signal == false)
 			execute_list(msh);

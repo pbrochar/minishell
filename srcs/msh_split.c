@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/19 19:28:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 22:07:21 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	count_words(char *command, int op_pos)
 	is_quote = 0;
 	while (command[i] && ft_isspace(command[i]) && i < op_pos)
 		i++;
-	while (i < len)
+	while (i < len && i < op_pos)
 	{
 		if (command[i] == '\'')
 		{
@@ -71,7 +71,7 @@ static char	*return_word(char *command, int op_pos, int *i)
 		(*i)++;
 	j = *i;
 	(*i)--;
-	while (command[++(*i)] && !is_quote && !ft_isspace(command[*i]))
+	while (command[++(*i)] && (is_quote || !ft_isspace(command[*i])) && *i < op_pos)
 	{
 		if (command[*i] == '\'')
 		{
@@ -83,7 +83,7 @@ static char	*return_word(char *command, int op_pos, int *i)
 		}
 		else if (!is_quote && command[*i] == '\\')
 			(*i)++;
-		else if (!is_quote && command[*i] == '\"')
+		else if (command[*i] == '\"')
 		{
 			if (is_quote == '\"')
 				is_quote = 0;
@@ -115,10 +115,12 @@ char	**msh_split_command(char *command, int op_pos)
 	command_array = malloc(sizeof(char *) * (nb_word + 1));
 	if (command_array == NULL)
 		return (NULL);
-	ft_bzero(command_array, (nb_word + 1));
+	command_array[nb_word] = NULL;
 	while (j < nb_word)
 	{
 		command_array[j] = return_word(command, op_pos, &i);
+		if (i >= op_pos)
+			break ;
 		j++;
 	}
 	return (command_array);

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/19 18:44:03 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/19 22:05:46 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,43 +84,43 @@ void	msh_split_ops(t_master *msh)
 	int	i;
 	int	a;
 	int	ret;
+	int	is_quote;
 
-	i = 0;
+	i = -1;
 	a = 0;
-	while (i < msh->line_len)
+	is_quote = 0;
+	while (++i < msh->line_len)
 	{
-		if (msh->line[i] == '\\')
+		if (msh->line[i] == '\'')
 		{
-			i += 2;
+			if (is_quote == '\'')
+				is_quote = 0;
+			else
+				is_quote = '\'';
 			continue ;
 		}
-		else if (msh->line[i] == '\'')
+		else if (!is_quote && msh->line[i] == '\\')
 		{
 			i++;
-			while (msh->line[i] != '\'')
-				i++;
-			i++;
+			continue ;
 		}
 		else if (msh->line[i] == '\"')
 		{
-			i++;
-			while (msh->line[i] != '\"')
+			if (is_quote == '\"')
+				is_quote = 0;
+			else
+				is_quote = '\"';
+			continue ;
+		}
+		if (!is_quote)
+		{	
+			ret = is_operand(msh->line, i);
+			if (ret != -1)
 			{
-				if (msh->line[i] == '\\')
-					i++;
-				i++;
+				fill_list(msh, a, ret, &i);
+				a = i;
 			}
-			i++;
 		}
-		ret = is_operand(msh->line, i);
-		if (ret != -1)
-		{
-			fill_list(msh, a, ret, &i);
-			a = i;
-			i++;
-		}
-		else
-			i++;
 	}
 	fill_list(msh, a, ret, &i);
 	msh->save_commands_list = msh->commands;
