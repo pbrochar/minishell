@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/19 22:05:46 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/21 14:16:23 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,21 @@ static int	fill_end_list(t_master *msh)
 	ft_lstadd_back(&msh->commands, ft_lstnew(end_op));
 	return (0);
 }
+static int	check_space(t_master *msh, int a, int i)
+{
+	while (a < i && msh->line[a])
+	{
+		if (ft_isspace(msh->line[a]) == 0)
+			return (1);
+		a++;
+	}
+	return (0);
+}
 
 static int	fill_list(t_master *msh, int a, int ret, int *i)
 {
-	fill_list_command(msh, a, *i);
+	if (check_space(msh, a, *i))
+		fill_list_command(msh, a, *i);
 	if (ret != -1)
 	{
 		fill_list_op(msh, ret);
@@ -118,6 +129,14 @@ void	msh_split_ops(t_master *msh)
 			if (ret != -1)
 			{
 				fill_list(msh, a, ret, &i);
+				a = i;
+			}
+			ret = is_operand(msh->line, i);
+			while (i < msh->line_len && ret != -1)
+			{
+				fill_list_op(msh, is_operand(msh->line, i));
+				i += ft_strlen(msh->operands[ret]);
+				ret = is_operand(msh->line, i);
 				a = i;
 			}
 		}

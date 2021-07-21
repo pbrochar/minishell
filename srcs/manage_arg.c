@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/19 20:05:32 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/20 17:29:09 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ void	remove_quote(char **arg, int i, int quote)
 
 char	*parser(t_master *msh, char *line)
 {
-	int	i;
-	int	j;
-	int	size;
-	char *new_line;
-	bool simple_quote_flag;
-	
+	int		i;
+	int		j;
+	int		size;
+	char	*new_line;
+	bool	simple_quote_flag;
+
 	simple_quote_flag = false;
 	i = -1;
 	j = 0;

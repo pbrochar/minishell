@@ -6,26 +6,56 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/19 19:49:19 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/21 14:23:10 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	heredoc_parser(t_master *msh)
+void	print_list(t_master *msh)
+{
+	t_list *temp;
+	int 	i = 0;
+
+	temp = msh->commands;
+	while (temp)
+	{
+		if ((((t_command *)temp->content)->op != NULL))
+			printf("[%s]\n", ((t_command *)temp->content)->op);
+		if (((t_command *)temp->content)->command_arg != NULL)
+		{
+			i = 0;
+			while(((t_command *)temp->content)->command_arg[i])
+			{
+				printf("|%s|\n", ((t_command *)temp->content)->command_arg[i]);
+				i++;
+			}
+		}
+		temp = temp->next;
+	}
+}
+
+void	final_parser(t_master *msh)
 {
 	t_list	*temp;
 
 	temp = msh->commands;
 	while (msh->commands)
 	{
-		while (((t_command *)msh->commands->content)->op == NULL)
-			msh->commands = msh->commands->next;
 		if (((t_command *)msh->commands->content)->op != NULL && \
 			ft_strcmp(((t_command *)msh->commands->content)->op, "<<") == 0)
 			((t_command *)msh->commands->content)->op_fct(msh);
 		if (msh->sigint_signal == true)
 			break ;
+		if (((t_command *)msh->commands->content)->op != NULL && \
+			(((t_command *)msh->commands->prev->content)->command_arg == NULL))
+		{
+			ft_putstr_fd("msh: syntax error near unexpected token `", STDERR_FILENO);
+			ft_putstr_fd(((t_command *)msh->commands->content)->op, STDERR_FILENO);
+			ft_putstr_fd("'\n", STDERR_FILENO);
+			msh->abort = true;
+			break;
+		}
 		msh->commands = msh->commands->next;
 	}
 	msh->commands = temp;
@@ -56,6 +86,8 @@ void	rest_struct_after_exec(t_master *msh)
 	msh->nb_line = 0;
 	msh->commands = NULL;
 	msh->save_commands_list = NULL;
+	if (msh->abort == true)
+		msh->abort = false;
 	reset_curs_pos(msh);
 }
 
@@ -80,9 +112,10 @@ int	execute_line(t_master *msh)
 	if (msh->line_len != 0 && !str_is_space(msh->line))
 	{
 		msh_split_ops(msh);
-		history_management(msh);	
-		heredoc_parser(msh);
-		if (msh->sigint_signal == false)
+		history_management(msh);
+	//	print_list(msh);
+		final_parser(msh);
+		if (msh->sigint_signal == false && msh->abort == false)
 			execute_list(msh);
 	}
 	print_prompt(msh);

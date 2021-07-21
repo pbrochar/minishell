@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 19:07:32 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/19 20:03:29 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/21 12:29:24 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	db_chevron_remove_quote(t_master *msh)
 
 	i = 1;
 	arg = ((t_command *)msh->commands->next->content)->command_arg[0];
-	printf("%s\n", arg);
 	if (arg[0] == 34)
 	{
 		msh->heredoc_env_var = true;
@@ -71,7 +70,6 @@ void	db_chevron_remove_quote(t_master *msh)
 	if (new_arg == NULL)
 		return ;
 	ft_strlcpy(new_arg, &arg[1], i);
-	printf("%s\n", new_arg);
 	free(((t_command *)msh->commands->next->content)->command_arg[0]);
 	((t_command *)msh->commands->next->content)->command_arg[0] = new_arg;
 }

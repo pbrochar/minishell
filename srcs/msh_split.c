@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/19 22:07:21 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/21 12:27:46 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	count_words(char *command, int op_pos)
 		else
 		{
 			i++;
-			if (!command[i]) {
+			if (!command[i] || i >= op_pos) {
 				nb_word++;
 			}			
 		}
