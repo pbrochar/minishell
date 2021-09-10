@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/21 14:29:24 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 17:15:54 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,90 +14,24 @@
 
 static int	count_words(char *command, int op_pos)
 {
-	int	i;
-	int	nb_word;
-	int	len;
-	int	is_quote;
+	t_count_words	var;
+	int				i;
 
 	i = 0;
-	nb_word = 0;
-	len = ft_strlen(command);
-	is_quote = 0;
+	init_var_count_words(&var, command);
 	while (command[i] && ft_isspace(command[i]) && i < op_pos)
 		i++;
-	while (i < len && i < op_pos)
+	while (i < var.len && i < op_pos)
 	{
 		if (command[i] == '\'')
-		{
-			if (is_quote == '\'')
-				is_quote = 0;
-			else
-				is_quote = '\'';
-		}
-		else if (!is_quote && command[i] == '\\')
+			change_quote('\'', &var.is_quote);
+		else if (!var.is_quote && command[i] == '\\')
 			i++;
-		else if (!is_quote && command[i] == '\"')
-		{
-			if (is_quote == '\"')
-				is_quote = 0;
-			else
-				is_quote = '\"';
-		}
-		if (!is_quote && ft_isspace(command[i]))
-		{
-			nb_word++;
-			while (ft_isspace(command[i]))
-				i++;
-		}
-		else
-		{
-			i++;
-			if (!command[i] || i >= op_pos)
-				nb_word++;
-		}
+		else if (!var.is_quote && command[i] == '\"')
+			change_quote('\"', &var.is_quote);
+		update_nb_words(&var, &i, command, op_pos);
 	}
-	return (nb_word);
-}
-
-static char	*return_word(char *command, int op_pos, int *i)
-{
-	int		j;
-	int		is_quote;
-	char	*word;
-
-	is_quote = 0;
-	while (command[*i] && ft_isspace(command[*i]) && *i < op_pos)
-		(*i)++;
-	j = *i;
-	(*i)--;
-	while (command[++(*i)] && \
-		(is_quote || !ft_isspace(command[*i])) && *i < op_pos)
-	{
-		if (command[*i] == '\'')
-		{
-			if (is_quote == '\'')
-				is_quote = 0;
-			else
-				is_quote = '\'';
-			continue ;
-		}
-		else if (!is_quote && command[*i] == '\\')
-			(*i)++;
-		else if (command[*i] == '\"')
-		{
-			if (is_quote == '\"')
-				is_quote = 0;
-			else
-				is_quote = '\"';
-			continue ;
-		}
-	}
-	word = malloc(sizeof(char *) * ((*i) - j + 1));
-	if (!word)
-		return (NULL);
-	ft_strlcpy(word, &command[j], ((*i) - j + 1));
-	(*i)++;
-	return (word);
+	return (var.nb_word);
 }
 
 char	**msh_split_command(char *command, int op_pos)

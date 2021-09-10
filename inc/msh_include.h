@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 17:40:10 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:32:08 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 17:14:39 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@
 # include "libft.h"
 # include "msh_execute.h"
 # include "msh_signal.h"
+# include "msh_split.h"
 
 #endif

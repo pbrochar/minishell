@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/21 12:26:06 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 17:18:45 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,26 @@ typedef struct s_master
 	int			new_fd[2];
 	int			heredoc_fd[2];
 }				t_master;
+
+typedef struct	s_parser
+{
+	int		j;
+	int		size;
+	bool	simple_quote_flag;
+}				t_parser;
+
+typedef struct	s_count_words
+{
+	int	nb_word;
+	int	len;
+	int	is_quote;
+}				t_count_words;
+
+typedef struct	s_split_ops
+{
+	int	a;
+	int	ret;
+	int	is_quote;
+}				t_split_ops;
 
 #endif
