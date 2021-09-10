@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 18:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/12 15:47:20 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 15:01:20 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ int	built_in_exit(t_master *msh, char **arg)
 		write(STDERR_FILENO, "exit\n", 5);
 	if (arg && arg[0] && arg[1] && str_is_digit(arg[1]) == -1)
 	{
-		ft_putstr_fd("msh: exit: ", STDERR_FILENO);
-		ft_putstr_fd(arg[1], STDERR_FILENO);
-		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+		print_err_num_arg(arg[1]);
 		ret = 2;
 	}
 	else if (arg && arg[0] && arg[1] && arg[2])

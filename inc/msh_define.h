@@ -6,13 +6,18 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 20:41:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/08 21:26:59 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 14:58:05 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MSH_DEFINE_H
 # define MSH_DEFINE_H
 
+/*
+** Define Error messages
+*/
+# define SYNT_ERR "msh: syntax error near unexpected token `"
+# define CD_TOO_M_A "msh: cd: too many arguments\n"
 # define USER "user"
 # define NB_OPERAND 7
 # define SEMICOLON ";"

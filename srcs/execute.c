@@ -6,16 +6,16 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 14:45:14 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 15:42:01 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_list(t_master *msh)
+/*void	print_list(t_master *msh)
 {
-	t_list *temp;
-	int 	i = 0;
+	t_list	*temp;
+	int		i = 0;
 
 	temp = msh->commands;
 	while (temp)
@@ -33,49 +33,7 @@ void	print_list(t_master *msh)
 		}
 		temp = temp->next;
 	}
-}
-
-void	final_parser(t_master *msh)
-{
-	t_list	*temp;
-
-	//print_list(msh);
-	temp = msh->commands;
-	while (msh->commands)
-	{
-		if (((t_command *)msh->commands->content)->op != NULL && \
-			ft_strcmp(((t_command *)msh->commands->content)->op, "<<") == 0)
-			((t_command *)msh->commands->content)->op_fct(msh);
-		if (msh->sigint_signal == true)
-			break ;
-		if (((t_command *)msh->commands->content)->op != NULL && \
-			(((t_command *)msh->commands->content)->op[0] == ';' || \
-			((t_command *)msh->commands->content)->op[0] == '|') && \
-			((t_command *)msh->commands->prev && ((t_command *)msh->commands->prev->content)->op != NULL))
-		{
-			ft_putstr_fd("msh: syntax error near unexpected token `", STDERR_FILENO);
-			ft_putstr_fd(((t_command *)msh->commands->content)->op, STDERR_FILENO);
-			ft_putstr_fd("'\n", STDERR_FILENO);
-			msh->abort = true;
-			break;
-		}
-		if (((t_command *)msh->commands->content)->op != NULL && \
-			(t_command *)msh->commands->prev != NULL && \
-			((((t_command *)msh->commands->prev->content)->op != NULL) && \
-			((t_command *)msh->commands->prev->content)->op[0] != 'B'))
-		{
-			ft_putstr_fd("msh: syntax error near unexpected token `", STDERR_FILENO);
-			ft_putstr_fd(((t_command *)msh->commands->content)->op, STDERR_FILENO);
-			ft_putstr_fd("'\n", STDERR_FILENO);
-			msh->abort = true;
-			break;
-		}
-		msh->commands = msh->commands->next;
-	}
-	msh->commands = temp;
-	//print_list(msh);
-}
-
+}*/
 void	execute_list(t_master *msh)
 {
 	while (msh->commands)
@@ -87,7 +45,7 @@ void	execute_list(t_master *msh)
 			return ;
 		if (((t_command *)msh->commands->content)->op != NULL && \
 			((t_command *)msh->commands->content)->op[0] == 'B')
-				msh->commands = msh->commands->next;
+			msh->commands = msh->commands->next;
 		msh->commands = msh->commands->next;
 		while (((t_command *)msh->commands->content)->op == NULL)
 			msh->commands = msh->commands->next;
@@ -131,7 +89,6 @@ int	execute_line(t_master *msh)
 	{
 		msh_split_ops(msh);
 		history_management(msh);
-		//print_list(msh);
 		final_parser(msh);
 		if (msh->sigint_signal == false && msh->abort == false)
 			execute_list(msh);

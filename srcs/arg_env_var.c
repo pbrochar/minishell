@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:11:24 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/21 14:32:01 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 15:29:59 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@ static void	add_value_in_arg(char *temp, int pos, char **new_line)
 	temp = ft_strinstr(*new_line, temp, pos);
 	free(*new_line);
 	*new_line = temp;
+}
+
+static char	*create_new_line(char **new_line)
+{
+	*new_line = malloc(sizeof(char) * 1);
+	if (!(*new_line))
+		return (NULL);
+	ft_bzero(*new_line, 1);
+	return (*new_line);
 }
 
 int	insert_env_value(t_master *msh, char **new_line, char *arg, int *pos)
@@ -38,6 +47,14 @@ int	insert_env_value(t_master *msh, char **new_line, char *arg, int *pos)
 	return (i);
 }
 
+static void	fill_new_line(char **new_line, int *j, int i, char *arg)
+{
+	*new_line = ft_mem_exp(*new_line, sizeof(char) * ((*j) + 1), \
+						sizeof(char) * ((*j) + 2));
+	(*new_line)[*j] = arg[i];
+	(*j)++;
+}
+
 char	*manage_env_variable(t_master *msh, char *arg)
 {
 	int		i;
@@ -48,10 +65,8 @@ char	*manage_env_variable(t_master *msh, char *arg)
 	i = -1;
 	j = 0;
 	size = ft_strlen(arg);
-	new_line = malloc(sizeof(char) * 1);
-	if (!new_line)
+	if (create_new_line(&new_line) == NULL)
 		return (NULL);
-	ft_bzero(new_line, 1);
 	while (++i < size)
 	{
 		if (arg[i] == '\\')
@@ -61,10 +76,7 @@ char	*manage_env_variable(t_master *msh, char *arg)
 			i += (insert_env_value(msh, &new_line, &arg[i], &j) - 1);
 			continue ;
 		}
-		new_line = ft_mem_exp(new_line, sizeof(char) * (j + 1), \
-						sizeof(char) * (j + 2));
-		new_line[j] = arg[i];
-		j++;
+		fill_new_line(&new_line, &j, i, arg);
 	}
 	free(arg);
 	return (new_line);

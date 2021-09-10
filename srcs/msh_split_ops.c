@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/08/16 14:39:26 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 15:19:22 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	fill_begin_list(t_master *msh)
 	ft_lstadd_back(&msh->commands, ft_lstnew(begin_op));
 	return (0);
 }
+
 static int	check_space(t_master *msh, int a, int i)
 {
 	while (a < i && msh->line[a])
@@ -107,6 +108,34 @@ static int	fill_list(t_master *msh, int a, int ret, int *i)
 	return (1);
 }
 
+static void	change_quote(int quote_type, int *is_quote)
+{
+	if (*is_quote == quote_type)
+		*is_quote = 0;
+	else
+		*is_quote = quote_type;
+}
+
+static int	check_spec_char(t_master *msh, int *i, int *is_quote)
+{
+	if (msh->line[*i] == '\'')
+	{
+		change_quote('\'', is_quote);
+		return (1);
+	}
+	else if (!is_quote && msh->line[*i] == '\\')
+	{
+		(*i)++;
+		return (1);
+	}
+	else if (msh->line[*i] == '\"')
+	{
+		change_quote('\"', is_quote);
+		return (1);
+	}
+	return (0);
+}
+
 void	msh_split_ops(t_master *msh)
 {
 	int	i;
@@ -120,27 +149,8 @@ void	msh_split_ops(t_master *msh)
 	fill_begin_list(msh);
 	while (++i < msh->line_len)
 	{
-		if (msh->line[i] == '\'')
-		{
-			if (is_quote == '\'')
-				is_quote = 0;
-			else
-				is_quote = '\'';
+		if (check_spec_char(msh, &i, &is_quote) == 1)
 			continue ;
-		}
-		else if (!is_quote && msh->line[i] == '\\')
-		{
-			i++;
-			continue ;
-		}
-		else if (msh->line[i] == '\"')
-		{
-			if (is_quote == '\"')
-				is_quote = 0;
-			else
-				is_quote = '\"';
-			continue ;
-		}
 		if (!is_quote)
 		{	
 			ret = is_operand(msh->line, i);

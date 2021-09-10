@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:01:28 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/21 12:26:28 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 15:45:56 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,38 @@ int	init_struct(t_master **msh_m)
 	return (0);
 }
 
-int	init_main_struct(t_master **msh_m, char **envp, t_term *term_c)
+static void	init_int_main_struct(t_master **msh_m)
 {
-	(*msh_m)->line = NULL;
 	(*msh_m)->line_len = 0;
 	(*msh_m)->curs_pos->curs_pos_rel = 0;
 	(*msh_m)->nb_line = 0;
 	(*msh_m)->curs_pos->curs_pos_abs = (*msh_m)->prompt_len;
-	(*msh_m)->envp = envp;
-	(*msh_m)->term = term_c;
+	(*msh_m)->return_value = 0;
+	(*msh_m)->pid = -1;
 	(*msh_m)->save_curs_pos->curs_pos_abs = -1;
 	(*msh_m)->save_curs_pos->curs_pos_rel = -1;
+}
+
+static void	init_str_main_struct(t_master **msh_m)
+{
+	(*msh_m)->line = NULL;
 	(*msh_m)->commands = NULL;
 	(*msh_m)->save_commands_list = NULL;
 	(*msh_m)->history = NULL;
 	(*msh_m)->clipboard = NULL;
-	(*msh_m)->return_value = 0;
-	(*msh_m)->pid = -1;
+	(*msh_m)->return_value_char = NULL;
+}
+
+int	init_main_struct(t_master **msh_m, char **envp, t_term *term_c)
+{
+	init_int_main_struct(msh_m);
+	init_str_main_struct(msh_m);
+	(*msh_m)->envp = envp;
+	(*msh_m)->term = term_c;
 	(*msh_m)->commmand_running = false;
 	(*msh_m)->heredoc_running = false;
 	(*msh_m)->sigint_signal = false;
 	(*msh_m)->abort = false;
-	(*msh_m)->return_value_char = NULL;
 	ret_value(*msh_m, 0);
 	(*msh_m)->res_x = tgetnum("co");
 	(*msh_m)->res_y = tgetnum("li");

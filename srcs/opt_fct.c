@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 14:48:48 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 14:51:24 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,6 @@ void	semicolon_fct(t_master *msh)
 						prev->content)->op[0] == ';'))
 		execute_fct(msh, ((t_command *)msh->commands->prev->content) \
 						->command_arg);
-//	else if (msh->commands->prev->prev && ((t_command *)msh->commands->prev-> \
-//						prev->content)->op[0] == ';')
-//		execute_fct(msh, ((t_command *)msh->commands->prev->content) \
-//								->command_arg);
 }
 
 void	end_of_list(t_master *msh)
