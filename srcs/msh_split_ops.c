@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/21 14:16:23 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/08/16 14:39:26 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,23 @@ static int	fill_end_list(t_master *msh)
 	ft_lstadd_back(&msh->commands, ft_lstnew(end_op));
 	return (0);
 }
+
+int	fill_begin_list(t_master *msh)
+{
+	t_command	*begin_op;
+
+	begin_op = malloc(sizeof(t_command));
+	if (begin_op == NULL)
+		return (-1);
+	begin_op->op_fct = NULL;
+	begin_op->command_arg = NULL;
+	begin_op->op = ft_strdup("B");
+	begin_op->std_in_data = NULL;
+	begin_op->std_in = STDIN_FILENO;
+	begin_op->std_out = STDOUT_FILENO;
+	ft_lstadd_back(&msh->commands, ft_lstnew(begin_op));
+	return (0);
+}
 static int	check_space(t_master *msh, int a, int i)
 {
 	while (a < i && msh->line[a])
@@ -100,6 +117,7 @@ void	msh_split_ops(t_master *msh)
 	i = -1;
 	a = 0;
 	is_quote = 0;
+	fill_begin_list(msh);
 	while (++i < msh->line_len)
 	{
 		if (msh->line[i] == '\'')

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/21 12:27:46 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/21 14:29:24 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	count_words(char *command, int op_pos)
 	int	i;
 	int	nb_word;
 	int	len;
-	int is_quote;
+	int	is_quote;
 
 	i = 0;
 	nb_word = 0;
@@ -52,9 +52,8 @@ static int	count_words(char *command, int op_pos)
 		else
 		{
 			i++;
-			if (!command[i] || i >= op_pos) {
+			if (!command[i] || i >= op_pos)
 				nb_word++;
-			}			
 		}
 	}
 	return (nb_word);
@@ -71,7 +70,8 @@ static char	*return_word(char *command, int op_pos, int *i)
 		(*i)++;
 	j = *i;
 	(*i)--;
-	while (command[++(*i)] && (is_quote || !ft_isspace(command[*i])) && *i < op_pos)
+	while (command[++(*i)] && \
+		(is_quote || !ft_isspace(command[*i])) && *i < op_pos)
 	{
 		if (command[*i] == '\'')
 		{

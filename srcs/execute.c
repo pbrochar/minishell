@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/21 14:23:10 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 14:45:14 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	final_parser(t_master *msh)
 {
 	t_list	*temp;
 
+	//print_list(msh);
 	temp = msh->commands;
 	while (msh->commands)
 	{
@@ -48,7 +49,20 @@ void	final_parser(t_master *msh)
 		if (msh->sigint_signal == true)
 			break ;
 		if (((t_command *)msh->commands->content)->op != NULL && \
-			(((t_command *)msh->commands->prev->content)->command_arg == NULL))
+			(((t_command *)msh->commands->content)->op[0] == ';' || \
+			((t_command *)msh->commands->content)->op[0] == '|') && \
+			((t_command *)msh->commands->prev && ((t_command *)msh->commands->prev->content)->op != NULL))
+		{
+			ft_putstr_fd("msh: syntax error near unexpected token `", STDERR_FILENO);
+			ft_putstr_fd(((t_command *)msh->commands->content)->op, STDERR_FILENO);
+			ft_putstr_fd("'\n", STDERR_FILENO);
+			msh->abort = true;
+			break;
+		}
+		if (((t_command *)msh->commands->content)->op != NULL && \
+			(t_command *)msh->commands->prev != NULL && \
+			((((t_command *)msh->commands->prev->content)->op != NULL) && \
+			((t_command *)msh->commands->prev->content)->op[0] != 'B'))
 		{
 			ft_putstr_fd("msh: syntax error near unexpected token `", STDERR_FILENO);
 			ft_putstr_fd(((t_command *)msh->commands->content)->op, STDERR_FILENO);
@@ -59,17 +73,21 @@ void	final_parser(t_master *msh)
 		msh->commands = msh->commands->next;
 	}
 	msh->commands = temp;
+	//print_list(msh);
 }
 
 void	execute_list(t_master *msh)
 {
-	msh->commands = msh->commands->next;
 	while (msh->commands)
 	{
-		((t_command *)msh->commands->content)->op_fct(msh);
+		if (((t_command *)msh->commands->content)->op_fct != NULL)
+			((t_command *)msh->commands->content)->op_fct(msh);
 		if (((t_command *)msh->commands->content)->op != NULL && \
 			((t_command *)msh->commands->content)->op[0] == '\0')
 			return ;
+		if (((t_command *)msh->commands->content)->op != NULL && \
+			((t_command *)msh->commands->content)->op[0] == 'B')
+				msh->commands = msh->commands->next;
 		msh->commands = msh->commands->next;
 		while (((t_command *)msh->commands->content)->op == NULL)
 			msh->commands = msh->commands->next;
@@ -113,7 +131,7 @@ int	execute_line(t_master *msh)
 	{
 		msh_split_ops(msh);
 		history_management(msh);
-	//	print_list(msh);
+		//print_list(msh);
 		final_parser(msh);
 		if (msh->sigint_signal == false && msh->abort == false)
 			execute_list(msh);

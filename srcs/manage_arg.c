@@ -6,13 +6,13 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/20 17:29:09 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/07/21 14:30:02 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		remove_quote_size(char *line, int quote)
+int	remove_quote_size(char *line, int quote)
 {
 	int	i;
 	int	count;
@@ -23,7 +23,7 @@ int		remove_quote_size(char *line, int quote)
 	i = 0;
 	size = ft_strlen(line);
 	count = 0;
-	while(i < size)
+	while (i < size)
 	{
 		if (line[i] == '\\')
 		{
@@ -111,7 +111,8 @@ char	*parser(t_master *msh, char *line)
 			i += (insert_env_value(msh, &new_line, &line[i], &j) - 1);
 			continue ;
 		}
-		new_line = ft_mem_exp(new_line, sizeof(char) * (j + 1), sizeof(char) * (j + 2));
+		new_line = ft_mem_exp(new_line, sizeof(char) * (j + 1), \
+							sizeof(char) * (j + 2));
 		new_line[j] = line[i];
 		j++;
 	}

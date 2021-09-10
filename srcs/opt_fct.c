@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:04:43 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 14:48:48 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,15 @@ void	execute_fct(t_master *msh, char **arg)
 
 void	semicolon_fct(t_master *msh)
 {
-	if (msh->commands->prev->prev == NULL)
+	if (((t_command *)msh->commands->prev->prev->content)->op[0] == 'B' || \
+		(msh->commands->prev->prev && ((t_command *)msh->commands->prev-> \
+						prev->content)->op[0] == ';'))
 		execute_fct(msh, ((t_command *)msh->commands->prev->content) \
 						->command_arg);
-	else if (msh->commands->prev->prev && ((t_command *)msh->commands->prev-> \
-						prev->content)->op[0] == ';')
-		execute_fct(msh, ((t_command *)msh->commands->prev->content) \
-								->command_arg);
+//	else if (msh->commands->prev->prev && ((t_command *)msh->commands->prev-> \
+//						prev->content)->op[0] == ';')
+//		execute_fct(msh, ((t_command *)msh->commands->prev->content) \
+//								->command_arg);
 }
 
 void	end_of_list(t_master *msh)
@@ -69,8 +71,9 @@ void	end_of_list(t_master *msh)
 	if (msh->commands->prev->prev == NULL)
 		execute_fct(msh, ((t_command *)msh->commands->prev->content) \
 						->command_arg);
-	else if (msh->commands->prev->prev && ((t_command *)msh->commands->prev \
-						->prev->content)->op[0] == ';')
+	else if (msh->commands->prev->prev && \
+		 (((t_command *)msh->commands->prev->prev->content)->op[0] == ';' || \
+		 	((t_command *)msh->commands->prev->prev->content)->op[0] == 'B'))
 		execute_fct(msh, ((t_command *)msh->commands->prev->content) \
 						->command_arg);
 }
