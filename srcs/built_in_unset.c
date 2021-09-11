@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:50:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:41:50 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:00:29 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,20 @@ int	built_in_unset(t_master *msh, char **arg)
 	int	i;
 	int	env_index;
 	int	size;
+	int	ret;
 
-	i = 1;
-	while (arg[i])
+	i = 0;
+	while (arg[++i])
 	{
+		ret = check_format(arg[i]);
+		if (ret == -1)
+		{
+			print_err_bad_identifier(arg[i]);
+			ret_value(msh, 1);
+			continue ;
+		}
+		else if (ret == -2)
+			continue ;
 		env_index = 0;
 		size = ft_strlen(arg[i]);
 		while (msh->envp[env_index])
@@ -77,7 +87,6 @@ int	built_in_unset(t_master *msh, char **arg)
 			}
 			env_index++;
 		}
-		i++;
 	}
 	ret_value(msh, 0);
 	return (0);

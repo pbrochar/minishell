@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 16:13:47 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:10:09 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	execute_fct(t_master *msh, char **arg)
 	if (!arg)
 		return ;
 	arg = manage_arg(msh, arg);
+	if (!arg[0][0])
+		return ;
 	built_in_i = is_built_in(msh, arg[0]);
 	setup_fd(msh, &old_stdout, &old_stdin);
 	if (built_in_i != -1)

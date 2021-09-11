@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 16:50:32 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:16:46 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	execute_line(t_master *msh)
 		msh_split_ops(msh);
 		history_management(msh);
 		final_parser(msh);
+		print_list(msh);
 		if (msh->sigint_signal == false && msh->abort == false)
 			execute_list(msh);
 	}

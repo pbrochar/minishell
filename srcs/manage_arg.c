@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 16:56:35 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:17:42 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*parser(t_master *msh, char *line)
 			var.double_quote_flag = !var.double_quote_flag;
 			continue ;
 		}
-		else if (!var.simple_quote_flag && line[i] == '$')
+		else if (!var.simple_quote_flag && line[i] == '$' && line[i + 1])
 		{
 			i += (insert_env_value(msh, &new_line, &line[i], &var.j) - 1);
 			continue ;

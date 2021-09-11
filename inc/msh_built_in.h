@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 18:11:55 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 18:12:29 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 18:59:25 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void		print_err_num_arg(char *arg);
 int			built_in_export(t_master *msh, char **arg);
 int			var_already_exist(t_master *msh, char *arg);
 void		change_env_value(t_master *msh, char *arg, int index);
-
+int			check_format(char *var);
 /*
 ** from srcs/built_in_export_error.c
 */

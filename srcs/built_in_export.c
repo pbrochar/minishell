@@ -6,13 +6,13 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:39:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 15:59:20 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 18:58:55 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_format(char *var)
+int	check_format(char *var)
 {
 	int	i;
 
