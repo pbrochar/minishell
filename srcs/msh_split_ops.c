@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 16:13:11 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 16:47:34 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	check_spec_char(t_master *msh, int *i, int *is_quote)
 		change_quote('\'', is_quote);
 		return (1);
 	}
-	else if (!is_quote && msh->line[*i] == '\\')
+	else if (!(*is_quote) && msh->line[*i] == '\\')
 	{
 		(*i)++;
 		return (1);
