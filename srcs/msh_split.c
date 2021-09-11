@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 14:13:38 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 17:15:54 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 19:17:45 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	count_words(char *command, int op_pos)
 			change_quote('\'', &var.is_quote);
 		else if (!var.is_quote && command[i] == '\\')
 			i++;
-		else if (!var.is_quote && command[i] == '\"')
+		else if (command[i] == '\"')
 			change_quote('\"', &var.is_quote);
 		update_nb_words(&var, &i, command, op_pos);
 	}

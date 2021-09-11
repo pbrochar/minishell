@@ -6,13 +6,13 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 15:42:01 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 15:44:53 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*void	print_list(t_master *msh)
+void	print_list(t_master *msh)
 {
 	t_list	*temp;
 	int		i = 0;
@@ -33,7 +33,8 @@
 		}
 		temp = temp->next;
 	}
-}*/
+}
+
 void	execute_list(t_master *msh)
 {
 	while (msh->commands)

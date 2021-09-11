@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/12 15:37:04 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/12 15:37:13 by pbrochar         ###   ########.fr       */
+/*   Created: 2021/09/10 18:11:55 by pbrochar          #+#    #+#             */
+/*   Updated: 2021/09/10 18:12:29 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 ** from srcs/built_in_cd.c
 */
 int			built_in_cd(t_master *msh, char **arg);
+
+/*
+** from srcs/built_in_cd_error.c
+*/
+int			print_err_bad_folder(t_master *msh, char *folder, int err);
+int			print_err_too_m_a(t_master *msh);
 
 /*
 ** from srcs/built_in_cd_utils.c
@@ -43,11 +49,21 @@ int			built_in_env(t_master *msh, char **arg);
 int			built_in_exit(t_master *msh, char **arg);
 
 /*
+** from srcs/built_in_exit_error.c
+*/
+void		print_err_num_arg(char *arg);
+
+/*
 ** from srcs/built_in_export.c
 */
 int			built_in_export(t_master *msh, char **arg);
 int			var_already_exist(t_master *msh, char *arg);
 void		change_env_value(t_master *msh, char *arg, int index);
+
+/*
+** from srcs/built_in_export_error.c
+*/
+void		print_err_bad_identifier(char *arg);
 
 /*
 ** from srcs/built_in_pwd.c

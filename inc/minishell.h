@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 15:41:32 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 18:32:08 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	print_err_num_arg(char *arg);
 int	print_err_too_m_a(t_master *msh);
 int	print_err_bad_folder(t_master *msh, char *folder, int err);
 void	final_parser(t_master *msh);
+void	print_list(t_master *msh);
 
 #endif

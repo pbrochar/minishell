@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 16:52:00 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 15:55:49 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	init_parser_var(t_parser *var, char *line, char **new_line, int *i)
 {
 	var->simple_quote_flag = false;
+	var->double_quote_flag = false;
 	*i = -1;
 	var->j = 0;
 	var->size = ft_strlen(line);
@@ -42,7 +43,7 @@ char	*parser(t_master *msh, char *line)
 	init_parser_var(&var, line, &new_line, &i);
 	while (++i < var.size)
 	{
-		if (line[i] == '\'')
+		if (!var.double_quote_flag && line[i] == '\'')
 		{
 			var.simple_quote_flag = !var.simple_quote_flag;
 			continue ;
@@ -50,7 +51,10 @@ char	*parser(t_master *msh, char *line)
 		else if (!var.simple_quote_flag && line[i] == '\\')
 			i++;
 		else if (!var.simple_quote_flag && line[i] == '\"')
+		{
+			var.double_quote_flag = !var.double_quote_flag;
 			continue ;
+		}
 		else if (!var.simple_quote_flag && line[i] == '$')
 		{
 			i += (insert_env_value(msh, &new_line, &line[i], &var.j) - 1);

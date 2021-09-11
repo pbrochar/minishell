@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:39:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/19 19:30:24 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/10 18:24:17 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static int	check_format(char *var)
 			return (-1);
 		i++;
 	}
-	if (var[i] != '=')
-		return (-1);
+	if (!var[i])
+		return (-2);
 	return (0);
 }
 
@@ -87,21 +87,30 @@ int	built_in_export(t_master *msh, char **arg)
 	int	i;
 	int	ret;
 
-	i = 1;
+	i = 0;
 	while (arg[i])
 	{
-		if (check_format(arg[i]) == -1)
+		printf("%s\n", arg[i]);
+		i++;
+	}
+	i = 0;
+	while (arg[++i])
+	{
+		printf("%s\n", arg[i]);
+		ret = check_format(arg[i]);
+		if (ret == -1)
 		{
-			ft_printf("Bad identifier\n");
-			ret_value(msh, 2);
-			return (-1);
+			print_err_bad_identifier(arg[i]);
+			ret_value(msh, 1);
+			continue ;
 		}
+		else if (ret == -2)
+			continue ;
 		ret = var_already_exist(msh, arg[i]);
 		if (ret != -1)
 			change_env_value(msh, arg[i], ret);
 		else
 			realloc_env(msh, arg[i]);
-		i++;
 	}
 	ret_value(msh, 0);
 	return (0);

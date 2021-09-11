@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 17:18:45 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 15:54:34 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef struct	s_parser
 	int		j;
 	int		size;
 	bool	simple_quote_flag;
+	bool	double_quote_flag;
 }				t_parser;
 
 typedef struct	s_count_words

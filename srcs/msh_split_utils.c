@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:10:32 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 17:16:02 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 15:40:39 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*create_word(int *i, int j, char *command)
 		return (NULL);
 	ft_strlcpy(word, &command[j], ((*i) - j + 1));
 	(*i)++;
+	printf("word = %s\n", word);
 	return (word);
 }
 
