@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 19:16:46 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:43:22 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void	execute_list(t_master *msh)
 {
 	while (msh->commands)
 	{
+		if (((t_command *)msh->commands->content)->op != NULL && \
+			((t_command *)msh->commands->content)->op[0] == 'B')
+			msh->commands = msh->commands->next;
 		if (((t_command *)msh->commands->content)->op_fct != NULL)
 			((t_command *)msh->commands->content)->op_fct(msh);
 		if (((t_command *)msh->commands->content)->op != NULL && \
 			((t_command *)msh->commands->content)->op[0] == '\0')
 			return ;
-		if (((t_command *)msh->commands->content)->op != NULL && \
-			((t_command *)msh->commands->content)->op[0] == 'B')
-			msh->commands = msh->commands->next;
 		msh->commands = msh->commands->next;
 		while (((t_command *)msh->commands->content)->op == NULL)
 			msh->commands = msh->commands->next;
@@ -91,7 +91,7 @@ int	execute_line(t_master *msh)
 		msh_split_ops(msh);
 		history_management(msh);
 		final_parser(msh);
-		print_list(msh);
+	//	print_list(msh);
 		if (msh->sigint_signal == false && msh->abort == false)
 			execute_list(msh);
 	}

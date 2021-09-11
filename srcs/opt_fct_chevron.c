@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 18:53:46 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/21 14:50:22 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 19:41:54 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,20 @@ void	chevron_left_fct(t_master *msh)
 
 	if (((t_command *)msh->commands->next->content)->command_arg == NULL)
 	{
-		printf("Error, need a file name\n");
+		ft_putstr_fd("Error, need a file name\n", STDERR_FILENO);
 		return ;
 	}
 	else
 		fd = open(((t_command *)msh->commands->next->content)->command_arg[0], \
 								 O_RDONLY);
+	if (fd == -1)
+	{
+		ft_putstr_fd("msh: ", STDERR_FILENO);
+		ft_putstr_fd(((t_command *)msh->commands->next->content)->command_arg[0], STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+	}
 	((t_command *)msh->commands->prev->content)->std_in = fd;
 	msh->commands = msh->commands->prev;
 	lst_del_one(msh->commands->next);
