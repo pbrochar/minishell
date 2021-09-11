@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:39:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 18:24:17 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 15:59:20 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,8 @@ int	built_in_export(t_master *msh, char **arg)
 	int	ret;
 
 	i = 0;
-	while (arg[i])
-	{
-		printf("%s\n", arg[i]);
-		i++;
-	}
-	i = 0;
 	while (arg[++i])
 	{
-		printf("%s\n", arg[i]);
 		ret = check_format(arg[i]);
 		if (ret == -1)
 		{

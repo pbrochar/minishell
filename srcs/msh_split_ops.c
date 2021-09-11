@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:10:23 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/10 19:13:27 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/11 16:13:11 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	msh_split_ops(t_master *msh)
 	i = -1;
 	var.a = 0;
 	var.is_quote = 0;
+	var.ret = -1;
 	fill_begin_list(msh);
 	while (++i < msh->line_len)
 	{
