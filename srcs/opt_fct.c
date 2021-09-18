@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/16 11:26:19 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 19:24:51 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/12 17:56:15 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,18 @@ void	init_path(t_master **msh)
 	temp = ft_strchr((*msh)->envp[i], '=');
 	i = 1;
 	(*msh)->path = ft_split(&temp[i], ':');
+}
+
+void	print_arguments(char **arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i])
+	{
+		printf("arg[%d] = %s\n", i, arg[i]);
+		i++;
+	}
 }
 
 void	execute_fct(t_master *msh, char **arg)

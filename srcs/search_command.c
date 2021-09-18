@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 13:12:14 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/07 13:19:57 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 15:48:57 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ int	search_command(t_master *msh, char **arg)
 	struct dirent	*files;
 	int				i;
 
-	i = 0;
-	while (msh->path[i])
+	i = -1;
+	if (arg[0][0] == '.' && arg[0][1] && arg[0][1] == '.')
+		return (-1);
+	while (msh->path[++i])
 	{
 		directory = opendir(msh->path[i]);
 		while (msh->path[i] && directory == NULL)
@@ -43,7 +45,6 @@ int	search_command(t_master *msh, char **arg)
 			files = readdir(directory);
 		}
 		closedir(directory);
-		i++;
 	}
 	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:50:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 19:00:29 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 16:24:47 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,38 +56,59 @@ static int	realloc_env(t_master *msh, int index)
 	return (0);
 }
 
-int	built_in_unset(t_master *msh, char **arg)
+static int	check_format(char *var)
 {
 	int	i;
-	int	env_index;
-	int	size;
-	int	ret;
 
 	i = 0;
+	if (ft_isalpha(var[i]) == 0 && var[i] != '_')
+		return (-1);
+	while (var[i])
+	{
+		if (ft_isalnum(var[i]) == 0 && var[i] != '_')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
+static int	check_error(int ret, char *str, t_master *msh, int *final_ret)
+{
+	if (ret == -1)
+	{
+		print_err_bad_identifier(str);
+		ret_value(msh, 1);
+		(*final_ret) = 1;
+		return (0);
+	}
+	return (1);
+}
+
+int	built_in_unset(t_master *msh, char **arg)
+{
+	int		i;
+	t_unset	var;
+
+	i = 0;
+	var.ret = 0;
+	var.final_ret = 0;
 	while (arg[++i])
 	{
-		ret = check_format(arg[i]);
-		if (ret == -1)
-		{
-			print_err_bad_identifier(arg[i]);
-			ret_value(msh, 1);
+		var.ret = check_format(arg[i]);
+		if (check_error(var.ret, arg[i], msh, &var.final_ret) == 0)
 			continue ;
-		}
-		else if (ret == -2)
-			continue ;
-		env_index = 0;
-		size = ft_strlen(arg[i]);
-		while (msh->envp[env_index])
+		var.env_index = -1;
+		var.size = ft_strlen(arg[i]);
+		while (msh->envp[++var.env_index])
 		{
-			if (ft_strncmp(msh->envp[env_index], arg[i], \
-				size) == 0 && msh->envp[env_index][size] == '=')
+			if (ft_strncmp(msh->envp[var.env_index], arg[i], \
+				var.size) == 0 && msh->envp[var.env_index][var.size] == '=')
 			{
-				realloc_env(msh, env_index);
+				realloc_env(msh, var.env_index);
 				break ;
 			}
-			env_index++;
 		}
 	}
-	ret_value(msh, 0);
-	return (0);
+	if (var.ret != -1 && var.final_ret == 0)
+		return (ret_value(msh, 0));
 }

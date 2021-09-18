@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 17:02:09 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 15:54:34 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 16:21:32 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,5 +147,13 @@ typedef struct	s_split_ops
 	int	ret;
 	int	is_quote;
 }				t_split_ops;
+
+typedef struct	s_unset
+{
+	int	env_index;
+	int	size;
+	int	ret;
+	int	final_ret;
+}				t_unset;
 
 #endif

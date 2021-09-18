@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 18:53:46 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 19:41:54 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 15:56:10 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,16 @@ void	chevron_right_fct(t_master *msh)
 		return ;
 	}
 	else
+	{
+		((t_command *)msh->commands->next->content)->command_arg = \
+			manage_arg(msh, ((t_command *)msh->commands->next->content) \
+							->command_arg);
 		fd = open(((t_command *)msh->commands->next->content)->command_arg[0], \
 					 O_RDWR | O_CREAT | O_TRUNC, 0644);
+	}
+	if (fd == -1)
+		opt_chevron_put_error(((t_command *)msh->commands->next->content) \
+					->command_arg[0]);
 	((t_command *)msh->commands->prev->content)->std_out = fd;
 	msh->commands = msh->commands->prev;
 	lst_del_one(msh->commands->next);
@@ -40,8 +48,13 @@ void	db_chevron_right_fct(t_master *msh)
 		return ;
 	}
 	else
+	{
+		((t_command *)msh->commands->next->content)->command_arg = \
+		manage_arg(msh, ((t_command *)msh->commands->next->content) \
+							->command_arg);
 		fd = open(((t_command *)msh->commands->next->content)->command_arg[0], \
 								O_RDWR | O_CREAT | O_APPEND, 0644);
+	}
 	((t_command *)msh->commands->prev->content)->std_out = fd;
 	msh->commands = msh->commands->prev;
 	lst_del_one(msh->commands->next);
@@ -58,16 +71,16 @@ void	chevron_left_fct(t_master *msh)
 		return ;
 	}
 	else
+	{
+		((t_command *)msh->commands->next->content)->command_arg = \
+		manage_arg(msh, ((t_command *)msh->commands->next->content) \
+							->command_arg);
 		fd = open(((t_command *)msh->commands->next->content)->command_arg[0], \
 								 O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr_fd("msh: ", STDERR_FILENO);
-		ft_putstr_fd(((t_command *)msh->commands->next->content)->command_arg[0], STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
 	}
+	if (fd == -1)
+		opt_chevron_put_error(((t_command *)msh->commands->next->content) \
+								->command_arg[0]);
 	((t_command *)msh->commands->prev->content)->std_in = fd;
 	msh->commands = msh->commands->prev;
 	lst_del_one(msh->commands->next);

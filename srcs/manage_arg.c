@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/06 15:48:33 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 19:17:42 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 16:11:05 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,10 @@ char	*parser(t_master *msh, char *line)
 	init_parser_var(&var, line, &new_line, &i);
 	while (++i < var.size)
 	{
-		if (!var.double_quote_flag && line[i] == '\'')
-		{
-			var.simple_quote_flag = !var.simple_quote_flag;
+		if (manage_simple_quote_parser(&var, line, i) == 0)
 			continue ;
-		}
 		else if (!var.simple_quote_flag && line[i] == '\\')
-		{
-			if (line[i + 1] && (line[i + 1] == '\\' \
-				|| line[i + 1] == '\"' || line[i + 1] == '$' || (is_operand(line, i + 1) != -1)))
-				i++;
-		}
+			check_special_char(line, &i);
 		else if (!var.simple_quote_flag && line[i] == '\"')
 		{
 			var.double_quote_flag = !var.double_quote_flag;

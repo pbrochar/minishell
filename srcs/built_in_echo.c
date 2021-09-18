@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:02:34 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/12 15:46:14 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/12 17:03:18 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	built_in_echo(t_master *msh, char **arg)
 	while (arg[i])
 	{
 		ft_printf("%s", arg[i]);
-		if (arg[i + 1])
+		if (arg[i + 1] && arg[i][0] != '\0')
 			ft_printf(" ");
 		if (print_newline == 0)
 			manage_n_opt(msh, arg, i);

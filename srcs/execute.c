@@ -6,34 +6,11 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 20:23:03 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 19:43:22 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 16:03:43 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_list(t_master *msh)
-{
-	t_list	*temp;
-	int		i = 0;
-
-	temp = msh->commands;
-	while (temp)
-	{
-		if ((((t_command *)temp->content)->op != NULL))
-			printf("[%s]\n", ((t_command *)temp->content)->op);
-		if (((t_command *)temp->content)->command_arg != NULL)
-		{
-			i = 0;
-			while(((t_command *)temp->content)->command_arg[i])
-			{
-				printf("|%s|\n", ((t_command *)temp->content)->command_arg[i]);
-				i++;
-			}
-		}
-		temp = temp->next;
-	}
-}
 
 void	execute_list(t_master *msh)
 {
@@ -91,7 +68,6 @@ int	execute_line(t_master *msh)
 		msh_split_ops(msh);
 		history_management(msh);
 		final_parser(msh);
-	//	print_list(msh);
 		if (msh->sigint_signal == false && msh->abort == false)
 			execute_list(msh);
 	}

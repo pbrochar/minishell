@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 14:00:26 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 20:43:31 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 15:49:17 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static int	exec_command_pipe(t_master *msh, char **arg)
 
 	if (arg[0] == NULL || arg[0][0] == 32)
 		return (-1);
-	if (arg[0][0] == '.' || arg[0][0] == '/')
+	if ((arg[0][0] == '.' || arg[0][0] == '/') && \
+		(ft_strlen(arg[0]) != 2 && arg[0][0] != '.' && arg[0][1] != '.'))
 		command = ft_strdup(arg[0]);
 	else
 	{

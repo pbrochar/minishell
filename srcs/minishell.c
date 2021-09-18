@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:43:57 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/19 16:10:37 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/12 16:56:32 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	sigint_handler(int sig)
 {
 	((t_master *)g_msh)->sigint_signal = true;
+	ret_value((t_master *)(g_msh), 130);
 	if (g_msh->commmand_running == true)
 	{
 		kill(g_msh->pid, sig);
@@ -41,6 +42,7 @@ void	sigint_handler(int sig)
 void	sigquit_handler(int sig)
 {
 	(void)sig;
+	ret_value((t_master *)g_msh, 131);
 	return ;
 }
 

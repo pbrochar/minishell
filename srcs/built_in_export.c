@@ -6,13 +6,13 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:39:18 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/11 18:58:55 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 16:12:24 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_format(char *var)
+static int	check_format(char *var)
 {
 	int	i;
 
@@ -57,29 +57,29 @@ static int	realloc_env(t_master *msh, char *new_var)
 	return (0);
 }
 
-int	var_already_exist(t_master *msh, char *arg)
+static int	check_arg_value(char **arg)
 {
-	int	var_name_size;
 	int	i;
 
-	i = 0;
-	while (arg[i] != '=')
-		i++;
-	var_name_size = i;
-	i = 0;
-	while (msh->envp[i])
+	i = 1;
+	while (arg[i])
 	{
-		if (ft_strncmp(msh->envp[i], arg, var_name_size + 1) == 0)
-			return (i);
+		if (arg[i][0] != '\0')
+			return (1);
 		i++;
 	}
-	return (-1);
+	return (0);
 }
 
-void	change_env_value(t_master *msh, char *arg, int index)
+static int	print_export_values(t_master *msh)
 {
-	free(msh->envp[index]);
-	msh->envp[index] = ft_strdup(arg);
+	int	i;
+
+	i = -1;
+	while (msh->envp[++i])
+		ft_printf("declare -x %s\n", msh->envp[i]);
+	ret_value(msh, 0);
+	return (0);
 }
 
 int	built_in_export(t_master *msh, char **arg)
@@ -88,6 +88,8 @@ int	built_in_export(t_master *msh, char **arg)
 	int	ret;
 
 	i = 0;
+	if (check_arg_value(arg) == 0)
+		return (print_export_values(msh));
 	while (arg[++i])
 	{
 		ret = check_format(arg[i]);
