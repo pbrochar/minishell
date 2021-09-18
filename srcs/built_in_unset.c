@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:50:42 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/18 16:24:47 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 16:35:54 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,22 +86,21 @@ static int	check_error(int ret, char *str, t_master *msh, int *final_ret)
 
 int	built_in_unset(t_master *msh, char **arg)
 {
-	int		i;
 	t_unset	var;
 
-	i = 0;
+	var.i = 0;
 	var.ret = 0;
 	var.final_ret = 0;
-	while (arg[++i])
+	while (arg[++var.i])
 	{
-		var.ret = check_format(arg[i]);
-		if (check_error(var.ret, arg[i], msh, &var.final_ret) == 0)
+		var.ret = check_format(arg[var.i]);
+		if (check_error(var.ret, arg[var.i], msh, &var.final_ret) == 0)
 			continue ;
 		var.env_index = -1;
-		var.size = ft_strlen(arg[i]);
+		var.size = ft_strlen(arg[var.i]);
 		while (msh->envp[++var.env_index])
 		{
-			if (ft_strncmp(msh->envp[var.env_index], arg[i], \
+			if (ft_strncmp(msh->envp[var.env_index], arg[var.i], \
 				var.size) == 0 && msh->envp[var.env_index][var.size] == '=')
 			{
 				realloc_env(msh, var.env_index);
@@ -110,5 +109,6 @@ int	built_in_unset(t_master *msh, char **arg)
 		}
 	}
 	if (var.ret != -1 && var.final_ret == 0)
-		return (ret_value(msh, 0));
+		ret_value(msh, 0);
+	return (0);
 }
