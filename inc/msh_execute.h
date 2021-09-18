@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 19:24:48 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/07/11 19:24:59 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 16:26:51 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,15 @@ int			exec_command(t_master *msh, char **arg);
 /*
 ** from srcs/execute_command_child.c
 */
-void		exec_manage_child_process(t_master *msh, int fd_pipe[2], char *command, char **arg);
+void		exec_manage_child_process(t_master *msh, int fd_pipe[2], \
+										char *command, char **arg);
 void		manage_heredoc_child(t_master *msh, int fd_pipe[2]);
 
 /*
 ** from srcs/execute_command_parent.c
 */
-void		exec_manage_parent_process(t_master *msh, int fd_pipe[2], char *command);
+void		exec_manage_parent_process(t_master *msh, int fd_pipe[2], \
+										char *command);
 void		manage_heredoc_parent(t_master *msh, int fd_pipe[2]);
 
 #endif

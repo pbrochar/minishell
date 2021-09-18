@@ -6,7 +6,7 @@
 /*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:45:11 by pbrochar          #+#    #+#             */
-/*   Updated: 2021/09/18 16:12:59 by pbrochar         ###   ########.fr       */
+/*   Updated: 2021/09/18 16:26:19 by pbrochar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "msh_include.h"
 
-const static t_master *g_msh;
+const static t_master	*g_msh;
 
 void	paste_clipboard(t_master *msh);
 void	manage_delete_multiline(t_master *msh);
@@ -64,12 +64,12 @@ void	change_shlvl(t_master *msh);
 int		insert_env_value(t_master *msh, char **new_line, char *arg, int *pos);
 
 void	print_err_num_arg(char *arg);
-int	print_err_too_m_a(t_master *msh);
-int	print_err_bad_folder(t_master *msh, char *folder, int err);
+int		print_err_too_m_a(t_master *msh);
+int		print_err_bad_folder(t_master *msh, char *folder, int err);
 void	final_parser(t_master *msh);
 void	print_list(t_master *msh);
-void opt_chevron_put_error(char *str);
-int	manage_simple_quote_parser(t_parser *var, char *line, int i);
+void	opt_chevron_put_error(char *str);
+int		manage_simple_quote_parser(t_parser *var, char *line, int i);
 void	check_special_char(char *line, int *i);
 
 #endif

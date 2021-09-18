@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   msh_opt.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pbrochar <pbrochar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/18 16:26:59 by pbrochar          #+#    #+#             */
+/*   Updated: 2021/09/18 16:27:20 by pbrochar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MSH_OPT_H
 # define MSH_OPT_H
-
 
 /*
 ** from srcs/opt_fct.c
@@ -63,7 +74,8 @@ void		heredoc_pipe_child(t_master *msh, int heredoc_fd[2]);
 /*
 ** from srcs/opt_pipe_parent.c
 */
-void		manage_parent_fd(int old_fd[2], int new_fd[2], int i, int pipe_count);
+void		manage_parent_fd(int old_fd[2], int new_fd[2], int i, \
+								int pipe_count);
 void		manage_parent_process(t_master *msh, int i, int pipe_count);
 
 /*
